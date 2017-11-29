@@ -18,7 +18,7 @@
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
     "popper.js": "^1.12.9",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }
