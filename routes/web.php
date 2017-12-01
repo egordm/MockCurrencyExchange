@@ -12,5 +12,8 @@
 */
 //Auth::routes();
 
+Route::post('/login', 'AuthController@login')->name('login');
+Route::post('/register', 'AuthController@register')->name('register');
+
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');

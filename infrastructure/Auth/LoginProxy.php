@@ -117,6 +117,7 @@ class LoginProxy
 
 		$data = json_decode($response->getContent());
 
+
 		return [
 			'access_token' => $data->access_token,
 			'refresh_token' => $data->refresh_token,

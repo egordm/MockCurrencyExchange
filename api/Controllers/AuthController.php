@@ -10,11 +10,15 @@ namespace API\Controllers;
 
 
 use API\Requests\LoginRequest;
-use Illuminate\Validation\ValidationException;
+use API\Requests\RegisterRequest;
+use App\Repositories\UserRepository;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Infrastructure\Auth\LoginProxy;
 use Infrastructure\Requests\APIRequest;
 
-class LoginController extends APIController
+class AuthController extends APIController
 {
 	/**
 	 * @var LoginProxy
@@ -50,6 +54,7 @@ class LoginController extends APIController
 	public function logout()
 	{
 		$this->loginProxy->logout();
+		$this->guard()->logout();
 
 		return \Response::make(null, 204);
 	}

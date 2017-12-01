@@ -9,6 +9,7 @@
 namespace Tests\API\Feature;
 
 
+use App\Repositories\UserRepository;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -37,5 +38,18 @@ class AuthenticationTest extends TestCase
 		]);
 		$response->assertStatus(200);
 		$response->assertJsonStructure(['access_token', 'refresh_token', 'expires_in']);
+	}
+
+	public function testRegister() {
+		$user = \DB::table('users')->where(['email' => 'test@test.test'])->first();
+		if($user) \DB::table('users')->delete($user->id);
+
+		$response = $this->postJson(route('api.register'), [
+			'name' => 'Jonny Test',
+			'email' => 'test@test.test',
+			'password' => 'test_test'
+		]);
+		$response->assertStatus(200);
+		$response->assertJsonFragment(['success' => true]);
 	}
 }
