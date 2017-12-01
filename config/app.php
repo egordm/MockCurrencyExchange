@@ -169,6 +169,8 @@ return [
          */
 	    Collective\Html\HtmlServiceProvider::class,
 	    Eloquence\EloquenceServiceProvider::class,
+	    Optimus\ApiConsumer\Provider\LaravelServiceProvider::class,
+
 
 
 	    /*
