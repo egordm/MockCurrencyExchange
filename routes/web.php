@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Auth::routes();
 
-Route::get('/', 'MainController@index');
-Route::get('/exchange', 'MainController@exchange');
+Route::get('/', 'MainController@index')->name('home');
+Route::get('/exchange', 'MainController@exchange')->name('exchange');

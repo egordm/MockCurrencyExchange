@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', 'LoginController@login')->name('api.login');
+Route::post('/login/refresh', 'LoginController@refresh')->name('api.refresh');
+
+Route::group(['middleware' => 'auth:api'], function () {
+	Route::post('/logout', 'LoginController@logout')->name('api.logout');
+
+	Route::get('/user', function (Request $request) {
+		return $request->user();
+	});
 });
