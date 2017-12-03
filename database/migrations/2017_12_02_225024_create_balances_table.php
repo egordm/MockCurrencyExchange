@@ -14,11 +14,12 @@ class CreateBalancesTable extends Migration
     public function up()
     {
         \Schema::create('balances', function (Blueprint $table) {
-            $table->increments('id');
 	        $table->unsignedInteger('user_id');
 	        $table->unsignedInteger('valuta_id');
 	        $table->unsignedDecimal('quantity', 16, 8);
             $table->timestamps();
+
+            $table->primary(['user_id', 'valuta_id']);
         });
 
 	    \Schema::table('balances', function (Blueprint $table) {
