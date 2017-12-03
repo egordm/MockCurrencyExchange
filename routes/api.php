@@ -16,10 +16,12 @@ use Illuminate\Http\Request;
 Route::post('/login', 'AuthController@login')->name('api.login');
 Route::post('/login/refresh', 'AuthController@refresh')->name('api.refresh');
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'multi-auth'], function () {
 	Route::post('/logout', 'AuthController@logout')->middleware('guest')->name('api.logout');
 
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	});
+
+	Route::get('/balance', 'BalanceController@index')->name('api.balance');
 });

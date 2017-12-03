@@ -11,8 +11,9 @@ namespace App\Repositories;
 
 use App\User;
 use Bosnadev\Repositories\Eloquent\Repository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
-class UserRepository extends Repository
+class UserRepository extends BaseRepository
 {
 
 	/**
