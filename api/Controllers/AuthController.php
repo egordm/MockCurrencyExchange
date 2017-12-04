@@ -10,12 +10,8 @@ namespace API\Controllers;
 
 
 use API\Requests\LoginRequest;
-use API\Requests\RegisterRequest;
-use App\Repositories\UserRepository;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Infrastructure\Auth\LoginProxy;
+use Infrastructure\Controllers\APIController;
 use Infrastructure\Requests\APIRequest;
 
 class AuthController extends APIController

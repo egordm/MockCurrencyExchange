@@ -11,7 +11,7 @@ namespace API\Controllers;
 
 use App\Repositories\BalanceRepository;
 use Illuminate\Auth\AuthenticationException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Infrastructure\Controllers\APIController;
 
 class BalanceController extends APIController
 {
@@ -29,14 +29,8 @@ class BalanceController extends APIController
 		$this->balanceRepository = $balanceRepository;
 	}
 
-	/**
-	 * @throws AuthenticationException
-	 */
 	public function index() {
-		$user = \Auth::user();
-		if(!$user) throw new AuthenticationException();
-
-		return $this->balanceRepository->getBalance($user);
+		return $this->balanceRepository->getBalance(\Auth::user());
 	}
 
 
