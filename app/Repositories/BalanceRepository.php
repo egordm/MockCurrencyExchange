@@ -14,7 +14,7 @@ use App\Repositories\Presenters\BalancePresenter;
 use App\User;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class BalanceRepository extends BaseRepository
+class BalanceRepository extends PresentableRepository
 {
 	/**
 	 * Specify Model class name
@@ -32,7 +32,7 @@ class BalanceRepository extends BaseRepository
 	 */
 	public function getBalance(User $user)
 	{
-		return $this->findWhere(['user_id' => $user->id]);
+		return $this->with(['valuta'])->findWhere(['user_id' => $user->id]);
 	}
 
 	public function presenter()

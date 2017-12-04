@@ -13,7 +13,7 @@ use App\User;
 use Bosnadev\Repositories\Eloquent\Repository;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class UserRepository extends BaseRepository
+class UserRepository extends PresentableRepository
 {
 
 	/**
