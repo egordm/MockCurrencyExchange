@@ -2,15 +2,15 @@
 
 namespace App\Repositories\Presenters;
 
-use App\Transformers\BalanceTransformer;
+use App\Transformers\OrderFillTransformer;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
- * Class BalancePresenter
+ * Class OrderFillPresenter
  *
  * @package namespace App\Repositories\Presenters;
  */
-class BalancePresenter extends FractalRelationshipsPresenter
+class OrderFillPresenter extends FractalRelationshipsPresenter
 {
     /**
      * Transformer
@@ -19,6 +19,6 @@ class BalancePresenter extends FractalRelationshipsPresenter
      */
     public function getTransformer()
     {
-        return new BalanceTransformer();
+        return new OrderFillTransformer();
     }
 }
