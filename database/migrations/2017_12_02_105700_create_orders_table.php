@@ -20,10 +20,10 @@ class CreateOrdersTable extends Migration
 	        $table->unsignedDecimal('price', 16, 8); // 00000000.00000000
 	        $table->unsignedDecimal('fee', 14, 8)->default(0); // 000000.00000000
 	        $table->unsignedDecimal('quantity', 14, 8); // 000000.00000000
-	        $table->boolean('buy');
-	        $table->unsignedTinyInteger('type');
-	        $table->unsignedTinyInteger('status');
-	        $table->boolean('settled');
+	        $table->boolean('buy')->default(1);
+	        $table->unsignedTinyInteger('type')->default(0);
+	        $table->unsignedTinyInteger('status')->default(0);
+	        $table->boolean('settled')->default(0);
 	        $table->timestamps();
         });
 
