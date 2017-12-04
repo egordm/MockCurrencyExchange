@@ -6,7 +6,7 @@
  * Time: 21:18
  */
 
-namespace API\Controllers;
+namespace Infrastructure\Controllers;
 
 use Illuminate\Routing\Controller;
 
