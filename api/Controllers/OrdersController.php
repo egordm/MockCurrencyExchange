@@ -36,7 +36,6 @@ class OrdersController extends APIController
 
 	public function view($id)
 	{
-		return Order::find(1)->fill_percentage(Order::find(2));
 		return $this->orderRepository->with(['orders_filling', 'orders_filled', 'valuta_pair'])->present(['order_fills'])->find($id);
 	}
 
