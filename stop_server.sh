@@ -2,4 +2,4 @@
 
 hs=`cat vagrant_dir`
 cd $hs
-vagrant up
+vagrant destroy --force
