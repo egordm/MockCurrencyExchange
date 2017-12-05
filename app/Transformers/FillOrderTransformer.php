@@ -47,7 +47,7 @@ class FillOrderTransformer extends TransformerAbstract
 			'settled' => $model->settled,
 			'created_at' => $model->created_at,
 			'updated_at' => $model->updated_at,
-			'fill_percentage' => $model->fill_percentage($this->parent)
+			'fill_percentage' => $this->parent->fill_percentage($model)
 		];
 	}
 }

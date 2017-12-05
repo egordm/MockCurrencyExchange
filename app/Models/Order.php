@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Repositories\OrderFillRepository;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\ContainerExceptionInterface;
+use Illuminate\Support\Facades\NotFoundExceptionInterface;
 use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\PresentableTrait;
@@ -46,49 +50,80 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Order extends Model implements Transformable, Presentable
 {
-    use TransformableTrait, PresentableTrait;
+	use TransformableTrait, PresentableTrait;
 
-    const TYPE_LIMIT = 0;
-    const TYPE_MARKET = 1;
+	const TYPE_LIMIT = 0;
+	const TYPE_MARKET = 1;
 
-    const STATUS_OPEN = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_DONE = 2;
-    const STATUS_CANCELLED = 3;
+	const STATUS_OPEN = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_DONE = 2;
+	const STATUS_CANCELLED = 3;
 
-    protected $fillable = [];
+	protected $fillable = [];
 
-	public function user() {
+	public function user()
+	{
 		return $this->belongsTo(User::class);
 	}
 
-	public function valuta_pair() {
+	public function valuta_pair()
+	{
 		return $this->belongsTo(ValutaPair::class);
 	}
 
-	public function order_fills() {
+	public function order_fills()
+	{
 		return $this->orders_filling->merge($this->orders_filled);
 	}
 
-	public function orders_filling() {
+	/**
+	 * Get orders that fill this order. All results will be buy orders.
+	 * @return BelongsToMany
+	 */
+	public function orders_filling()
+	{
 		return $this->belongsToMany(Order::class, 'order_fills', 'order_secondary_id', 'order_primary_id')->withPivot(['percentage']);
 	}
 
-	public function orders_filled() {
+	/**
+	 * Get orders that are being filled with this one. All results will be sell orders.
+	 * @return BelongsToMany
+	 */
+	public function orders_filled()
+	{
 		return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['percentage']);
 	}
 
-	public function fill_percentage(Order $order) {
-		if(isset($this->pivot)) $percentage = $this->pivot->percentage;
+	/** @noinspection PhpDocMissingThrowsInspection */
+	/**
+	 *
+	 * Get a percentage that is filled by the order
+	 * @param Order $order
+	 * @return float
+	 */
+	public function fill_percentage(Order $order)
+	{
+		if (isset($order->pivot)) $percentage = $order->pivot->percentage;
 		else {
-			// TODO: move into repository
-			$fill = OrderFill::where($this->buy ? ['order_primary_id' => $this->id, 'order_secondary_id' => $order->id]
-				: ['order_primary_id' => $order->id, 'order_secondary_id' => $this->id])->first();
-
-			if(!$fill) return 0;
+			/** @noinspection PhpUnhandledExceptionInspection */
+			$fill = \App::get(OrderFillRepository::class)->skipPresenter()
+				->findById($this->buy ? $this->id : $order->id, $this->buy ? $order->id : $this->id)->first();
+			if (!$fill) return 0;
 			$percentage = $fill->percentage;
 		}
 
 		return ($order->buy) ? $percentage : ($order->quantity * $percentage) / $this->quantity;
+	}
+
+	/**
+	 * Get a percentage of the order that is filled
+	 */
+	public function filled_percentage()
+	{
+		$fills = $this->buy ? $this->orders_filled : $this->orders_filling;
+		$ret = 0;
+		foreach ($fills as $fill) $ret += $this->fill_percentage($fill);
+		return $ret;
 	}
 }

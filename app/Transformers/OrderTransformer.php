@@ -31,8 +31,9 @@ class OrderTransformer extends TransformerAbstract
 	        'type' => $model->type,
 	        'status' => $model->status,
 	        'settled' => $model->settled,
+	        'filled_percentage' => $model->filled_percentage(),
             'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            'updated_at' => $model->updated_at,
         ];
     }
 

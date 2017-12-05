@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Repositories\Presenters\OrderFillPresenter;
 use App\Repositories\Presenters\OrderPresenter;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -37,7 +38,7 @@ class OrderFillRepository extends PresentableRepository
 
 	public function presenter()
 	{
-		return OrderPresenter::class;
+		return OrderFillPresenter::class;
 	}
 
 	/**
@@ -47,4 +48,9 @@ class OrderFillRepository extends PresentableRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+	public function findById($id_primary, $id_secondary, $columns = ['*'])
+	{
+		return $this->findWhere(['order_primary_id' => $id_primary, 'order_secondary_id' => $id_secondary], $columns);
+	}
 }
