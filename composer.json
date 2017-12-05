@@ -14,8 +14,11 @@
     "fideloper/proxy": "~3.3",
     "kirkbushell/eloquence": "^2.0",
     "laravel/framework": "5.5.*",
+    "laravel/passport": "^4.0@dev",
     "laravel/tinker": "~1.0",
     "laravelcollective/html": "^5.5",
+    "optimus/api-consumer": "dev-master",
+    "prettus/l5-repository": "dev-master",
     "spatie/laravel-fractal": "^5.3"
   },
   "require-dev": {
@@ -33,7 +36,9 @@
 	  "database/factories"
 	],
 	"psr-4": {
-	  "App\\": "app/"
+	  "App\\": "app/",
+	  "API\\": "api/",
+	  "Infrastructure\\": "infrastructure/"
 	}
   },
   "autoload-dev": {

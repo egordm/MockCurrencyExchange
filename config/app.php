@@ -169,6 +169,7 @@ return [
          */
 	    Collective\Html\HtmlServiceProvider::class,
 	    Eloquence\EloquenceServiceProvider::class,
+	    Optimus\ApiConsumer\Provider\LaravelServiceProvider::class,
 
 
 	    /*
@@ -179,7 +180,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
     /*
