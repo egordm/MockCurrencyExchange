@@ -10,6 +10,7 @@ namespace API\Controllers;
 
 
 use App\Models\Order;
+use App\Models\Valuta;
 use App\Repositories\OrderRepository;
 use Infrastructure\Controllers\APIController;
 
@@ -41,6 +42,7 @@ class OrdersController extends APIController
 
 	public function create()
 	{
-
+	    $this->orderRepository->skipPresenter()->find(1)->balance();
+        //\Auth::user()->getBalance(Valuta::where(['symbol' => 'BTC'])->first());
 	}
 }

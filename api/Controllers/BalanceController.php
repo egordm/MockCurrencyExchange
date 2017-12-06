@@ -10,6 +10,7 @@ namespace API\Controllers;
 
 
 use App\Repositories\BalanceRepository;
+use App\Repositories\OrderRepository;
 use Illuminate\Auth\AuthenticationException;
 use Infrastructure\Controllers\APIController;
 
@@ -30,7 +31,10 @@ class BalanceController extends APIController
 	}
 
 	public function index() {
-		return $this->balanceRepository->getBalance(\Auth::user());
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $orders = \App::get(OrderRepository::class)->skipPresenter()->getOrders(\Auth::user(), ['status' => 0]);
+        // TODO: sum the order balances and display
+		return $this->balanceRepository->getBalances(\Auth::user());
 	}
 
 
