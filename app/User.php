@@ -3,6 +3,9 @@
 namespace App;
 
 use App\Models\Balance;
+use App\Models\Order;
+use App\Models\Valuta;
+use App\Repositories\BalanceRepository;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -61,5 +64,17 @@ class User extends Authenticatable
 
 	public function balances() {
 		return $this->hasMany(Balance::class);
+	}
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+	}
+
+    public function getBalance(Valuta $valuta)
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $balance = \App::get(BalanceRepository::class)->getBalance($this, $valuta);
+        return $balance->quantity;
 	}
 }

@@ -54,9 +54,9 @@ class OrderRepository extends PresentableRepository
 	 * @param User $user
 	 * @return mixed
 	 */
-	public function getOrders(User $user)
+	public function getOrders(User $user, $where = [])
 	{
-		return $this->with(['valuta_pair'])->findWhere(['user_id' => $user->id]);
+		return $this->with(['valuta_pair'])->findWhere(array_merge(['user_id' => $user->id], $where));
 	}
 
 	//public function filledRatio
