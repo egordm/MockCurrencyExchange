@@ -32,7 +32,6 @@ class ValutaPairRepository extends PresentableRepository
     */
     public function validator()
     {
-
         return ValutaPairValidator::class;
     }
 

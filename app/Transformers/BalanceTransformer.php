@@ -23,10 +23,11 @@ class BalanceTransformer extends TransformerAbstract
 	 */
     public function transform(Balance $model)
     {
-    	\Log::debug($model);
-        return [
+        $ret =  [
 	        'quantity' => $model->quantity,
+	        'halted' => $model->halted_quantity
         ];
+        return $ret;
     }
 
     public function includeValuta(Balance $model) {

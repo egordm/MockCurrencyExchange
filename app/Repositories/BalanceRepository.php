@@ -12,8 +12,13 @@ namespace App\Repositories;
 use App\Models\Balance;
 use App\Models\Valuta;
 use App\Repositories\Criteria\ActiveOrderCriteria;
+use App\Repositories\Criteria\BySymbolCriteria;
+use App\Repositories\Criteria\HoldQuantityCriteria;
 use App\Repositories\Criteria\OrderValutaCriteria;
+use App\Repositories\Criteria\WithBalanceCriteria;
 use App\Repositories\Presenters\BalancePresenter;
+use App\Repositories\Presenters\BalanceValutaPresenter;
+use App\Transformers\BalanceValutaTransformer;
 use App\User;
 
 class BalanceRepository extends PresentableRepository
@@ -30,16 +35,28 @@ class BalanceRepository extends PresentableRepository
 
 	/**
 	 * @param User $user
+	 * @param null $symbols
 	 * @return mixed
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
 	 */
-	public function getBalances(User $user)
+	public function getBalances(User $user, $symbols = null)
 	{
-		return $this->with(['valuta'])->findWhere(['user_id' => $user->id]);
+		$useValuta = !empty($symbols);
+		$repo = $useValuta ? \App::get(ValutaRepository::class) : $this;
+		$repo->pushCriteria(new HoldQuantityCriteria(\Auth::user(), $useValuta ? 'valuta.id' : 'balances.valuta_id'));
+		if(!$useValuta) return $this->with(['valuta'])->findWhere(['balances.user_id' => $user->id]);
+
+		$repo->pushCriteria(new BySymbolCriteria($symbols, !$useValuta));
+		$repo->pushCriteria(new WithBalanceCriteria(\Auth::user()));
+		$repo->setPresenter(BalanceValutaPresenter::class);
+		return $repo->all();;
 	}
 
 	public function getBalance(User $user, Valuta $valuta)
 	{
-		return $this->findWhere(['user_id' => $user->id, 'valuta_id' => $valuta->id]);
+		return  $this->findWhere(['user_id' => $user->id, 'valuta_id' => $valuta->id]);
 	}
 
 	/**

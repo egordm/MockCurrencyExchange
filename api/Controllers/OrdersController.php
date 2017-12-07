@@ -14,9 +14,6 @@ use App\Models\Valuta;
 use App\Repositories\OrderRepository;
 use App\Validators\OrderFillValidator;
 use Infrastructure\Controllers\APIController;
-use Mockery\Exception;
-use Prettus\Repository\Exceptions\RepositoryException;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class OrdersController extends APIController
