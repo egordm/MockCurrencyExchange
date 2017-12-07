@@ -60,7 +60,7 @@ class Order extends Model implements Transformable, Presentable
     const STATUS_DONE = 2;
     const STATUS_CANCELLED = 3;
 
-    protected $fillable = [];
+    protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
 
     public function user()
     {
@@ -127,14 +127,38 @@ class Order extends Model implements Transformable, Presentable
         return $ret;
     }
 
-    public function balance()
-    {
-        $pair = $this->valuta_pair;
-        $fp = $this->filled_percentage();
-        return [
-            $pair->valuta_primary_id => ($this->buy ? -1 : 1) * ($this->quantity * $fp) * $this->price,
-            $pair->valuta_secondary_id => ($this->buy ? 1 : -1) * $this->quantity * (1 - $fp),
+	/**
+	 * Quantity of valuta that is bought
+	 * @return float|int
+	 */
+	public function buyQuantity()
+	{
+		return !$this->buy ? $this->quantity * $this->price : $this->quantity;
+	}
 
-        ];
+	/**
+	 * Valuta that is bought
+	 * @return Valuta
+	 */
+	public function buyValuta()
+	{
+		return !$this->buy ? $this->valuta_pair->valuta_primary : $this->valuta_pair->valuta_secondary;
+	}
+
+	/**
+	 * Quantity of valuta that is sold
+	 */
+	public function sellQuantity()
+	{
+		return $this->buy ? $this->quantity * $this->price : $this->quantity;
+    }
+
+	/**
+	 * Valuta that is bought
+	 * @return Valuta
+	 */
+	public function sellValuta()
+	{
+		return $this->buy ? $this->valuta_pair->valuta_primary : $this->valuta_pair->valuta_secondary;
 	}
 }

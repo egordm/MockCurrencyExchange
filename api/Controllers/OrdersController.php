@@ -9,40 +9,58 @@
 namespace API\Controllers;
 
 
-use App\Models\Order;
+use API\Requests\OrderCreateRequest;
 use App\Models\Valuta;
 use App\Repositories\OrderRepository;
+use App\Validators\OrderFillValidator;
 use Infrastructure\Controllers\APIController;
+use Mockery\Exception;
+use Prettus\Repository\Exceptions\RepositoryException;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 class OrdersController extends APIController
 {
 	/**
 	 * @var OrderRepository
 	 */
-	public $orderRepository;
+	public $repository;
+
+	/**
+	 * @var OrderFillValidator
+	 */
+	protected $validator;
 
 	/**
 	 * OrdersController constructor.
 	 * @param OrderRepository $orderRepository
+	 * @param OrderFillValidator $validator
 	 */
-	public function __construct(OrderRepository $orderRepository)
+	public function __construct(OrderRepository $orderRepository, OrderFillValidator $validator)
 	{
-		$this->orderRepository = $orderRepository;
+		$this->repository = $orderRepository;
+		$this->validator = $validator;
 	}
+
 
 	public function index()
 	{
-		return $this->orderRepository->getOrders(\Auth::user());
+		return $this->repository->getOrders(\Auth::user());
 	}
 
 	public function view($id)
 	{
-		return $this->orderRepository->with(['orders_filling', 'orders_filled', 'valuta_pair'])->present(['order_fills'])->find($id);
+		return $this->repository->with(['orders_filling', 'orders_filled', 'valuta_pair'])->present(['order_fills'])->find($id);
 	}
 
-	public function create()
+	public function create(OrderCreateRequest $request)
 	{
-	    $this->orderRepository->skipPresenter()->find(1)->balance();
-        //\Auth::user()->getBalance(Valuta::where(['symbol' => 'BTC'])->first());
+		try {
+			return $this->repository->createForUser(\Auth::user(), $request->all()); // TODO fill order
+		} catch (ValidatorException $e) {
+			return \Response::json(['error' => true, 'message' => $e->getMessageBag()]);
+		} catch (\Throwable $e) {
+			return \Response::json(['error' => true, 'message' => $e->getMessage()]);
+		}
 	}
 }
