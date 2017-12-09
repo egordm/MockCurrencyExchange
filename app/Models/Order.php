@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderFillRepository;
+use App\Repositories\OrderRepository;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +14,7 @@ use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\PresentableTrait;
 use Prettus\Repository\Traits\TransformableTrait;
+use Psy\Exception\RuntimeException;
 
 /**
  * App\Models\Order
@@ -25,7 +28,6 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property bool $buy
  * @property int $type
  * @property int $status
- * @property bool $settled
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuy($value)
@@ -34,7 +36,6 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSettled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)
@@ -56,13 +57,14 @@ class Order extends Model implements Transformable, Presentable
     const TYPE_MARKET = 1;
 
     const STATUS_OPEN = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_DONE = 2;
-    const STATUS_CANCELLED = 3;
+    const STATUS_FILLED = 1;
+    const STATUS_CANCELLED = 2;
 
-    protected $fillable = [];
+    protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
 
-    public function user()
+    protected $filled_quantity = null;
+
+	public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -83,7 +85,7 @@ class Order extends Model implements Transformable, Presentable
      */
     public function orders_filling()
     {
-        return $this->belongsToMany(Order::class, 'order_fills', 'order_secondary_id', 'order_primary_id')->withPivot(['percentage']);
+        return $this->belongsToMany(Order::class, 'order_fills', 'order_secondary_id', 'order_primary_id')->withPivot(['quantity as fill_qty']);
     }
 
     /**
@@ -92,49 +94,67 @@ class Order extends Model implements Transformable, Presentable
      */
     public function orders_filled()
     {
-        return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['percentage']);
+        return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['quantity as fill_qty']);
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
-    /**
-     *
-     * Get a percentage that is filled by the order
-     * @param Order $order
-     * @return float
-     */
-    public function fill_percentage(Order $order)
-    {
-        if (isset($order->pivot)) $percentage = $order->pivot->percentage;
-        else {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $fill = \App::get(OrderFillRepository::class)->skipPresenter()
-                ->findById($this->buy ? $this->id : $order->id, $this->buy ? $order->id : $this->id)->first();
-            if (!$fill) return 0;
-            $percentage = $fill->percentage;
-        }
+	/**
+	 * @param bool $invalidate
+	 * @return mixed
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function getFilledQuantity($invalidate = false)
+	{
+		if(isset($this->attributes['filled_qty'])){
+			$this->filled_quantity = $this->filled_qty;
+			unset($this->attributes['filled_qty']);
+		}
+		if($this->filled_quantity != null && !$invalidate) return $this->filled_quantity;
 
-        return ($order->buy) ? $percentage : ($order->quantity * $percentage) / $this->quantity;
+		$repo = \App::get(OrderRepository::class);
+		$repo->pushCriteria(FilledQuantityCriteria::class);
+		$order = $repo->skipPresenter()->find($this->id);
+		$this->filled_quantity = $order->filled_qty;
+		return $this->filled_quantity;
     }
 
-    /**
-     * Get a percentage of the order that is filled
-     */
-    public function filled_percentage()
-    {
-        $fills = $this->buy ? $this->orders_filled : $this->orders_filling;
-        $ret = 0;
-        foreach ($fills as $fill) $ret += $this->fill_percentage($fill);
-        return $ret;
+	public function setFilledQuantity($value)
+	{
+		$this->filled_quantity = $value;
     }
 
-    public function balance()
-    {
-        $pair = $this->valuta_pair;
-        $fp = $this->filled_percentage();
-        return [
-            $pair->valuta_primary_id => ($this->buy ? -1 : 1) * ($this->quantity * $fp) * $this->price,
-            $pair->valuta_secondary_id => ($this->buy ? 1 : -1) * $this->quantity * (1 - $fp),
+	/**
+	 * Quantity of valuta that is bought
+	 * @return float|int
+	 */
+	public function buyQuantity()
+	{
+		return !$this->buy ? $this->quantity * $this->price : $this->quantity;
+	}
 
-        ];
+	/**
+	 * Valuta that is bought
+	 * @return Valuta
+	 */
+	public function buyValuta()
+	{
+		return !$this->buy ? $this->valuta_pair->valuta_primary : $this->valuta_pair->valuta_secondary;
+	}
+
+	/**
+	 * Quantity of valuta that is sold
+	 */
+	public function sellQuantity()
+	{
+		return $this->buy ? $this->quantity * $this->price : $this->quantity;
+    }
+
+	/**
+	 * Valuta that is bought
+	 * @return Valuta
+	 */
+	public function sellValuta()
+	{
+		return $this->buy ? $this->valuta_pair->valuta_primary : $this->valuta_pair->valuta_secondary;
 	}
 }

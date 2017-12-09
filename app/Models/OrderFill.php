@@ -11,20 +11,20 @@ use Prettus\Repository\Traits\TransformableTrait;
  *
  * @property int $order_primary_id
  * @property int $order_secondary_id
- * @property float $percentage
+ * @property float $quantity
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereOrderPrimaryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereOrderSecondaryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill wherePercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereQuantity($value)
  */
 class OrderFill extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = [];
+    protected $fillable = ['order_primary_id', 'order_secondary_id', 'quantity'];
 
 }

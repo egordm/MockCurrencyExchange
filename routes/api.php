@@ -23,12 +23,16 @@ Route::group(['middleware' => 'multi-auth'], function () {
 		return $request->user();
 	});
 
-	Route::get('/balance', 'BalanceController@index')->name('api.balance');
+	Route::prefix('balance')->group(function () {
+		Route::get('/{symbols?}', 'BalanceController@index')->name('api.balance');
+	});
+
 
 	Route::prefix('order')->group(function () {
 		Route::get('/', 'OrdersController@index');
-		Route::get('/{id}', 'OrdersController@view');
 		Route::post('/create', 'OrdersController@create');
+		Route::get('/{id}', 'OrdersController@view');
+		Route::post('/{id}/cancel', 'OrdersController@cancel');
 	});
 
 	Route::group(['prefix' => 'market'], function () {

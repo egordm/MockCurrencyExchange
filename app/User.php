@@ -34,6 +34,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Balance[] $balances
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  */
 class User extends Authenticatable
 {
@@ -74,7 +75,11 @@ class User extends Authenticatable
     public function getBalance(Valuta $valuta)
     {
         /** @noinspection PhpUnhandledExceptionInspection */
-        $balance = \App::get(BalanceRepository::class)->getBalance($this, $valuta);
-        return $balance->quantity;
+        $balance = \App::get(BalanceRepository::class)->skipPresenter()->getBalance($this, $valuta)->first();
+        return (!$balance) ? 0 : $balance->quantity;
+	}
+
+	public function getHaltedBalance(Valuta $valuta) {
+		return \App::get(BalanceRepository::class)->getHaltedBalance($this, $valuta);
 	}
 }

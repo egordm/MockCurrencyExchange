@@ -58,7 +58,6 @@ namespace App\Models{
  *
  * @property int $order_primary_id
  * @property int $order_secondary_id
- * @property float $percentage
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereCreatedAt($value)
@@ -84,7 +83,6 @@ namespace App\Models{
  * @property bool $buy
  * @property int $type
  * @property int $status
- * @property bool $settled
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuy($value)
@@ -93,7 +91,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSettled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)

@@ -9,17 +9,20 @@
 namespace API\Controllers;
 
 
+use API\Requests\OrderCreateRequest;
 use App\Models\Order;
-use App\Models\Valuta;
+use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
+use App\Repositories\Presenters\OrderPresenter;
 use Infrastructure\Controllers\APIController;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 class OrdersController extends APIController
 {
 	/**
-	 * @var OrderRepository
+	 * @var Order
 	 */
-	public $orderRepository;
+	public $repository;
 
 	/**
 	 * OrdersController constructor.
@@ -27,22 +30,54 @@ class OrdersController extends APIController
 	 */
 	public function __construct(OrderRepository $orderRepository)
 	{
-		$this->orderRepository = $orderRepository;
+		$this->repository = $orderRepository;
 	}
 
+	/**
+	 * Show all users orders
+	 * @return mixed
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
 	public function index()
 	{
-		return $this->orderRepository->getOrders(\Auth::user());
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->repository->pushCriteria(FilledQuantityCriteria::class);
+		return $this->present($this->repository->getOrders(\Auth::user()));
 	}
 
+	/**
+	 * Show a specific order
+	 * @param $id
+	 * @return mixed
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
 	public function view($id)
 	{
-		return $this->orderRepository->with(['orders_filling', 'orders_filled', 'valuta_pair'])->present(['order_fills'])->find($id);
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->repository->pushCriteria(FilledQuantityCriteria::class);
+		/** @noinspection PhpUnhandledExceptionInspection */
+		return $this->present($this->repository->with(['valuta_pair'])->getOrder(\Auth::user(), $id));
 	}
 
-	public function create()
+	public function create(OrderCreateRequest $request)
 	{
-	    $this->orderRepository->skipPresenter()->find(1)->balance();
-        //\Auth::user()->getBalance(Valuta::where(['symbol' => 'BTC'])->first());
+		try {
+			/** @noinspection PhpUnhandledExceptionInspection */
+			return $this->present($this->repository->createOrder(\Auth::user(), $request->all()));
+		} catch (ValidatorException $e) {
+			return \Response::json(['error' => true, 'message' => $e->getMessageBag()]);
+		}
+	}
+
+	public function cancel(int $id)
+	{
+		$order = $this->repository->getOrder(\Auth::user(), $id);
+		$this->repository->closeOrder($order);
+		return $this->present($order);
+	}
+
+	public function presenter()
+	{
+		return new OrderPresenter();
 	}
 }
