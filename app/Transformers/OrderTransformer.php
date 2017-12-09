@@ -12,7 +12,6 @@ use App\Models\Order;
 class OrderTransformer extends TransformerAbstract
 {
 	public $defaultIncludes = ['valuta_pair'];
-	public $availableIncludes = ['valuta_pair', 'order_fills'];
 
     /**
      * Transform the Order entity
@@ -31,7 +30,7 @@ class OrderTransformer extends TransformerAbstract
 	        'type' => (int) $model->type,
 	        'status' => (int) $model->status,
 	        'settled' => (int) $model->settled,
-	        'filled_percentage' => $model->filled_percentage(),
+	        'filled_quantity' => $model->filled_quantity(),
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at,
         ];
@@ -40,8 +39,4 @@ class OrderTransformer extends TransformerAbstract
     public function includeValutaPair(Order $model) {
 	    return $this->item($model->valuta_pair, new ValutaPairTransformer());
     }
-
-	public function includeOrderFills(Order $model) {
-		return $this->collection($model->order_fills(), new FillOrderTransformer($model));
-	}
 }

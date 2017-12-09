@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderFillRepository;
+use App\Repositories\OrderRepository;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -57,7 +59,7 @@ class Order extends Model implements Transformable, Presentable
 
     const STATUS_OPEN = 0;
     const STATUS_ACTIVE = 1;
-    const STATUS_DONE = 2;
+    const STATUS_FILLED = 2;
     const STATUS_CANCELLED = 3;
 
     protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
@@ -83,7 +85,7 @@ class Order extends Model implements Transformable, Presentable
      */
     public function orders_filling()
     {
-        return $this->belongsToMany(Order::class, 'order_fills', 'order_secondary_id', 'order_primary_id')->withPivot(['percentage']);
+        return $this->belongsToMany(Order::class, 'order_fills', 'order_secondary_id', 'order_primary_id')->withPivot(['quantity as fill_qty']);
     }
 
     /**
@@ -92,39 +94,17 @@ class Order extends Model implements Transformable, Presentable
      */
     public function orders_filled()
     {
-        return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['percentage']);
+        return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['quantity as fill_qty']);
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
-    /**
-     *
-     * Get a percentage that is filled by the order
-     * @param Order $order
-     * @return float
-     */
-    public function fill_percentage(Order $order)
-    {
-        if (isset($order->pivot)) $percentage = $order->pivot->percentage;
-        else {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $fill = \App::get(OrderFillRepository::class)->skipPresenter()
-                ->findById($this->buy ? $this->id : $order->id, $this->buy ? $order->id : $this->id)->first();
-            if (!$fill) return 0;
-            $percentage = $fill->percentage;
-        }
+	public function filled_quantity()
+	{
+		if(isset($this->filled_qty)) return $this->filled_qty;
 
-        return ($order->buy) ? $percentage : ($order->quantity * $percentage) / $this->quantity;
-    }
-
-    /**
-     * Get a percentage of the order that is filled
-     */
-    public function filled_percentage()
-    {
-        $fills = $this->buy ? $this->orders_filled : $this->orders_filling;
-        $ret = 0;
-        foreach ($fills as $fill) $ret += $this->fill_percentage($fill);
-        return $ret;
+		$repo = \App::get(OrderRepository::class);
+		$repo->pushCriteria(FilledQuantityCriteria::class);
+		$order = $repo->skipPresenter()->find($this->id);
+		return $order->filled_qty;
     }
 
 	/**

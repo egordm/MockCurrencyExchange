@@ -51,7 +51,7 @@ class BalanceRepository extends PresentableRepository
 		$repo->pushCriteria(new BySymbolCriteria($symbols, !$useValuta));
 		$repo->pushCriteria(new WithBalanceCriteria(\Auth::user()));
 		$repo->setPresenter(BalanceValutaPresenter::class);
-		return $repo->all();;
+		return $repo->all();
 	}
 
 	public function getBalance(User $user, Valuta $valuta)

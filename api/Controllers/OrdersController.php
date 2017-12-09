@@ -10,54 +10,66 @@ namespace API\Controllers;
 
 
 use API\Requests\OrderCreateRequest;
-use App\Models\Valuta;
+use App\Models\Order;
+use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
-use App\Validators\OrderFillValidator;
 use Infrastructure\Controllers\APIController;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class OrdersController extends APIController
 {
 	/**
-	 * @var OrderRepository
+	 * @var Order
 	 */
 	public $repository;
 
 	/**
-	 * @var OrderFillValidator
-	 */
-	protected $validator;
-
-	/**
 	 * OrdersController constructor.
 	 * @param OrderRepository $orderRepository
-	 * @param OrderFillValidator $validator
 	 */
-	public function __construct(OrderRepository $orderRepository, OrderFillValidator $validator)
+	public function __construct(OrderRepository $orderRepository)
 	{
 		$this->repository = $orderRepository;
-		$this->validator = $validator;
 	}
 
-
+	/**
+	 * Show all users orders
+	 * @return mixed
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
 	public function index()
 	{
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->repository->pushCriteria(FilledQuantityCriteria::class);
 		return $this->repository->getOrders(\Auth::user());
 	}
 
+	/**
+	 * Show a specific order
+	 * @param $id
+	 * @return mixed
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
 	public function view($id)
 	{
-		return $this->repository->with(['orders_filling', 'orders_filled', 'valuta_pair'])->present(['order_fills'])->find($id);
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->repository->pushCriteria(FilledQuantityCriteria::class);
+		/** @noinspection PhpUnhandledExceptionInspection */
+		return $this->repository->with(['valuta_pair'])->getOrder(\Auth::user(), $id);
 	}
 
 	public function create(OrderCreateRequest $request)
 	{
 		try {
-			return $this->repository->createForUser(\Auth::user(), $request->all()); // TODO fill order
+			/** @noinspection PhpUnhandledExceptionInspection */
+			return $this->repository->createOrder(\Auth::user(), $request->all());
 		} catch (ValidatorException $e) {
 			return \Response::json(['error' => true, 'message' => $e->getMessageBag()]);
-		} catch (\Throwable $e) {
-			return \Response::json(['error' => true, 'message' => $e->getMessage()]);
 		}
+	}
+
+	public function cancel(Order $order)
+	{
+		
 	}
 }
