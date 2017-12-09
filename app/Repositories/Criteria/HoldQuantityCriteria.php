@@ -48,7 +48,7 @@ class HoldQuantityCriteria implements CriteriaInterface
 				->orWhereColumn($this->valutaIdColumn, '=', 'valuta_pairs.valuta_secondary_id');
 		})->leftJoin('orders', function ($join) { // Find active orders that are selling corresponding currency
 			$join->whereColumn('valuta_pairs.id', '=', 'orders.valuta_pair_id');
-			$join->where('orders.settled', false);
+			$join->where('orders.status', 0);
 			$join->where('orders.user_id', $this->user->id);
 			$join->where(function ($query) {
 				$query->where(function ($query) {

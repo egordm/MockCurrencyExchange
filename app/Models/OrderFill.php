@@ -17,9 +17,9 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereOrderPrimaryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereOrderSecondaryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill wherePercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereQuantity($value)
  */
 class OrderFill extends Model implements Transformable
 {

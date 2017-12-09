@@ -120,7 +120,6 @@ class OrderRepository extends AdvancedRepository
 	private function updateStatus(Order $order) {
 		if($order->status == Order::STATUS_OPEN && $order->quantity <= $order->getFilledQuantity()) {
 			$order->status = Order::STATUS_FILLED;
-			$order->settled = true;
 			$order->save();
 		}
 	}

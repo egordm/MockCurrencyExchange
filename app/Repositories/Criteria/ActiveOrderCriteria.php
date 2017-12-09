@@ -27,6 +27,6 @@ class ActiveOrderCriteria implements CriteriaInterface
 	 */
 	public function apply($model, RepositoryInterface $repository)
 	{
-		return $model->where('settled', false);
+		return $model->where('orders.status', 0);
 	}
 }

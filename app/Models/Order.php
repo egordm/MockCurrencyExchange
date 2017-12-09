@@ -28,7 +28,6 @@ use Psy\Exception\RuntimeException;
  * @property bool $buy
  * @property int $type
  * @property int $status
- * @property bool $settled
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuy($value)
@@ -37,7 +36,6 @@ use Psy\Exception\RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSettled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)

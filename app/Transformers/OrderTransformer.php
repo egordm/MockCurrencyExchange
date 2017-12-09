@@ -29,7 +29,6 @@ class OrderTransformer extends TransformerAbstract
 	        'buy' => (bool)$model->buy,
 	        'type' => (int) $model->type,
 	        'status' => (int) $model->status,
-	        'settled' => (int) $model->settled,
 	        'filled_quantity' => $model->getFilledQuantity(),
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at,

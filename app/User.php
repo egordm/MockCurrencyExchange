@@ -34,6 +34,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Balance[] $balances
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  */
 class User extends Authenticatable
 {

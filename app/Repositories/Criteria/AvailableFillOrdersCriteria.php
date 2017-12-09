@@ -42,7 +42,7 @@ class AvailableFillOrdersCriteria implements CriteriaInterface
 			$join->orWhere(function ($query) {
 				$query->whereColumn('orders.id', 'order_fills.order_secondary_id');
 			});
-		})->where('orders.settled',false)
+		})->where('orders.status',0)
 			->addSelect(\DB::raw('orders.*, COALESCE(SUM(order_fills.quantity),0) as filled_qty'))
 			->groupBy('orders.id')
 			->orderBy('orders.price', $this->order->buy ? 'asc' : 'desc')
