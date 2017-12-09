@@ -11,9 +11,9 @@ namespace API\Controllers;
 
 use API\Requests\OrderCreateRequest;
 use App\Models\Order;
-use App\Repositories\Criteria\AvailableFillOrdersCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
+use App\Repositories\Presenters\OrderPresenter;
 use Infrastructure\Controllers\APIController;
 use Prettus\Validator\Exceptions\ValidatorException;
 
@@ -42,7 +42,7 @@ class OrdersController extends APIController
 	{
 		/** @noinspection PhpUnhandledExceptionInspection */
 		$this->repository->pushCriteria(FilledQuantityCriteria::class);
-		return $this->repository->getOrders(\Auth::user());
+		return $this->present($this->repository->getOrders(\Auth::user()));
 	}
 
 	/**
@@ -56,21 +56,28 @@ class OrdersController extends APIController
 		/** @noinspection PhpUnhandledExceptionInspection */
 		$this->repository->pushCriteria(FilledQuantityCriteria::class);
 		/** @noinspection PhpUnhandledExceptionInspection */
-		return $this->repository->with(['valuta_pair'])->getOrder(\Auth::user(), $id);
+		return $this->present($this->repository->with(['valuta_pair'])->getOrder(\Auth::user(), $id));
 	}
 
 	public function create(OrderCreateRequest $request)
 	{
 		try {
 			/** @noinspection PhpUnhandledExceptionInspection */
-			return $this->repository->createOrder(\Auth::user(), $request->all());
+			return $this->present($this->repository->createOrder(\Auth::user(), $request->all()));
 		} catch (ValidatorException $e) {
 			return \Response::json(['error' => true, 'message' => $e->getMessageBag()]);
 		}
 	}
 
-	public function cancel(Order $order)
+	public function cancel(int $id)
 	{
-		
+		$order = $this->repository->getOrder(\Auth::user(), $id);
+		$this->repository->closeOrder($order);
+		return $this->present($order);
+	}
+
+	public function presenter()
+	{
+		return new OrderPresenter();
 	}
 }

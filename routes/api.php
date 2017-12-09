@@ -30,8 +30,9 @@ Route::group(['middleware' => 'multi-auth'], function () {
 
 	Route::prefix('order')->group(function () {
 		Route::get('/', 'OrdersController@index');
-		Route::get('/{id}', 'OrdersController@view');
 		Route::post('/create', 'OrdersController@create');
+		Route::get('/{id}', 'OrdersController@view');
+		Route::post('/{id}/cancel', 'OrdersController@cancel');
 	});
 
 	Route::group(['prefix' => 'market'], function () {

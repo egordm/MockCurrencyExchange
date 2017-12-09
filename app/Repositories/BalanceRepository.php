@@ -18,7 +18,6 @@ use App\Repositories\Criteria\OrderValutaCriteria;
 use App\Repositories\Criteria\WithBalanceCriteria;
 use App\Repositories\Presenters\BalancePresenter;
 use App\Repositories\Presenters\BalanceValutaPresenter;
-use App\Transformers\BalanceValutaTransformer;
 use App\User;
 
 class BalanceRepository extends PresentableRepository
@@ -31,6 +30,11 @@ class BalanceRepository extends PresentableRepository
 	public function model()
 	{
 		return Balance::class;
+	}
+
+	public function presenter()
+	{
+		return BalancePresenter::class;
 	}
 
 	/**
@@ -46,7 +50,7 @@ class BalanceRepository extends PresentableRepository
 		$useValuta = !empty($symbols);
 		$repo = $useValuta ? \App::get(ValutaRepository::class) : $this;
 		$repo->pushCriteria(new HoldQuantityCriteria(\Auth::user(), $useValuta ? 'valuta.id' : 'balances.valuta_id'));
-		if(!$useValuta) return $this->with(['valuta'])->findWhere(['balances.user_id' => $user->id]);
+		if (!$useValuta) return $this->with(['valuta'])->findWhere(['balances.user_id' => $user->id]);
 
 		$repo->pushCriteria(new BySymbolCriteria($symbols, !$useValuta));
 		$repo->pushCriteria(new WithBalanceCriteria(\Auth::user()));
@@ -56,7 +60,7 @@ class BalanceRepository extends PresentableRepository
 
 	public function getBalance(User $user, Valuta $valuta)
 	{
-		return  $this->findWhere(['user_id' => $user->id, 'valuta_id' => $valuta->id]);
+		return $this->findWhere(['user_id' => $user->id, 'valuta_id' => $valuta->id]);
 	}
 
 	/**
@@ -81,8 +85,15 @@ class BalanceRepository extends PresentableRepository
 		return $ret;
 	}
 
-	public function presenter()
+	public function mutateBalances(array $mutations) // TODO: use models
 	{
-		return BalancePresenter::class;
+		$values = [];
+		foreach ($mutations as $mutation) {
+			$values = array_merge($values, [$mutation['user_id'], $mutation['valuta_id'], $mutation['quantity']]);
+		}
+		$query = 'INSERT INTO balances (user_id, valuta_id, quantity, created_at, updated_at) VALUES ' .
+			implode(',', array_fill(0, count($mutations), '(?,?,?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)')) .
+			' ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)';
+		\DB::insert($query, $values);
 	}
 }

@@ -9,8 +9,18 @@
 namespace Infrastructure\Controllers;
 
 use Illuminate\Routing\Controller;
+use Prettus\Repository\Contracts\PresenterInterface;
 
-class APIController extends Controller
+abstract class APIController extends Controller
 {
+	/**
+	 * @return PresenterInterface
+	 */
+	public abstract function presenter();
+
+	public function present($data)
+	{
+		return $this->presenter()->present($data);
+	}
 
 }

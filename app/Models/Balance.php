@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Repositories\Presenters\BalancePresenter;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Presentable;
-use Prettus\Repository\Contracts\PresenterInterface;
 use Prettus\Repository\Traits\PresentableTrait;
 
 /**
@@ -32,11 +30,24 @@ class Balance extends Model implements Presentable
 {
 	use PresentableTrait;
 
-    public function user() {
-    	return $this->belongsTo(User::class);
-    }
+	protected $guarded = [];
 
-    public function valuta() {
-	    return $this->belongsTo(Valuta::class);
-    }
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
+
+	public function valuta()
+	{
+		return $this->belongsTo(Valuta::class);
+	}
+
+	public function mutate($mutation)
+	{
+		$query = 'INSERT INTO balances (user_id, valuta_id, quantity, created_at, updated_at) ' .
+			'VALUES (?,?,?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)' .
+			' ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)';
+		\DB::insert($query, [$this->user_id, $this->valuta_id, $mutation]);
+		$this->quantity += $mutation;
+	}
 }

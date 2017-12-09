@@ -2,14 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Models\Balance;
 use App\Models\Order;
 use App\Models\OrderFill;
 use App\Repositories\Criteria\AvailableFillOrdersCriteria;
 use App\Repositories\Presenters\OrderPresenter;
 use App\User;
 use App\Validators\OrderValidator;
+use Illuminate\Database\Eloquent\Collection;
 use Infrastructure\Exceptions\InsufficientFundsException;
+use Mockery\Exception;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 
 /**
@@ -36,11 +40,6 @@ class OrderRepository extends AdvancedRepository
 	public function validator()
 	{
 		return OrderValidator::class;
-	}
-
-	public function presenter()
-	{
-		return OrderPresenter::class;
 	}
 
 	/**
@@ -72,7 +71,7 @@ class OrderRepository extends AdvancedRepository
 		if ($order->sellQuantity() > $user->getBalance($order->sellValuta()) - $user->getHaltedBalance($order->sellValuta()))
 			throw new InsufficientFundsException();
 
-		$order = $this->skipPresenter()->saveInstance($order);
+		$order = $this->saveInstance($order);
 		return $this->fillOrder($order)->presenter();
 	}
 
@@ -89,7 +88,7 @@ class OrderRepository extends AdvancedRepository
 	{
 		// TODO: we could split this for the sake of simplicity. But, oin the other side we probably will only use it like this
 		$this->pushCriteria(new AvailableFillOrdersCriteria($order));
-		$available_fills = $this->skipPresenter()->all();
+		$available_fills = $this->with('valuta_pair')->skipPresenter()->all();
 		$this->clearCriteria();
 
 		$filled_qty = $order->getFilledQuantity();
@@ -119,28 +118,48 @@ class OrderRepository extends AdvancedRepository
 
 	private function updateStatus(Order $order) {
 		if($order->status == Order::STATUS_OPEN && $order->quantity <= $order->getFilledQuantity()) {
-			$order->status = Order::STATUS_FILLED;
-			$order->save();
+			$this->closeOrder($order);
 		}
+	}
+
+	/**
+	 * @param Order $order
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 * @throws \Exception
+	 */
+	public function closeOrder(Order $order)
+	{
+		if($order->status != Order::STATUS_OPEN) throw new \Exception('Order is already closed');
+		$cancel = $order->quantity > $order->getFilledQuantity();
+		$order->status = $cancel ? Order::STATUS_CANCELLED : Order::STATUS_FILLED;
+		$order->save();
+
+		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_primary_id]))
+			->mutate($order->buy ? -$order->sellQuantity() : $order->buyQuantity());
+		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_secondary_id]))
+			->mutate($order->buy ? $order->buyQuantity() : -$order->sellQuantity());
 	}
 
 	/**
 	 * @param User $user
 	 * @param array $where
-	 * @return mixed
+	 * @return Order[]|Collection
 	 */
 	public function getOrders(User $user, $where = [])
 	{
-		return $this->with(['valuta_pair'])->findWhere(array_merge(['orders.user_id' => $user->id], $where));
+		return $this->with(['valuta_pair'])->skipPresenter()->findWhere(array_merge(['orders.user_id' => $user->id], $where));
 	}
 
 	/**
 	 * @param User $user
 	 * @param int $id
-	 * @return mixed
+	 * @return Order
 	 */
 	public function getOrder(User $user, int $id)
 	{
-		return $this->with(['valuta_pair'])->findWhere(['orders.user_id' => $user->id, 'orders.id' => $id]);
+		$ret = $this->with(['valuta_pair'])->findWhere(['orders.user_id' => $user->id, 'orders.id' => $id])->first();
+		if(empty($ret)) throw new ResourceNotFoundException();
+		return $ret;
 	}
 }
