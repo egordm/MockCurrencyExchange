@@ -97,9 +97,15 @@ class Order extends Model implements Transformable, Presentable
         return $this->belongsToMany(Order::class, 'order_fills', 'order_primary_id', 'order_secondary_id')->withPivot(['quantity as fill_qty']);
     }
 
-	public function filled_quantity()
+	/**
+	 * @param bool $invalidate
+	 * @return mixed
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function filled_quantity($invalidate = false)
 	{
-		if(isset($this->filled_qty)) return $this->filled_qty;
+		if(isset($this->filled_qty) && !$invalidate) return $this->filled_qty;
 
 		$repo = \App::get(OrderRepository::class);
 		$repo->pushCriteria(FilledQuantityCriteria::class);

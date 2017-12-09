@@ -11,6 +11,7 @@ namespace API\Controllers;
 
 use API\Requests\OrderCreateRequest;
 use App\Models\Order;
+use App\Repositories\Criteria\AvailableFillOrdersCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
 use Infrastructure\Controllers\APIController;
