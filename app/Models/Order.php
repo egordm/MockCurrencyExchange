@@ -14,6 +14,7 @@ use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\PresentableTrait;
 use Prettus\Repository\Traits\TransformableTrait;
+use Psy\Exception\RuntimeException;
 
 /**
  * App\Models\Order
@@ -58,13 +59,14 @@ class Order extends Model implements Transformable, Presentable
     const TYPE_MARKET = 1;
 
     const STATUS_OPEN = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_FILLED = 2;
-    const STATUS_CANCELLED = 3;
+    const STATUS_FILLED = 1;
+    const STATUS_CANCELLED = 2;
 
     protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
 
-    public function user()
+    protected $filled_quantity = null;
+
+	public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -103,14 +105,24 @@ class Order extends Model implements Transformable, Presentable
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
 	 */
-	public function filled_quantity($invalidate = false)
+	public function getFilledQuantity($invalidate = false)
 	{
-		if(isset($this->filled_qty) && !$invalidate) return $this->filled_qty;
+		if(isset($this->attributes['filled_qty'])){
+			$this->filled_quantity = $this->filled_qty;
+			unset($this->attributes['filled_qty']);
+		}
+		if($this->filled_quantity != null && !$invalidate) return $this->filled_quantity;
 
 		$repo = \App::get(OrderRepository::class);
 		$repo->pushCriteria(FilledQuantityCriteria::class);
 		$order = $repo->skipPresenter()->find($this->id);
-		return $order->filled_qty;
+		$this->filled_quantity = $order->filled_qty;
+		return $this->filled_quantity;
+    }
+
+	public function setFilledQuantity($value)
+	{
+		$this->filled_quantity = $value;
     }
 
 	/**

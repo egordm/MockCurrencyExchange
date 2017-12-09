@@ -92,10 +92,10 @@ class OrderRepository extends AdvancedRepository
 		$available_fills = $this->skipPresenter()->all();
 		$this->clearCriteria();
 
-		$filled_qty = $order->filled_quantity();
-		\DB::transaction(function () use ($available_fills, $order, $filled_qty) {
+		$filled_qty = $order->getFilledQuantity();
+		\DB::transaction(function () use (&$available_fills, &$order, &$filled_qty) {
 			foreach ($available_fills as $available_fill) {
-				$available_qty = $available_fill->quantity - $available_fill->filled_qty; // Calculate quantity left to fill for the filler
+				$available_qty = $available_fill->quantity - $available_fill->getFilledQuantity(); // Calculate quantity left to fill for the filler
 				$quantity_to_fill = $order->quantity - $filled_qty; // Calculate quantity left to fill for the order
 				$fill_qty = max(0, min($available_qty, $quantity_to_fill)); // Calculate quantity we will fill. Smallest of the upper 2
 				if($fill_qty <= 0) continue;
@@ -106,12 +106,23 @@ class OrderRepository extends AdvancedRepository
 					'quantity' => $fill_qty
 				]);
 
+				$available_fill->setFilledQuantity($available_fill->getFilledQuantity() + $fill_qty);
+				$this->updateStatus($available_fill);
 				$filled_qty += $fill_qty;
 			}
 		});
 
-		$order->filled_qty = $filled_qty;
+		$order->setFilledQuantity($filled_qty);
+		$this->updateStatus($order);
 		return $order;
+	}
+
+	private function updateStatus(Order $order) {
+		if($order->status == Order::STATUS_OPEN && $order->quantity <= $order->getFilledQuantity()) {
+			$order->status = Order::STATUS_FILLED;
+			$order->settled = true;
+			$order->save();
+		}
 	}
 
 	/**
