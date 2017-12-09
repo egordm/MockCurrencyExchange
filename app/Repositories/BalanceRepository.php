@@ -32,11 +32,6 @@ class BalanceRepository extends PresentableRepository
 		return Balance::class;
 	}
 
-	public function presenter()
-	{
-		return BalancePresenter::class;
-	}
-
 	/**
 	 * @param User $user
 	 * @param null $symbols

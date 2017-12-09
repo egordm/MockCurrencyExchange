@@ -9,8 +9,10 @@
 namespace API\Controllers;
 
 
+use App\Repositories\Presenters\ValutaPresenter;
 use App\Repositories\ValutaPairRepository;
 use Infrastructure\Controllers\APIController;
+use Prettus\Repository\Contracts\PresenterInterface;
 
 class MarketController extends APIController
 {
@@ -31,5 +33,13 @@ class MarketController extends APIController
 
 	public function index() {
 		return $this->valutaPairRepository->all_display();
+	}
+
+	/**
+	 * @return PresenterInterface
+	 */
+	public function presenter()
+	{
+		return new ValutaPresenter();
 	}
 }
