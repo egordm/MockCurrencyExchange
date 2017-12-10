@@ -172,6 +172,9 @@ return [
 	    Optimus\ApiConsumer\Provider\LaravelServiceProvider::class,
 	    App\Providers\ResponseServiceProvider::class,
 
+	    //
+	    \App\Providers\BinanceServiceProvider::class,
+
 
 	    /*
 		 * Application Service Providers...

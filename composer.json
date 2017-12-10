@@ -12,6 +12,7 @@
     "php": ">=7.0.0",
     "doctrine/dbal": "^2.6",
     "fideloper/proxy": "~3.3",
+    "jaggedsoft/php-binance-api": "@dev",
     "kirkbushell/eloquence": "^2.0",
     "laravel/framework": "5.5.*",
     "laravel/passport": "^4.0@dev",
