@@ -9,6 +9,7 @@
 namespace App\Repositories\Criteria;
 
 
+use App\Models\Order;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\CriteriaInterface;
@@ -27,6 +28,6 @@ class ActiveOrderCriteria implements CriteriaInterface
 	 */
 	public function apply($model, RepositoryInterface $repository)
 	{
-		return $model->where('orders.status', 0);
+		return $model->where('orders.status', Order::STATUS_OPEN);
 	}
 }

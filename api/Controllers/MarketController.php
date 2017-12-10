@@ -9,17 +9,21 @@
 namespace API\Controllers;
 
 
-use App\Repositories\Presenters\ValutaPresenter;
+use App\Repositories\Criteria\ActiveOrderCriteria;
+use App\Repositories\Criteria\FilledQuantityCriteria;
+use App\Repositories\OrderRepository;
+use App\Repositories\Presenters\DepthPresenter;
+use App\Repositories\Presenters\ValutaPairPresenter;
 use App\Repositories\ValutaPairRepository;
 use Infrastructure\Controllers\APIController;
-use Prettus\Repository\Contracts\PresenterInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class MarketController extends APIController
 {
 	/**
 	 * @var ValutaPairRepository
 	 */
-	private $valutaPairRepository;
+	private $repository;
 
 	/**
 	 * MarketController constructor.
@@ -27,19 +31,38 @@ class MarketController extends APIController
 	 */
 	public function __construct(ValutaPairRepository $valutaPairRepository)
 	{
-		$this->valutaPairRepository = $valutaPairRepository;
+		$this->repository = $valutaPairRepository;
 	}
 
-
-	public function index() {
-		return $this->valutaPairRepository->all_display();
-	}
-
-	/**
-	 * @return PresenterInterface
-	 */
 	public function presenter()
 	{
-		return new ValutaPresenter();
+		return new ValutaPairPresenter();
 	}
+
+	public function index()
+	{
+		return $this->present($this->repository->all_display());
+	}
+
+	public function view($market)
+	{
+		// TODO: Get daily percentages
+		$market = $this->repository->with(['valuta_primary', 'valuta_secondary'])->findByMarket($market);
+		if (!$market) throw new NotFoundResourceException();
+		return $this->present($market);
+	}
+
+	public function depth($market)
+	{
+		$market = $this->repository->with(['valuta_primary', 'valuta_secondary'])->findByMarket($market);
+		if (!$market) throw new NotFoundResourceException();
+
+		$orderRepository = \App::get(OrderRepository::class);
+		$orderRepository->pushCriteria(FilledQuantityCriteria::class);
+		$orderRepository->pushCriteria(ActiveOrderCriteria::class);
+		$orders = $orderRepository->findWhere(['orders.valuta_pair_id' => $market->id], ['id', 'quantity', 'price', 'buy'])->groupBy('buy');
+		return (new DepthPresenter())->present($orders->all());
+	}
+
+
 }

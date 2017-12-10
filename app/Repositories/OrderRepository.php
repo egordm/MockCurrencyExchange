@@ -148,7 +148,7 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function getOrders(User $user, $where = [])
 	{
-		return $this->with(['valuta_pair'])->skipPresenter()->findWhere(array_merge(['orders.user_id' => $user->id], $where));
+		return $this->with(['valuta_pair'])->findWhere(array_merge(['orders.user_id' => $user->id], $where));
 	}
 
 	/**
