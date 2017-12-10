@@ -15,7 +15,6 @@ use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
 use App\Repositories\Presenters\OrderPresenter;
 use Infrastructure\Controllers\APIController;
-use Prettus\Validator\Exceptions\ValidatorException;
 
 class OrdersController extends APIController
 {
@@ -61,12 +60,8 @@ class OrdersController extends APIController
 
 	public function create(OrderCreateRequest $request)
 	{
-		try {
-			/** @noinspection PhpUnhandledExceptionInspection */
-			return $this->present($this->repository->createOrder(\Auth::user(), $request->all()));
-		} catch (ValidatorException $e) {
-			return \Response::json(['error' => true, 'message' => $e->getMessageBag()]);
-		}
+		/** @noinspection PhpUnhandledExceptionInspection */
+		return $this->present($this->repository->createOrder(\Auth::user(), $request->all()));
 	}
 
 	public function cancel(int $id)
