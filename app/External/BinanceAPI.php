@@ -9,51 +9,64 @@
 namespace App\External;
 
 
+use App\Models\CandlestickNode;
+use App\Models\ValutaPair;
+use App\Repositories\CandlestickNodeRepository;
+
 class BinanceAPI
 {
-	const INTERVALS = [
-		'1m' => 1,
-		'3m' => 3,
-		'5m' => 5,
-		'15m' => 15,
-		'30m' => 30,
-		'1h' => 60,
-		'2h' => 120,
-		'4h' => 240,
-		'6h' => 360,
-		'8h' => 480,
-		'12h' => 720,
-		'1d' => 1440,
-		'3d' => 4320,
-		'1w' => 10080,
-		'1M' => 43830
-	];
-
 	/**
 	 * @var \Binance\API
 	 */
 	protected $api;
 
 	/**
-	 * BinanceAPI constructor.
+	 * @var CandlestickNodeRepository
 	 */
-	public function __construct()
+	protected $candleRepo;
+
+	/**
+	 * BinanceAPI constructor.
+	 * @param CandlestickNodeRepository $candleRepo
+	 */
+	public function __construct(CandlestickNodeRepository $candleRepo)
 	{
 		$this->api = new \Binance\API(env('BINANCE_API_KEY'), env('BINANCE_SECRET_KEY'));
+		$this->candleRepo = $candleRepo;
 	}
 
 
 	/**
-	 * @param $symbol
+	 * @param ValutaPair $market
 	 * @param string $interval
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function candlesticks($symbol, $interval = '15m')
+	public function candlesticks(ValutaPair $market, $interval = '15m')
 	{
-		if(!isset(BinanceAPI::INTERVALS[$interval])) throw new \Exception('Invalid interval');
-		return $this->api->candlesticks($symbol, $interval);
+		if (!isset(CandlestickNodeRepository::INTERVALS[$interval])) throw new \Exception('Invalid interval');
+		$interval_time = CandlestickNodeRepository::INTERVALS[$interval];
+		$nodes = $this->candleRepo->getNodes($market, $interval_time);
+
+		if(empty($nodes)) {
+			$interval_id = $this->candleRepo->getIntervalId($interval_time);
+			$ticks = $this->api->candlesticks($market->external_symbol->symbol, $interval);
+			foreach ($ticks as $tick) {
+				$nodes[] = new CandlestickNode([
+					'open' => $tick['open'],
+					'high' => $tick['high'],
+					'low' => $tick['low'],
+					'close' => $tick['close'],
+					'volume' => $tick['volume'],
+					'open_time' => $tick['openTime'] / 1000,
+					'close_time' => $tick['closeTime'] / 1000,
+					'interval' => $interval_id,
+					'valuta_pair_id' => $market->id
+				]);
+			}
+			$this->candleRepo->bulkSave($nodes);
+		}
+
+		return $nodes;
 	}
-
-
 }
