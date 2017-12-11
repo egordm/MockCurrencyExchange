@@ -10,7 +10,9 @@ namespace API\Controllers;
 
 
 use App\Repositories\BalanceRepository;
+use App\Repositories\Presenters\BalancePresenter;
 use Infrastructure\Controllers\APIController;
+use Prettus\Repository\Contracts\PresenterInterface;
 
 class BalanceController extends APIController
 {
@@ -26,13 +28,28 @@ class BalanceController extends APIController
 	public function __construct(BalanceRepository $balanceRepository)
 	{
 		$this->balanceRepository = $balanceRepository;
+		$this->balanceRepository->setPresenter($this->presenter());
 	}
 
+	/**
+	 * Get a list of balances for currencies user owns
+	 * @param null|string $symbols
+	 * @return mixed
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
 	public function index($symbols = null)
 	{
 		/** @noinspection PhpUnhandledExceptionInspection */
-		// TODO: sum the order balances and display
 		return $this->balanceRepository->getBalances(\Auth::user(), $symbols);
 	}
 
+	/**
+	 * @return PresenterInterface
+	 */
+	public function presenter()
+	{
+		return new BalancePresenter();
+	}
 }

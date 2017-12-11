@@ -28,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\OrderFillRepository::class, \App\Repositories\OrderFillRepository::class);
         $this->app->bind(\App\Repositories\BalanceRepository::class, \App\Repositories\BalanceRepository::class);
         $this->app->bind(\App\Repositories\ValutaRepository::class, \App\Repositories\ValutaRepository::class);
+        $this->app->bind(\App\Repositories\CandlestickNodeRepository::class, \App\Repositories\CandlestickNodeRepository::class);
         //:end-bindings:
     }
 }

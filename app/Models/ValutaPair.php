@@ -22,6 +22,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @mixin \Eloquent
  * @property-read \App\Models\Valuta $valuta_primary
  * @property-read \App\Models\Valuta $valuta_secondary
+ * @property-read \App\Models\ExternalSymbol $external_symbol
  */
 class ValutaPair extends Model implements Transformable
 {
@@ -37,4 +38,7 @@ class ValutaPair extends Model implements Transformable
 		return $this->belongsTo(Valuta::class);
 	}
 
+	public function external_symbol() {
+		return $this->hasOne(ExternalSymbol::class);
+	}
 }

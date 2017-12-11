@@ -13,6 +13,7 @@ use API\Requests\LoginRequest;
 use Infrastructure\Auth\LoginProxy;
 use Infrastructure\Controllers\APIController;
 use Infrastructure\Requests\APIRequest;
+use Prettus\Repository\Contracts\PresenterInterface;
 
 class AuthController extends APIController
 {

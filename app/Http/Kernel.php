@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\MultiGuardAuthentication;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Infrastructure\Middleware\BuildApiResponse;
 
 class Kernel extends HttpKernel
 {
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
 		'api' => [
 			'throttle:60,1',
 			'bindings',
+			BuildApiResponse::class,
 		],
 	];
 

@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Presenters\ValutaPairPresenter;
-use Prettus\Repository\Contracts\RepositoryInterface;
-use Prettus\Repository\Eloquent\BaseRepository;
+use App\Repositories\Criteria\ValutaMarketCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Models\ValutaPair;
 use App\Validators\ValutaPairValidator;
@@ -35,11 +33,6 @@ class ValutaPairRepository extends PresentableRepository
         return ValutaPairValidator::class;
     }
 
-	public function presenter()
-	{
-		return ValutaPairPresenter::class;
-	}
-
 	/**
 	 * Boot up the repository, pushing criteria
 	 * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -51,5 +44,13 @@ class ValutaPairRepository extends PresentableRepository
 
     public function all_display() {
     	return $this->with(['valuta_primary', 'valuta_secondary'])->all();
+    }
+
+	public function findByMarket($market)
+	{
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->pushCriteria(new ValutaMarketCriteria($market));
+
+		return $this->first();
     }
 }
