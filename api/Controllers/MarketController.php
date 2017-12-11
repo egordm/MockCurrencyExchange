@@ -13,6 +13,7 @@ use App\External\BinanceAPI;
 use App\Repositories\Criteria\ActiveOrderCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
+use App\Repositories\Presenters\CandleNodePresenter;
 use App\Repositories\Presenters\DepthPresenter;
 use App\Repositories\Presenters\ValutaPairPresenter;
 use App\Repositories\ValutaPairRepository;
@@ -58,6 +59,15 @@ class MarketController extends APIController
 		return $this->present($this->getMarket(['valuta_primary', 'valuta_secondary']));
 	}
 
+	/**
+	 * Get depth of the market. Basically current open orders
+	 * @link https://www.investopedia.com/terms/d/depth.asp
+	 * @param $market
+	 * @return array|mixed
+	 * @throws \Exception
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 */
 	public function depth($market)
 	{
 		$orderRepository = \App::get(OrderRepository::class);
@@ -67,8 +77,18 @@ class MarketController extends APIController
 		return (new DepthPresenter())->present($orders->all());
 	}
 
+	/**
+	 * Get candleticks data.
+	 * @link https://www.investopedia.com/terms/c/candlestick.asp
+	 * @param $market
+	 * @param BinanceAPI $bac
+	 * @return array|mixed
+	 * @throws \Exception
+	 */
 	public function candlesticks($market, BinanceAPI $bac)
 	{
-		return $bac->candlesticks('BTCUSDT', Input::get('interval', '15m'));
+		$market = $this->getMarket(['external_symbol']);
+		$nodes = $bac->candlesticks($market, Input::get('interval', '15m'));
+		return (new CandleNodePresenter())->present($nodes);
 	}
 }

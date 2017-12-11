@@ -16,8 +16,6 @@ class BinanceServiceProvider extends ServiceProvider
 {
 	public function register()
 	{
-		$this->app->bind(BinanceAPI::class, function ($app) {
-			return new BinanceAPI();
-		});
+		$this->app->bind(BinanceAPI::class, BinanceAPI::class);
 	}
 }
