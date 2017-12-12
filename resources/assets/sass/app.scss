@@ -1,9 +1,18 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("http://fonts.googleapis.com/css?family=Montserrat:400,300,700");
 
-// Variables
-@import "variables";
+// Helpers
+@import "helpers/variables";
 
-// Bootstrap
+// Vendor
 @import "~bootstrap/scss/bootstrap";
+@import "vendor/paper-kit";
+
+// Base
+@import "base";
+
+// Components
+
+// Pages
+@import "pages/index";

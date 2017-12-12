@@ -20,5 +20,8 @@
     "popper.js": "^1.12.9",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
+  },
+  "dependencies": {
+    "paper-kit-2": "^2.0.0"
   }
 }
