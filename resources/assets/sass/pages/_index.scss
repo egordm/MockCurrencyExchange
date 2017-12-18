@@ -232,3 +232,17 @@
 	position: relative;
   }
 }
+
+.main .section:first-of-type {
+  position: relative;
+  z-index: 2;
+}
+
+.card-profile .card-body .card-title {
+  margin-top: 5px !important;
+}
+
+.presentation-icon {
+  font-size: 110px;
+  color: $primary-color;
+}

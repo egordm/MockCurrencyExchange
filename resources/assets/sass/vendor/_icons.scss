@@ -1,0 +1,75 @@
+$icon-css-prefix: "icon";
+$icon-font-name: "cmex";
+$icon-font-path: "/fonts";
+
+$icon-var-choice: "\f102";
+$icon-var-disconnected: "\f106";
+$icon-var-money: "\f100";
+$icon-var-no-cash: "\f101";
+$icon-var-puzzle: "\f105";
+$icon-var-secure: "\f104";
+$icon-var-states: "\f103";
+
+
+@mixin icon-font() {
+  display: inline-block;
+  font-family: $icon-font-name;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+
+// Font paths
+// -------------------------
+
+@font-face {
+  font-family: "cmex";
+  src: url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.eot");
+  src: url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.eot?#iefix") format("embedded-opentype"),
+  url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.woff2") format("woff2"),
+  url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.woff") format("woff"),
+  url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.ttf") format("truetype"),
+  url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.svg#cmex") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+	font-family: "cmex";
+	src: url("#{$icon-font-path}/cmex_1972ed9152fede449dcc8b85ddf1b0ca.svg#cmex") format("svg");
+  }
+}
+
+// Icons
+// -------------------------
+
+
+[data-icon]:before,
+.icon-choice:before,
+.icon-disconnected:before,
+.icon-money:before,
+.icon-no-cash:before,
+.icon-puzzle:before,
+.icon-secure:before,
+.icon-states:before
+{ @include icon-font; }
+
+[data-icon]:before { content: attr(data-icon); }
+
+.icon-choice:before { content: $icon-var-choice; }
+.icon-disconnected:before { content: $icon-var-disconnected; }
+.icon-money:before { content: $icon-var-money; }
+.icon-no-cash:before { content: $icon-var-no-cash; }
+.icon-puzzle:before { content: $icon-var-puzzle; }
+.icon-secure:before { content: $icon-var-secure; }
+.icon-states:before { content: $icon-var-states; }
+

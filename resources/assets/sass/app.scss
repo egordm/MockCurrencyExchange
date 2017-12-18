@@ -8,11 +8,17 @@
 // Vendor
 @import "~bootstrap/scss/bootstrap";
 @import "vendor/paper-kit";
+@import "vendor/icons";
 
 // Base
 @import "base";
 
 // Components
+@import "components/icons";
+
+// Layout
+@import "layout/sections";
+@import "layout/footer";
 
 // Pages
 @import "pages/index";

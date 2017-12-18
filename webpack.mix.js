@@ -11,7 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/assets/js/app.jsx', 'public/js')
+mix.autoload({jquery: ['$', 'window.jQuery', 'jQuery']})
+	.react('resources/assets/js/app.jsx', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')
 	.extract(['react', 'react-dom'])
 	.sourceMaps();

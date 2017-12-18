@@ -7,6 +7,8 @@
 
 require('./bootstrap');
 
+import 'paper-kit-2/assets/js/paper-kit'
+
 /**
  * Next, we will create a fresh React component instance and attach it to
  * the page. Then, you may begin adding components to this application
