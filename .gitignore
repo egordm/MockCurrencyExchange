@@ -12,3 +12,4 @@ yarn-error.log
 .env
 vagrant_dir
 storage/debugbar/*
+.env.mock.*
