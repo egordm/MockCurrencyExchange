@@ -1,14 +1,24 @@
 .exchange {
-  height: 100vh;
-  background-color: $dark-color;
+  height: 100%;
   @include flexbox;
-  @include flex-direction(row)
+  @include flex-direction(column);
+
+  .wrapper {
+    @include flex(1);
+    @include flexbox;
+    @include flex-direction(row);
+  }
+
+  nav {
+    @include flex-basis($exchange-nav-height);
+    @include flex-shrink(0);
+  }
 }
 
 .main-panel {
   @include flex(1);
   @include flexbox;
-  @include flex-direction(column)
+  @include flex-direction(column);
 }
 
 .chart-panel {
@@ -22,7 +32,7 @@
 }
 
 .sidebar {
-  background-color: #0b2e13;
+  background-color: $exchange-panel-bg;
   @include flex-basis($exchange-sidebar-width);
   @include flex-shrink(0);
   @include flexbox;
@@ -42,11 +52,53 @@
 }
 
 .orders-panel {
-  background-color: #0b2e13;
   @include flex(1);
 }
 
 .orders-history-panel {
-  background-color: forestgreen;
   @include flex(1);
+}
+
+.panel-title {
+  text-transform: uppercase;
+  color: transparentize($exchange-color, 0.6);
+  font-weight: 700;
+  height: 38px;
+  line-height: 38px;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.order-table-container {
+  height: calc(100% - 38px); // TODO use flex
+  overflow: auto;
+  table {
+    width: 100%;
+    text-align: center;
+
+    th, td {
+      text-transform: uppercase;
+      font-size: 13px;
+      color: transparentize($exchange-color, 0.6);
+    }
+
+    th {
+      padding: $spacing;
+    }
+
+    td {
+      font-family: 'Roboto Condensed', sans-serif;
+    }
+    
+    .buy .price {
+        color: $buy-color;
+    }
+    .sell .price {
+      color: $sell-color;
+    }
+
+    .amount {
+      color: transparentize($exchange-color, 0.2);
+    }
+  }
 }

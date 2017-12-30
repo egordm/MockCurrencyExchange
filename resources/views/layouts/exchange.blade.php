@@ -11,7 +11,7 @@
 	<meta name="keywords" content="@yield('meta_keywords')">
 
 	<!-- Style -->
-	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/exchange.css') }}" rel="stylesheet">
 
 	<!-- Javascript -->
 	<script src="{{ asset('/js/manifest.js') }}"></script>
@@ -22,9 +22,10 @@
 	</script>
 </head>
 <body>
-<div id="root">
-	<div class="wrapper exchange">
-		@yield('content')
+<div class="root exchange">
+	<nav></nav>
+	<div class="wrapper">
+	@yield('content')
 	</div>
 </div>
 <script src="{{ asset('/js/app.js') }}"></script>
