@@ -1,0 +1,52 @@
+.exchange {
+  height: 100vh;
+  background-color: $dark-color;
+  @include flexbox;
+  @include flex-direction(row)
+}
+
+.main-panel {
+  @include flex(1);
+  @include flexbox;
+  @include flex-direction(column)
+}
+
+.chart-panel {
+  background-color: darkslateblue;
+  @include flex(1);
+}
+
+.secondary-panel {
+  @include flex-basis($exchange-trade-panel-height);
+  @include flex-shrink(0);
+}
+
+.sidebar {
+  background-color: #0b2e13;
+  @include flex-basis($exchange-sidebar-width);
+  @include flex-shrink(0);
+  @include flexbox;
+  @include flex-direction(column)
+}
+
+.market-panel {
+  @include flex(1);
+  @include flexbox;
+  @include flex-direction(row)
+}
+
+.trade-panel {
+  background-color: darkblue;
+  @include flex-basis($exchange-trade-panel-height);
+  @include flex-shrink(0);
+}
+
+.orders-panel {
+  background-color: #0b2e13;
+  @include flex(1);
+}
+
+.orders-history-panel {
+  background-color: forestgreen;
+  @include flex(1);
+}

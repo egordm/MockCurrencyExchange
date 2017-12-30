@@ -23,7 +23,7 @@
 </head>
 <body>
 <div id="root">
-	<div class="wrapper">
+	<div class="wrapper exchange">
 		@yield('content')
 	</div>
 </div>

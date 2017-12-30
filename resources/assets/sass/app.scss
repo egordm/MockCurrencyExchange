@@ -4,6 +4,7 @@
 
 // Helpers
 @import "helpers/variables";
+@import "helpers/flex";
 
 // Vendor
 @import "~bootstrap/scss/bootstrap";
@@ -19,6 +20,8 @@
 // Layout
 @import "layout/sections";
 @import "layout/footer";
+@import "layout/exchange-panels";
 
 // Pages
 @import "pages/index";
+@import "pages/exchange";
