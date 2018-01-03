@@ -12,7 +12,7 @@ $font-color: #333;
 // Exchange
 $exchange-bg: /*$dark-color;*/#202226;
 $exchange-panel-bg: lighten($exchange-bg, 3%);
-$exchange-color: white;
+$exchange-text-color: white;
 
 $buy-color: #8ec919;
 $sell-color: #ff007a;
@@ -22,8 +22,8 @@ $exchange-trade-panel-height: 256px;
 $exchange-nav-height: 48px;
 
 
-$spacing: 10px;
+$spacing: 8px;
 
 // Scrollbar
-$scrollbar-bg: transparentize($dark-color, 0.55);
-$scrollbar-color: transparentize(white, 0.85);
+$scrollbar-bg: transparentize($dark-color, 0.8);
+$scrollbar-color: transparentize(white, 0.90);

@@ -4,14 +4,14 @@
   @include flex-direction(column);
 
   .wrapper {
-    @include flex(1);
-    @include flexbox;
-    @include flex-direction(row);
+	@include flex(1);
+	@include flexbox;
+	@include flex-direction(row);
   }
 
   nav {
-    @include flex-basis($exchange-nav-height);
-    @include flex-shrink(0);
+	@include flex-basis($exchange-nav-height);
+	@include flex-shrink(0);
   }
 }
 
@@ -36,13 +36,13 @@
   @include flex-basis($exchange-sidebar-width);
   @include flex-shrink(0);
   @include flexbox;
-  @include flex-direction(column)
+  @include flex-direction(column);
 }
 
 .market-panel {
   @include flex(1);
   @include flexbox;
-  @include flex-direction(row)
+  @include flex-direction(row);
 }
 
 .trade-panel {
@@ -51,17 +51,15 @@
   @include flex-shrink(0);
 }
 
-.orders-panel {
+.orders-panel, .orders-history-panel {
   @include flex(1);
-}
-
-.orders-history-panel {
-  @include flex(1);
+  @include flexbox;
+  @include flex-direction(column)
 }
 
 .panel-title {
   text-transform: uppercase;
-  color: transparentize($exchange-color, 0.6);
+  color: transparentize($exchange-text-color, 0.6);
   font-weight: 700;
   height: 38px;
   line-height: 38px;
@@ -69,36 +67,68 @@
   margin: 0;
 }
 
-.order-table-container {
-  height: calc(100% - 38px); // TODO use flex
+.table {
+  margin: 0;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: transparentize($exchange-text-color, 0.6);
+
+  th, td {
+	padding: 0;
+	border: 0;
+	text-transform: uppercase;
+	font-size: 13px;
+  }
+
+  th {
+	padding: $spacing/2 $spacing;
+  }
+}
+
+.table-wrapper {
+  @include flex(1);
   overflow: auto;
-  table {
-    width: 100%;
-    text-align: center;
+}
 
-    th, td {
-      text-transform: uppercase;
-      font-size: 13px;
-      color: transparentize($exchange-color, 0.6);
-    }
+.order-table.table {
+  @extend .text-center;
 
-    th {
-      padding: $spacing;
-    }
+  th {
+	text-align: center;
+  }
 
-    td {
-      font-family: 'Roboto Condensed', sans-serif;
-    }
-    
-    .buy .price {
-        color: $buy-color;
-    }
-    .sell .price {
-      color: $sell-color;
-    }
+  td {
+	text-align: right;
+  }
 
-    .amount {
-      color: transparentize($exchange-color, 0.2);
-    }
+  th, td {
+	&:first-child {
+	  text-align: left;
+	  padding-left: $spacing;
+	}
+	&:last-child {
+	  text-align: right;
+	  padding-right: $spacing;
+	}
+  }
+
+  .amount {
+	@extend .bright;
+  }
+
+  &.bid .price {
+	@extend .green;
+  }
+  &.ask .price {
+	@extend .red;
+  }
+}
+
+.price-bar {
+  @extend .bright;
+  th {
+
+	font-size: $spacing * 2.5;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
   }
 }
