@@ -14,4 +14,4 @@ import 'paper-kit-2/assets/js/paper-kit'
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-require('./components/Example');
+require('./exchange/index');

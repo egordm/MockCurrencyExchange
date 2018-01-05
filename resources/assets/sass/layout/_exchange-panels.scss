@@ -1,60 +1,59 @@
 .exchange {
   height: 100%;
-  @include flexbox;
-  @include flex-direction(column);
 
   .wrapper {
-	@include flex(1);
-	@include flexbox;
-	@include flex-direction(row);
+	height: calc(100% - #{$exchange-nav-height});
   }
 
   nav {
-	@include flex-basis($exchange-nav-height);
-	@include flex-shrink(0);
+	height: $exchange-nav-height;
   }
 }
 
 .main-panel {
-  @include flex(1);
-  @include flexbox;
-  @include flex-direction(column);
-}
+  float: left;
+  height: 100%;
+  width: calc(100% - #{$exchange-sidebar-width});
 
-.chart-panel {
-  background-color: darkslateblue;
-  @include flex(1);
-}
+  .chart-panel, .secondary-panel {
+	width: 100%;
+  }
 
-.secondary-panel {
-  @include flex-basis($exchange-trade-panel-height);
-  @include flex-shrink(0);
+  .chart-panel {
+	height: calc(100% - #{$exchange-trade-panel-height});
+  }
+
+  .secondary-panel {
+	background-color: $exchange-panel-bg;
+	height: $exchange-trade-panel-height;
+  }
 }
 
 .sidebar {
+  float: left;
   background-color: $exchange-panel-bg;
-  @include flex-basis($exchange-sidebar-width);
-  @include flex-shrink(0);
+  width: $exchange-sidebar-width;
+  height: 100%;
   @include flexbox;
   @include flex-direction(column);
-}
 
-.market-panel {
-  @include flex(1);
-  @include flexbox;
-  @include flex-direction(row);
-}
+  .market-panel {
+	@include flex(1);
+	@include flexbox;
+	@include flex-direction(row);
 
-.trade-panel {
-  background-color: darkblue;
-  @include flex-basis($exchange-trade-panel-height);
-  @include flex-shrink(0);
-}
+	.orders-panel, .orders-history-panel {
+	  @include flex(1);
+	  @include flexbox;
+	  @include flex-direction(column)
+	}
+  }
 
-.orders-panel, .orders-history-panel {
-  @include flex(1);
-  @include flexbox;
-  @include flex-direction(column)
+  .trade-panel {
+	background-color: darkblue;
+	@include flex-basis($exchange-trade-panel-height);
+	@include flex-shrink(0);
+  }
 }
 
 .panel-title {
@@ -89,6 +88,8 @@
   overflow: auto;
 }
 
+
+
 .order-table.table {
   @extend .text-center;
 
@@ -114,12 +115,17 @@
   .amount {
 	@extend .bright;
   }
-
-  &.bid .price {
-	@extend .green;
+}
+.order-table {
+  &.bid, .buy {
+	.price {
+	  @extend .green;
+	}
   }
-  &.ask .price {
-	@extend .red;
+  &.ask, .sell {
+	.price {
+	  @extend .red;
+	}
   }
 }
 
@@ -131,4 +137,10 @@
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
   }
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }

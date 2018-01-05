@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "axios": "^0.17",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.0.0-beta.2",
     "cross-env": "^5.1",
@@ -22,6 +23,15 @@
     "react-dom": "^16.2.0"
   },
   "dependencies": {
-    "paper-kit-2": "^2.0.0"
+    "d3-dsv": "^1.0.8",
+    "d3-format": "^1.2.1",
+    "d3-scale": "^1.0.7",
+    "d3-time": "^1.0.8",
+    "d3-time-format": "^2.1.1",
+    "paper-kit-2": "^2.0.0",
+    "prop-types": "^15.6.0",
+    "react-redux": "^5.0.6",
+    "react-stockcharts": "^0.7.0-beta.22",
+    "redux": "^3.7.2"
   }
 }
