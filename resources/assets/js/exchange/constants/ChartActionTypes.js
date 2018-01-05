@@ -1,0 +1,1 @@
+export const CHART_RESIZE = 'CHART_RESIZE';
