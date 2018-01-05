@@ -3,16 +3,15 @@ import React, {Component} from 'react';
 import Navbar from './Navbar';
 import OrderHistory from "./OrderHistory";
 import OpenOrders from "./OpenOrders";
+import ChartPanel from "./ChartPanel";
 
 export default class Exchange extends Component {
 	render() {
-		return  [
+		return [
 			<Navbar/>,
 			<div className="wrapper">
 				<div className="main-panel">
-					<div className="chart-panel">
-
-					</div>
+					<ChartPanel/>
 					<div className="secondary-panel">
 
 					</div>
