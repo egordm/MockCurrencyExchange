@@ -16,6 +16,10 @@ export default class OrderList extends Component {
 		return <tr key={i} className={type}>{columnData}</tr>
 	};
 
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	render() {
 		return <div className="table-wrapper">
 			<table className={'table order-table ' + this.props.tableClass}>

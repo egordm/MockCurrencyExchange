@@ -3,7 +3,16 @@ import {connect} from 'react-redux';
 
 import OrderList from '../components/OrderList';
 
-class OrderHistory extends Component {
+@connect((store) => {
+	return {
+		order_history: store.order_history
+	};
+})
+export default class OrderHistory extends Component {
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	render() {
 		return <div className="orders-history-panel">
 			<h3 className="panel-title text-center">Last Trades</h3>
@@ -20,11 +29,3 @@ class OrderHistory extends Component {
 		</div>;
 	}
 }
-
-function mapStateToProps(state) {
-	return {
-		order_history: state.order_history
-	};
-}
-
-export default connect(mapStateToProps)(OrderHistory);
