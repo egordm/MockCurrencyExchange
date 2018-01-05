@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import {createStore} from "redux";
+
+import {applyMiddleware, createStore} from "redux";
 import {Provider} from 'react-redux';
-import allReducers from './reducers';
+import logger from 'redux-logger';
+import promise from 'redux-promise-middleware';
+
+import reducer from './reducers';
 import Exchange from './containers/Exchange';
 
-const store = createStore(
-	allReducers
-);
+
+const middleware = applyMiddleware(logger, promise());
+const store = createStore(reducer, middleware);
 
 
-ReactDOM.render(
-	<Provider store={store}>
-		<Exchange/>
-	</Provider>,
-	document.getElementById('root')
-);
+ReactDOM.render(<Provider store={store}><Exchange/></Provider>, document.getElementById('root'));
