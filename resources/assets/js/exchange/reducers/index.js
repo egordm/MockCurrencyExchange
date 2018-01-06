@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
 import OrderHistoryReducer from './reducer-order-history';
 import OpenOrdersReducer from './reducer-open-orders';
-import ChartReducer from './reducer-chart';
+import ChartingReducer from './reducer-charting';
 
 const allReducers = combineReducers({
 	order_history: OrderHistoryReducer,
 	open_orders: OpenOrdersReducer,
-	chart: ChartReducer,
+	charting: ChartingReducer,
 });
 
 export default allReducers;
