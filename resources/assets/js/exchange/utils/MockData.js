@@ -1,10 +1,10 @@
-import {tsvParse} from "d3-dsv";
+import {csvParse} from "d3-dsv";
 import {timeParse} from "d3-time-format";
 import {format} from "d3-format";
 
 function parseData(parse) {
 	return function (d) {
-		d.date = parse(d.date);
+		d.date = new Date(d.open_time * 1000);
 		d.open = +d.open;
 		d.high = +d.high;
 		d.low = +d.low;
@@ -18,9 +18,9 @@ function parseData(parse) {
 const parseDate = timeParse("%Y-%m-%d");
 
 export function getCandleData() {
-	return fetch("//rrag.github.io/react-stockcharts/data/MSFT.tsv")
+	return fetch("/test")
 		.then(response => response.text())
-		.then(data => tsvParse(data, parseData(parseDate)));
+		.then(data => csvParse(data, parseData(parseDate)));
 }
 
 export function getOpenOrders(count=30) {
