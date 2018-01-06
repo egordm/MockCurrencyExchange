@@ -36,6 +36,36 @@ export default class ChartWidget extends PureComponent {
 			xAccessor(data[data.length - 200])
 		];
 
+		const seriesStyle = {
+			stroke: d => d.close > d.open ? "#8ec919" : "#ff007a",
+			wickStroke: d => d.close > d.open ? "#8ec919" : "#ff007a",
+			fill: d => d.close > d.open ? "#8ec91900" : "#ff007a",
+			candleStrokeWidth: 1,
+			widthRatio: 0.7,
+			opacity: 1
+		};
+		const axisStyle = {
+			stroke: "#00000000",
+			tickStroke: "#7d7f81",
+			innerTickSize: 0,
+			fontSize: 11,
+			fontFamily: "'Roboto Condensed', sans-serif"
+		};
+		const ohlcStyle = {
+			fontSize: 14,
+			fontFamily: "'Roboto', sans-serif",
+			textFill: "#FFFFFF",
+			labelFill: "#7d7f81"
+		};
+		const xhairStyle = {
+			stroke: "#FFFFFF",
+			opacity: 0.4,
+
+		};
+		const coordStyle = {
+			fontFamily: "'Roboto Condensed', sans-serif",
+			fontSize: 11,
+		};
 
 		return <ChartCanvas ref={(el) => { this.canvas = el;}}
 		                    width={width} height={height} ratio={1}
