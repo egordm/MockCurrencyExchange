@@ -13,7 +13,7 @@ export default class OrderList extends Component {
 		let columnData = [];
 		let type = this.props.typeField ? order[this.props.typeField] : '';
 		for(let column of this.props.columns) columnData.push(<td className={column} key={column}>{order[column]}</td>)
-		return <tr key={i} className={type}>{columnData}</tr>
+		return <tr key={i} className={type}>{columnData}</tr>;
 	};
 
 	shouldComponentUpdate() {
