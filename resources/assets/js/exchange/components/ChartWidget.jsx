@@ -16,6 +16,9 @@ import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockch
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
 import {last} from "react-stockcharts/lib/utils/index";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
+import {chartMargin, axisStyle, candlestickStyle, coordStyle, ohlcStyle, xhairStyle, kagiStyle, styleFromType} from "../constants/ChartStyles";
+import {chartFromType} from "../constants/ChartTypes";
+import {settingFromType, transformForType} from "../constants/ChartSettings";
 
 
 export default class ChartWidget extends PureComponent {
@@ -23,69 +26,48 @@ export default class ChartWidget extends PureComponent {
 		data: PropTypes.array.isRequired,
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
+		settings: PropTypes.object,
 	};
 
 	render() {
-		const {width, height, data: initData} = this.props;
+		let {width, height, data: initialData} = this.props;
+		let {type} = this.props.settings;
+
+
+		const MainChartSeries = chartFromType(type);
+		const mainChartStyle = styleFromType(type);
+		const mainChartSettings = settingFromType(type);
+		const calculatedData = transformForType(type, initialData);
+		console.log(calculatedData);
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
-		const {data, xScale, xAccessor, displayXAccessor} = xScaleProvider(initData);
+		const {data, xScale, xAccessor, displayXAccessor} = xScaleProvider(calculatedData);
 
-		const xExtents = [
-			xAccessor(last(data)),
-			xAccessor(data[data.length - 200])
-		];
+		const xExtents = [xAccessor(last(data)), xAccessor(data[Math.max(0, data.length - 200)])];
 
-		const seriesStyle = {
-			stroke: d => d.close > d.open ? "#8ec919" : "#ff007a",
-			wickStroke: d => d.close > d.open ? "#8ec919" : "#ff007a",
-			fill: d => d.close > d.open ? "#8ec91900" : "#ff007a",
-			candleStrokeWidth: 1,
-			widthRatio: 0.7,
-			opacity: 1
-		};
-		const axisStyle = {
-			stroke: "#00000000",
-			tickStroke: "#7d7f81",
-			innerTickSize: 0,
-			fontSize: 11,
-			fontFamily: "'Roboto Condensed', sans-serif"
-		};
-		const ohlcStyle = {
-			fontSize: 14,
-			fontFamily: "'Roboto', sans-serif",
-			textFill: "#FFFFFF",
-			labelFill: "#7d7f81"
-		};
-		const xhairStyle = {
-			stroke: "#FFFFFF",
-			opacity: 0.4,
-
-		};
-		const coordStyle = {
-			fontFamily: "'Roboto Condensed', sans-serif",
-			fontSize: 11,
-		};
+		const gridHeight = height - chartMargin.top - chartMargin.bottom;
+		const gridWidth = width - chartMargin.left - chartMargin.right;
+		const yGrid = {innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2};
+		const xGrid = {innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2};
 
 		return <ChartCanvas ref={(el) => { this.canvas = el;}}
-		                    width={width} height={height} ratio={1}
+		                    width={width} height={height} ratio={1} margin={chartMargin}
 		                    data={data}
 		                    xScale={xScale}
 		                    xAccessor={xAccessor}
 		                    displayXAccessor={displayXAccessor}
 		                    xExtents={xExtents}
-		                    margin={{left: 0, right: 50, top: 0, bottom: 30}}
 		                    type="hybrid"
 		                    seriesName="BTCUSDT">
 			<CrossHairCursor snapX={true} {...xhairStyle}/>
 			<Chart id={0} yExtents={d => [d.high, d.low]}>
-				<YAxis axisAt="right" orient="right" ticks={5} {...axisStyle}/>
-				<XAxis axisAt="bottom" orient="bottom" {...axisStyle} ticks={8}/>
+				<YAxis axisAt="right" orient="right" ticks={5} {...axisStyle} {...yGrid}/>
+				<XAxis axisAt="bottom" orient="bottom" ticks={8} {...axisStyle} {...xGrid}/>
 
 				<MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat("%Y-%m-%d %H:%M")} {...coordStyle}/>
 				<MouseCoordinateY at="right" orient="right" displayFormat={format(".2f")} {...coordStyle}/>
 
-				<CandlestickSeries {...seriesStyle} />
+				<MainChartSeries {...mainChartSettings} {...mainChartStyle}/>
 
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
 			</Chart>
