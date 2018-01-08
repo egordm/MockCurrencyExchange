@@ -7,8 +7,6 @@ import PropTypes from "prop-types";
 import {format} from "d3-format";
 import {timeFormat} from "d3-time-format";
 
-import {CandlestickSeries} from "react-stockcharts/es/lib/series";
-
 import {XAxis, YAxis} from "react-stockcharts/es/lib/axes";
 
 import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockcharts/lib/coordinates";
@@ -16,10 +14,14 @@ import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockch
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
 import {last} from "react-stockcharts/lib/utils/index";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
-import {chartMargin, axisStyle, candlestickStyle, coordStyle, ohlcStyle, xhairStyle, kagiStyle, styleFromType} from "../constants/ChartStyles";
+import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType} from "../constants/ChartStyles";
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
+import IndicatorRenderer from '../helpers/IndicatorRenderer'
+
+import {LineSeries} from "react-stockcharts/es/lib/series";
+import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
 
 export default class ChartWidget extends PureComponent {
 	static propTypes = {
@@ -31,14 +33,21 @@ export default class ChartWidget extends PureComponent {
 
 	render() {
 		let {width, height, data: initialData} = this.props;
-		let {type} = this.props.settings;
+		let {type, indicators} = this.props.settings;
 
 
 		const MainChartSeries = chartFromType(type);
 		const mainChartStyle = styleFromType(type);
 		const mainChartSettings = settingFromType(type);
-		const calculatedData = transformForType(type, initialData);
-		console.log(calculatedData);
+		let calculatedData = transformForType(type, initialData);
+
+		let elements = [];
+		for(let indicator of indicators) {
+			const {calculator, elements: els} = IndicatorRenderer(indicator);
+			elements.push(els);
+			calculatedData = calculator(calculatedData);
+		}
+
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
 		const {data, xScale, xAccessor, displayXAccessor} = xScaleProvider(calculatedData);
@@ -68,6 +77,8 @@ export default class ChartWidget extends PureComponent {
 				<MouseCoordinateY at="right" orient="right" displayFormat={format(".2f")} {...coordStyle}/>
 
 				<MainChartSeries {...mainChartSettings} {...mainChartStyle}/>
+
+				{elements}
 
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
 			</Chart>
