@@ -18,11 +18,8 @@ import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
-import IndicatorRenderer from '../helpers/IndicatorRenderer'
-
 import {BarSeries} from "react-stockcharts/es/lib/series";
 import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
-import * as TooltipRenderer from "../helpers/TooltipRenderer";
 
 export default class ChartWidget extends PureComponent {
 	static propTypes = {
@@ -42,16 +39,11 @@ export default class ChartWidget extends PureComponent {
 		const mainChartSettings = settingFromType(type);
 		let calculatedData = transformForType(type, initialData);
 
-		let elements = [];
+		let offset = {value: 24};
 		let tooltips = {};
 		for (let indicator of indicators) {
-			const {calculator, elements: els, tooltip} = IndicatorRenderer(indicator);
-			elements.push(els);
-			calculatedData = calculator(calculatedData);
-			if (tooltip !== null) {
-				if (tooltip.name in tooltips) tooltips[tooltip.name].options = tooltips[tooltip.name].options.concat(tooltip.options);
-				else tooltips[tooltip.name] = tooltip;
-			}
+			calculatedData = indicator.calculator(calculatedData);
+			tooltips[indicator.tooltipKey] = indicator.renderTooltip(offset, tooltips[indicator.tooltipKey]);
 		}
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
@@ -83,9 +75,8 @@ export default class ChartWidget extends PureComponent {
 
 				<MainChartSeries {...mainChartSettings} {...mainChartStyle}/>
 
-				{elements}
-
-				{TooltipRenderer.renderMultiple(tooltips, 24)}
+				{indicators.map((el) => el.render())}
+				{Object.values(tooltips)}
 
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
 			</Chart>

@@ -1,5 +1,4 @@
 import {AREA, CANDLESTICK, HEIKIN_ASHI, KAGI, LINE, POINT_FIGURE, RENKO} from "./ChartTypes";
-import * as TooltipTypes from "./TooltipTypes";
 
 export const chartMargin = {left: 30, right: 50, top: 0, bottom: 30};
 
@@ -87,25 +86,33 @@ export function styleFromType(type) {
 	}
 }
 
-export const maTooltipStyle = {
+export const defaultTooltipStyle = {
 	textFill: "#FFFFFF",
-	labelFill: "#7d7f81",
-	fontSize: 12,
-	fontFamily: "'Roboto', sans-serif",
-};
-
-export const singleValTooltipStyle = {
 	labelFill: "#7d7f81",
 	valueFill: "#FFFFFF",
 	fontSize: 12,
 	fontFamily: "'Roboto', sans-serif",
 };
 
-export function styleFromTooltipType(type) {
-	switch (type.value) {
-		case TooltipTypes.SINGLEVALUE.value: {
-			return singleValTooltipStyle;
-		}
-		default: return maTooltipStyle;
-	}
-}
+export const bollBandStyle = {
+	stroke: {
+		top: "#FFFFFF",
+		middle: "#FFFFFF",
+		bottom: "#FFFFFF",
+	},
+	fill: "#FFFFFF",
+	opacity: 0.08,
+	strokeWidth: 1
+};
+
+export const sarStyle = {
+	fill: {
+		falling: "#ff007a",
+		rising: "#8ec919",
+	},
+};
+
+export const lineIndicatorStyle = {
+	strokeWidth: 2,
+	stroke: "#ffc400",
+};

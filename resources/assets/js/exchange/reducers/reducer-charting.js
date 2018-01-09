@@ -1,7 +1,7 @@
 import {CHART_RESIZE, REQUEST_DATA_FULFILLED} from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
-
+import {BollBandIndicator, LinearIndicator, SARIndicator} from '../presenters/IndicatorPresenter';
 /*{
 					type: IndicatorTypes.SAR,
 					options: {},
@@ -38,52 +38,10 @@ const initialState = {
 			selectedTool: null,
 			interval: '1d',
 			indicators: [
-				{
-					type: IndicatorTypes.EMA,
-					options: {
-						windowSize: 20
-					},
-					style: {
-						stroke: "#ffc400",
-						strokeWidth: 2
-					}
-				},
-				{
-					type: IndicatorTypes.SMA,
-					options: {
-						windowSize: 99
-					},
-					style: {
-						stroke: "#6600cc",
-						strokeWidth: 2
-					}
-				},
-				{
-					type: IndicatorTypes.SAR,
-					options: {},
-					style: {
-						fill: {
-							falling: "#ff007a",
-							rising: "#8ec919",
-						},
-					}
-				},
-				{
-					type: IndicatorTypes.BOLL,
-					options: {
-						windowSize: 20
-					},
-					style: {
-						stroke: {
-							top: "#FFFFFF",
-							middle: "#FFFFFF",
-							bottom: "#FFFFFF",
-						},
-						fill: "#FFFFFF",
-						opacity: 0.08,
-						strokeWidth: 1
-					}
-				}
+				new LinearIndicator(IndicatorTypes.EMA, {windowSize: 20}, {stroke: "#ffc400"}),
+				new LinearIndicator(IndicatorTypes.SMA, {windowSize: 99}, {stroke: "#6600cc"}),
+				new SARIndicator({}, {stroke: "#6600cc"}),
+				new BollBandIndicator({windowSize: 20}, {}),
 			],
 			tools: [],
 			settings: {
