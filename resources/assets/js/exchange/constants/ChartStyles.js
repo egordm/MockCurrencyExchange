@@ -1,6 +1,16 @@
 import {AREA, CANDLESTICK, HEIKIN_ASHI, KAGI, LINE, POINT_FIGURE, RENKO} from "./ChartTypes";
+import * as TooltipTypes from "./TooltipTypes";
 
-export const chartMargin = {left: 0, right: 50, top: 0, bottom: 30};
+export const chartMargin = {left: 30, right: 50, top: 0, bottom: 30};
+
+export const secondaryChartHeight = 100;
+
+export const mainChart = {
+	padding: {
+		top: 0,
+		bottom: secondaryChartHeight + 5
+	}
+};
 
 export const axisStyle = {
 	stroke: "#00000000",
@@ -53,6 +63,11 @@ export const areaStyle = {
 	opacity: 0.2
 };
 
+export const barStyle = {
+	fill: d => d.close > d.open ? "#8ec919" : "#ff007a",
+	opacity: 0
+};
+
 export function styleFromType(type) {
 	switch (type.value) {
 		case AREA.value: {
@@ -67,6 +82,30 @@ export function styleFromType(type) {
 		case HEIKIN_ASHI.value: {
 			return candlestickStyle;
 		}
-		default: return {};
+		default:
+			return {};
+	}
+}
+
+export const maTooltipStyle = {
+	textFill: "#FFFFFF",
+	labelFill: "#7d7f81",
+	fontSize: 12,
+	fontFamily: "'Roboto', sans-serif",
+};
+
+export const singleValTooltipStyle = {
+	labelFill: "#7d7f81",
+	valueFill: "#FFFFFF",
+	fontSize: 12,
+	fontFamily: "'Roboto', sans-serif",
+};
+
+export function styleFromTooltipType(type) {
+	switch (type.value) {
+		case TooltipTypes.SINGLEVALUE.value: {
+			return singleValTooltipStyle;
+		}
+		default: return maTooltipStyle;
 	}
 }
