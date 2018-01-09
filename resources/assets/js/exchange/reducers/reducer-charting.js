@@ -2,6 +2,33 @@ import {CHART_RESIZE, REQUEST_DATA_FULFILLED} from "../constants/ChartActionType
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
 
+/*{
+					type: IndicatorTypes.SAR,
+					options: {},
+					style: {
+						fill: {
+							falling: "#ff007a",
+							rising: "#8ec919",
+						},
+					}
+				}*/
+/*{
+	type: IndicatorTypes.BOLL,
+	options: {
+		windowSize: 20
+	},
+	style: {
+		stroke: {
+			top: "#FFFFFF",
+			middle: "#FFFFFF",
+			bottom: "#FFFFFF",
+		},
+		fill: "#FFFFFF",
+		opacity: 0.08,
+		strokeWidth: 1
+	}
+}*/
+
 const initialState = {
 	width: 100,
 	height: 100,
@@ -12,7 +39,7 @@ const initialState = {
 			interval: '1d',
 			indicators: [
 				{
-					type: IndicatorTypes.SMA,
+					type: IndicatorTypes.EMA,
 					options: {
 						windowSize: 20
 					},
@@ -32,6 +59,16 @@ const initialState = {
 					}
 				},
 				{
+					type: IndicatorTypes.SAR,
+					options: {},
+					style: {
+						fill: {
+							falling: "#ff007a",
+							rising: "#8ec919",
+						},
+					}
+				},
+				{
 					type: IndicatorTypes.BOLL,
 					options: {
 						windowSize: 20
@@ -43,7 +80,7 @@ const initialState = {
 							bottom: "#FFFFFF",
 						},
 						fill: "#FFFFFF",
-						opacity: 0.1,
+						opacity: 0.08,
 						strokeWidth: 1
 					}
 				}

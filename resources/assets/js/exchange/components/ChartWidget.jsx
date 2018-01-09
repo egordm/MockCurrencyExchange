@@ -14,14 +14,15 @@ import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockch
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
 import {last} from "react-stockcharts/lib/utils/index";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
-import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType} from "../constants/ChartStyles";
+import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType} from "../constants/ChartStyles";
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
 import IndicatorRenderer from '../helpers/IndicatorRenderer'
 
-import {LineSeries} from "react-stockcharts/es/lib/series";
+import {BarSeries} from "react-stockcharts/es/lib/series";
 import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
+import * as TooltipRenderer from "../helpers/TooltipRenderer";
 
 export default class ChartWidget extends PureComponent {
 	static propTypes = {
@@ -42,12 +43,16 @@ export default class ChartWidget extends PureComponent {
 		let calculatedData = transformForType(type, initialData);
 
 		let elements = [];
-		for(let indicator of indicators) {
-			const {calculator, elements: els} = IndicatorRenderer(indicator);
+		let tooltips = {};
+		for (let indicator of indicators) {
+			const {calculator, elements: els, tooltip} = IndicatorRenderer(indicator);
 			elements.push(els);
 			calculatedData = calculator(calculatedData);
+			if (tooltip !== null) {
+				if (tooltip.name in tooltips) tooltips[tooltip.name].options = tooltips[tooltip.name].options.concat(tooltip.options);
+				else tooltips[tooltip.name] = tooltip;
+			}
 		}
-
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
 		const {data, xScale, xAccessor, displayXAccessor} = xScaleProvider(calculatedData);
@@ -69,7 +74,7 @@ export default class ChartWidget extends PureComponent {
 		                    type="hybrid"
 		                    seriesName="BTCUSDT">
 			<CrossHairCursor snapX={true} {...xhairStyle}/>
-			<Chart id={0} yExtents={d => [d.high, d.low]}>
+			<Chart id={0} yExtents={d => [d.high, d.low]} {...mainChart}> {/*Main Chart*/}
 				<YAxis axisAt="right" orient="right" ticks={5} {...axisStyle} {...yGrid}/>
 				<XAxis axisAt="bottom" orient="bottom" ticks={8} {...axisStyle} {...xGrid}/>
 
@@ -80,7 +85,17 @@ export default class ChartWidget extends PureComponent {
 
 				{elements}
 
+				{TooltipRenderer.renderMultiple(tooltips, 24)}
+
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
+			</Chart>
+			<Chart id={1} yExtents={[d => d.volume]} height={secondaryChartHeight} origin={(w, h) => [0, h - secondaryChartHeight]}>
+				<YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".2s")} {...axisStyle} />
+
+				<MouseCoordinateY at="left" orient="left" displayFormat={format(".4s")} {...coordStyle}/>
+
+				<BarSeries yAccessor={d => d.volume} {...barStyle} />
+				<CurrentCoordinate yAccessor={d => d.volume} fill="#9B0A47"/>
 			</Chart>
 		</ChartCanvas>;
 	}
