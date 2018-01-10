@@ -1,7 +1,8 @@
-import {CHART_RESIZE, REQUEST_DATA_FULFILLED} from "../constants/ChartActionTypes";
+import {ADD_INDICATOR, CHART_RESIZE, REQUEST_DATA_FULFILLED} from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
-import {BollBandIndicator, LinearIndicator, SARIndicator} from '../presenters/IndicatorPresenter';
+import {createIndicator, LinearIndicator} from '../presenters/IndicatorPresenter';
+import update from 'react-addons-update';
 /*{
 					type: IndicatorTypes.SAR,
 					options: {},
@@ -38,10 +39,7 @@ const initialState = {
 			selectedTool: null,
 			interval: '1d',
 			indicators: [
-				new LinearIndicator(IndicatorTypes.EMA, {windowSize: 20}, {stroke: "#ffc400"}),
 				new LinearIndicator(IndicatorTypes.SMA, {windowSize: 99}, {stroke: "#6600cc"}),
-				new SARIndicator({}, {stroke: "#6600cc"}),
-				new BollBandIndicator({windowSize: 20}, {}),
 			],
 			tools: [],
 			settings: {
@@ -54,10 +52,18 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case CHART_RESIZE:
-			let {width, height} = action.payload;
+			const {width, height} = action.payload;
 			return {...state, width, height};
 		case REQUEST_DATA_FULFILLED:
 			return {...state, data: action.payload};
+		case ADD_INDICATOR:
+			return update(state, {
+				charts: {
+					[action.payload.index]: {
+						indicators: {$push: [createIndicator(action.payload.type)]}
+					}
+				}
+			});
 		default:
 			return state;
 	}

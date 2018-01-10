@@ -10,7 +10,7 @@ import reducer from './reducers';
 import Exchange from './containers/Exchange';
 
 
-const middleware = applyMiddleware(/*logger,*/ promise());
+const middleware = applyMiddleware(logger, promise());
 const store = createStore(reducer, middleware);
 
 

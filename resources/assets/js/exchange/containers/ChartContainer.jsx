@@ -23,14 +23,15 @@ export default class ChartContainer extends Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data;
+		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data
+			|| this.getChartSettings() !== nextProps.charts[this.props.index];
 	}
 
 	getChartSettings = () => this.props.charts[this.props.index];
 
 	renderChart = () => {
 		if (!this.props.data) return <p>Loading...</p>;
-		return <ChartWidget ref={(el) => { this.chartComponent = el;}}
+		return <ChartWidget index={this.props.index} ref={(el) => { this.chartComponent = el;}}
 			width={this.props.width} height={this.props.height - chartSettingHeight}
 			data={this.props.data}
 			settings={this.getChartSettings()}/>;
@@ -39,7 +40,7 @@ export default class ChartContainer extends Component {
 	render() {
 		return <div className="chart-component">
 			<div className="chart-widget">
-				<ChartSettings/>
+				<ChartSettings index={this.props.index}/>
 				{this.renderChart()}
 			</div>
 		</div>;
