@@ -8,3 +8,11 @@ export const TMA = {label: "Moving Average (Triangular)", value: "TMA", calculat
 export const BOLL = {label: "Bollinger Band", value: "BOLL", calculator: bollingerBand};
 export const SAR = {label: "SAR", value: "SAR", calculator: sar};
 
+export const Indicators = [
+	EMA,
+	SMA,
+	WMA,
+	TMA,
+	BOLL,
+	SAR
+];
