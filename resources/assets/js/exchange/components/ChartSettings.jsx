@@ -1,11 +1,30 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
 import {Indicators} from '../constants/IndicatorTypes';
 import {Tools} from '../constants/ToolTypes';
 import {intervalDays, intervalHours, intervalMinutes} from '../constants/ChartSettings';
+import * as ChartActions from "../actions/ChartActions";
+import PropTypes from "prop-types";
 
+@connect((store) => store.charting, (dispatch) => {
+	return {
+		addIndicator: bindActionCreators(ChartActions.addIndicator, dispatch),
+	};
+})
 export default class ChartSettings extends Component {
+	static propTypes = {
+		index: PropTypes.number.isRequired,
+	};
+
 	settingChanged(setting, option) {
-		console.log('Indicator selected ' + option.value)
+		switch(setting.value) {
+			case 'INDICATOR':
+				return this.props.addIndicator(option, this.props.index);
+			default:
+				console.log('Indicator selected ' + option.value)
+		}
 	}
 
 	renderDropdown = (setting, i) => {

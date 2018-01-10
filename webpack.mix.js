@@ -16,5 +16,5 @@ mix.setPublicPath('public_html/')
 	.react('resources/assets/js/app.jsx', 'public_html/js')
 	.sass('resources/assets/sass/app.scss', 'public_html/css')
 	.sass('resources/assets/sass/exchange.scss', 'public_html/css')
-	.extract(['react', 'react-dom'])
+	.extract(['react', 'react-dom', 'react-redux'])
 	.sourceMaps();
