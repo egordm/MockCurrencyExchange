@@ -1,0 +1,39 @@
+.chart-settings {
+  height: 26px;
+  padding-left: 24px;
+
+  &:first-child {
+	margin-left: 0;
+  }
+
+  .chart-setting {
+	display: inline;
+	margin-left: 0.4rem;
+
+	.dropdown-toggle {
+	  font-size: 0.8rem;
+	  padding: 0.16rem 0.45rem;
+	  background-color: $exchange-light-bg;
+	  color: white;
+
+	  &:focus, &:hover, &:active {
+		outline: 0;
+		box-shadow: 0 0;
+		-webkit-box-shadow: 0 0;
+	  }
+	}
+
+	.dropdown-menu {
+	  background-color: $exchange-light-bg;
+	  color: white;
+
+	  .dropdown-item {
+		font-size: 0.8rem;
+		cursor: pointer;
+		&:hover, &:focus, &:active {
+		  background-color: lighten($exchange-light-bg, 3%);
+		}
+	  }
+	}
+  }
+}

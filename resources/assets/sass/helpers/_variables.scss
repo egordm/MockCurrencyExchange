@@ -12,6 +12,7 @@ $font-color: #333;
 // Exchange
 $exchange-bg: /*$dark-color;*/#202226;
 $exchange-panel-bg: lighten($exchange-bg, 3%);
+$exchange-light-bg: lighten($exchange-bg, 7%);
 $exchange-text-color: white;
 
 $buy-color: #8ec919;
