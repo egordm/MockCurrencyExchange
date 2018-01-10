@@ -19,6 +19,7 @@ class IndicatorPresenter {
 	}
 
 	setOptions(options) {
+		if(!this.type) return;
 		this._options = options;
 		this._identifier = this.type.value + Object.values(this._options).join('');
 		this._calculator = this.type.calculator().options(this._options).merge((d, c) => { d[this._identifier] = c; }).accessor(d => d[this._identifier]);
@@ -127,5 +128,16 @@ export class SARIndicator extends SimpleIndicator {
 
 	constructor(options = {}, styling = {}) {
 		super(IndicatorTypes.SAR, options, styling, SARSeries, SingleValueTooltip, sarStyle);
+	}
+}
+
+export function createIndicator(type, options = {}, styling = {}) {
+	switch (type.value) {
+		case IndicatorTypes.BOLL.value:
+			return new BollBandIndicator(options, styling);
+		case IndicatorTypes.SAR.value:
+			return new SARIndicator(options, styling);
+		default:
+			return new LinearIndicator(type, options, styling);
 	}
 }
