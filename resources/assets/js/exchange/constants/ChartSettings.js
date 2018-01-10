@@ -30,3 +30,23 @@ export function transformForType(type, data) {
 			return data;
 	}
 }
+
+export const intervalMinutes = [
+	{label: '1 Minute', value: '1m'},
+	{label: '5 Minutes', value: '5m'},
+	{label: '15 Minutes', value: '15m'},
+	{label: '30 Minutes', value: '30m'},
+];
+
+export const intervalHours = [
+	{label: '1 Hour', value: '1h'},
+	{label: '2 Hours', value: '2h'},
+	{label: '4 Hours', value: '4h'},
+	{label: '6 Hours', value: '6h'},
+	{label: '12 Hours', value: '12h'},
+];
+
+export const intervalDays = [
+	{label: '1 Day', value: '1d'},
+	{label: '7 Days', value: '7d'},
+];

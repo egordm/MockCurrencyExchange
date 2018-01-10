@@ -5,6 +5,8 @@ import {bindActionCreators} from "redux";
 
 import * as ChartActions from "../actions/ChartActions";
 import ChartWidget from "../components/ChartWidget";
+import ChartSettings from "../components/ChartSettings";
+import {chartSettingHeight} from "../constants/ChartStyles";
 
 @connect((store) => store.charting, (dispatch) => {
 	return {
@@ -29,7 +31,7 @@ export default class ChartContainer extends Component {
 	renderChart = () => {
 		if (!this.props.data) return <p>Loading...</p>;
 		return <ChartWidget ref={(el) => { this.chartComponent = el;}}
-			width={this.props.width} height={this.props.height}
+			width={this.props.width} height={this.props.height - chartSettingHeight}
 			data={this.props.data}
 			settings={this.getChartSettings()}/>;
 	};
@@ -37,6 +39,7 @@ export default class ChartContainer extends Component {
 	render() {
 		return <div className="chart-component">
 			<div className="chart-widget">
+				<ChartSettings/>
 				{this.renderChart()}
 			</div>
 		</div>;
