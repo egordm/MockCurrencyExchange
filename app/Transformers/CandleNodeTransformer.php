@@ -21,13 +21,13 @@ class CandleNodeTransformer extends TransformerAbstract
 	public function transform($model)
 	{
 		return [
-			'open' => $model->open,
-			'high' => $model->high,
-			'low' => $model->low,
-			'close' => $model->close,
-			'volume' => $model->volume,
-			'open_time' => $model->open_time,
-			'close_time' => $model->close_time,
+			'open' => (double)$model->open,
+			'high' => (double)$model->high,
+			'low' => (double)$model->low,
+			'close' => (double)$model->close,
+			'volume' => (double)$model->volume,
+			'open_time' => (int)$model->open_time,
+			'close_time' => (int)$model->close_time,
 		];
 	}
 }
