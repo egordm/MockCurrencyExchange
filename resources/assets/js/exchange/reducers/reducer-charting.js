@@ -1,38 +1,15 @@
-import {ADD_INDICATOR, CHART_RESIZE, REQUEST_DATA_FULFILLED} from "../constants/ChartActionTypes";
+import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS} from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
 import {createIndicator, LinearIndicator} from '../presenters/IndicatorPresenter';
 import update from 'react-addons-update';
-/*{
-					type: IndicatorTypes.SAR,
-					options: {},
-					style: {
-						fill: {
-							falling: "#ff007a",
-							rising: "#8ec919",
-						},
-					}
-				}*/
-/*{
-	type: IndicatorTypes.BOLL,
-	options: {
-		windowSize: 20
-	},
-	style: {
-		stroke: {
-			top: "#FFFFFF",
-			middle: "#FFFFFF",
-			bottom: "#FFFFFF",
-		},
-		fill: "#FFFFFF",
-		opacity: 0.08,
-		strokeWidth: 1
-	}
-}*/
+import {processCandles} from "../utils/DataProcessing";
 
 const initialState = {
 	width: 100,
 	height: 100,
+	market: 'USD_BTC',
+	interval: '15m', // TODO: move interval into charts since we can stack charts
 	charts: [
 		{
 			type: ChartTypes.CANDLESTICK,
@@ -54,8 +31,8 @@ export default function (state = initialState, action) {
 		case CHART_RESIZE:
 			const {width, height} = action.payload;
 			return {...state, width, height};
-		case REQUEST_DATA_FULFILLED:
-			return {...state, data: action.payload};
+		case REQUEST_DATA_SUCCESS:
+			return {...state, data: processCandles(action.payload.data.data)};
 		case ADD_INDICATOR:
 			return update(state, {
 				charts: {
@@ -64,6 +41,8 @@ export default function (state = initialState, action) {
 					}
 				}
 			});
+		case SET_INTERVAL:
+			return {...state, interval: action.payload};
 		default:
 			return state;
 	}

@@ -19,7 +19,7 @@ export default class ChartContainer extends Component {
 	};
 
 	componentDidMount() {
-		if(!this.props.data) this.props.requestData();
+		if(!this.props.data) this.props.requestData(this.props.market, this.props.interval);
 	}
 
 	shouldComponentUpdate(nextProps) {

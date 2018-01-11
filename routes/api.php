@@ -34,11 +34,11 @@ Route::group(['middleware' => 'multi-auth'], function () {
 		Route::get('/{id}', 'OrdersController@view')->name('orders.view');
 		Route::post('/{id}/cancel', 'OrdersController@cancel')->name('orders.cancel');
 	});
+});
 
-	Route::group(['prefix' => 'markets'], function () {
-		Route::get('/', 'MarketController@index')->name('markets');
-		Route::get('/{market}', 'MarketController@view')->name('markets.view');
-		Route::get('/{market}/depth', 'MarketController@depth')->name('markets.depth');
-		Route::get('/{market}/candlesticks', 'MarketController@candlesticks')->name('markets.candlesticks');
-	});
+Route::group(['prefix' => 'markets'], function () {
+	Route::get('/', 'MarketController@index')->name('markets');
+	Route::get('/{market}', 'MarketController@view')->name('markets.view');
+	Route::get('/{market}/depth', 'MarketController@depth')->name('markets.depth');
+	Route::get('/{market}/candlesticks', 'MarketController@candlesticks')->name('markets.candlesticks');
 });

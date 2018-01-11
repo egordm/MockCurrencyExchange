@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 @connect((store) => store.charting, (dispatch) => {
 	return {
 		addIndicator: bindActionCreators(ChartActions.addIndicator, dispatch),
+		setInterval: bindActionCreators(ChartActions.setInterval, dispatch),
 	};
 })
 export default class ChartSettings extends Component {
@@ -22,6 +23,8 @@ export default class ChartSettings extends Component {
 		switch(setting.value) {
 			case 'INDICATOR':
 				return this.props.addIndicator(option, this.props.index);
+			case 'INTERVAL':
+				return this.props.setInterval(option.value);
 			default:
 				console.log('Indicator selected ' + option.value)
 		}
@@ -41,7 +44,7 @@ export default class ChartSettings extends Component {
 	render() {
 		const settings = [
 			{label: 'Minute', value: 'INTERVAL', options: intervalMinutes},
-			{label: 'Hours', value: 'INTERVAL', options: intervalHours},
+			//{label: 'Hours', value: 'INTERVAL', options: intervalHours},
 			{label: 'Days', value: 'INTERVAL', options: intervalDays},
 			{label: 'Indicator', value: 'INDICATOR', options: Indicators},
 			{label: 'Tool', value: 'TOOL', options: Tools},
