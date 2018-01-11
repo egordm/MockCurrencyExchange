@@ -88,7 +88,8 @@ class MarketController extends APIController
 	public function candlesticks($market, BinanceAPI $bac)
 	{
 		$market = $this->getMarket(['external_symbol']);
-		$nodes = $bac->candlesticks($market, Input::get('interval', '15m'));
+		$nodes = $bac->candlesticks($market, Input::get('interval', '15m'),
+			Input::get('start_time', null), Input::get('end_time', null));
 		return (new CandleNodePresenter())->present($nodes);
 	}
 }
