@@ -1,5 +1,6 @@
 export const CHART_RESIZE = 'CHART_RESIZE';
-export const REQUEST_DATA = 'REQUEST_DATA';
-export const REQUEST_DATA_SUCCESS = 'REQUEST_DATA_SUCCESS';
 export const ADD_INDICATOR = 'ADD_INDICATOR';
 export const SET_INTERVAL = 'SET_INTERVAL';
+export const POLL_DATA = 'POLL_DATA';
+export const POLL_DATA_SUCCESS = 'POLL_DATA_SUCCESS';
+export const POLL_DATA_STOP = 'POLL_DATA_STOP';

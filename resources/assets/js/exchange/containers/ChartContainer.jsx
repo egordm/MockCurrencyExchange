@@ -10,7 +10,7 @@ import {chartSettingHeight} from "../constants/ChartStyles";
 
 @connect((store) => store.charting, (dispatch) => {
 	return {
-		requestData: bindActionCreators(ChartActions.requestData, dispatch),
+		pollData: bindActionCreators(ChartActions.pollData, dispatch),
 	};
 })
 export default class ChartContainer extends Component {
@@ -19,9 +19,8 @@ export default class ChartContainer extends Component {
 	};
 
 	componentDidMount() {
-		if(!this.props.data) this.props.requestData(this.props.market, this.props.interval);
+		if (!this.props.data) this.props.pollData(this.props.market, this.props.interval);
 	}
-
 	shouldComponentUpdate(nextProps) {
 		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data
 			|| this.getChartSettings() !== nextProps.charts[this.props.index];
@@ -32,9 +31,9 @@ export default class ChartContainer extends Component {
 	renderChart = () => {
 		if (!this.props.data) return <p>Loading...</p>;
 		return <ChartWidget index={this.props.index} ref={(el) => { this.chartComponent = el;}}
-			width={this.props.width} height={this.props.height - chartSettingHeight}
-			data={this.props.data}
-			settings={this.getChartSettings()}/>;
+		                    width={this.props.width} height={this.props.height - chartSettingHeight}
+		                    data={this.props.data}
+		                    settings={this.getChartSettings()}/>;
 	};
 
 	render() {

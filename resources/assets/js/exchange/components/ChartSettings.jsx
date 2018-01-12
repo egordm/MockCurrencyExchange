@@ -24,7 +24,7 @@ export default class ChartSettings extends Component {
 			case 'INDICATOR':
 				return this.props.addIndicator(option, this.props.index);
 			case 'INTERVAL':
-				return this.props.setInterval(option.value);
+				return this.props.setInterval(option);
 			default:
 				console.log('Indicator selected ' + option.value)
 		}
@@ -44,7 +44,6 @@ export default class ChartSettings extends Component {
 	render() {
 		const settings = [
 			{label: 'Minute', value: 'INTERVAL', options: intervalMinutes},
-			//{label: 'Hours', value: 'INTERVAL', options: intervalHours},
 			{label: 'Days', value: 'INTERVAL', options: intervalDays},
 			{label: 'Indicator', value: 'INDICATOR', options: Indicators},
 			{label: 'Tool', value: 'TOOL', options: Tools},
