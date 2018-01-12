@@ -18,7 +18,7 @@ export function setInterval(interval) {
 	return [
 		(dispatch, getState) => {
 			const market = getState().charting.market;
-			dispatch(requestData(market, interval))
+			dispatch(pollData(market, interval))
 		},
 		{
 			type: SET_INTERVAL,
