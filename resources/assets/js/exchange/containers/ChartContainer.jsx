@@ -18,9 +18,10 @@ export default class ChartContainer extends Component {
 		index: PropTypes.number.isRequired,
 	};
 
-	componentDidMount() {
-		if (!this.props.data) this.props.pollData(this.props.market, this.props.interval);
-	}
+	/*componentDidMount() {
+		//if (!this.props.data) this.props.pollData(this.props.market, this.props.interval);
+	}*/
+
 	shouldComponentUpdate(nextProps) {
 		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data
 			|| this.getChartSettings() !== nextProps.charts[this.props.index];
