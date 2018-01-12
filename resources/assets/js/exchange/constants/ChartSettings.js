@@ -31,7 +31,7 @@ export function transformForType(type, data) {
 	}
 }
 
-export const pollInterval = 5000;
+export const pollInterval = 20000;
 
 export const defaultInterval = {label: '15 Minutes', value: '15m', length: 60 * 15};
 
