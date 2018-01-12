@@ -53,23 +53,25 @@ class BinanceAPI
 		$interval_time = CandlestickNodeRepository::INTERVALS[$interval];
 		$nodes = $this->candleRepo->getNodes($market, $interval_time, $start_time, $end_time);
 
-		if (empty($nodes)) {
+		if (empty($nodes) || count($nodes) == 1) {
 			$interval_id = $this->candleRepo->getIntervalId($interval_time);
 			$ticks = $this->requestCandlesticks($market->external_symbol->symbol, $interval, $start_time, $end_time);
-			foreach ($ticks as $tick) {
-				$nodes[] = new CandlestickNode([
-					'open' => $tick['open'],
-					'high' => $tick['high'],
-					'low' => $tick['low'],
-					'close' => $tick['close'],
-					'volume' => $tick['volume'],
-					'open_time' => $tick['openTime'] / 1000,
-					'close_time' => $tick['closeTime'] / 1000,
-					'interval' => $interval_id,
-					'valuta_pair_id' => $market->id
-				]);
+			if(!empty($ticks)) {
+				foreach ($ticks as $tick) {
+					$nodes[] = new CandlestickNode([
+						'open' => $tick['open'],
+						'high' => $tick['high'],
+						'low' => $tick['low'],
+						'close' => $tick['close'],
+						'volume' => $tick['volume'],
+						'open_time' => $tick['openTime'] / 1000,
+						'close_time' => $tick['closeTime'] / 1000,
+						'interval' => $interval_id,
+						'valuta_pair_id' => $market->id
+					]);
+				}
+				$this->candleRepo->bulkSave($nodes);
 			}
-			$this->candleRepo->bulkSave($nodes);
 		}
 
 		return $nodes;
@@ -81,6 +83,7 @@ class BinanceAPI
 		if(!empty($start_time)) $params['startTime'] = $start_time * 1000;
 		if(!empty($end_time)) $params['endTime'] = $end_time * 1000;
 		$response = $this->request("v1/klines", $params);
+		if(empty($response)) return [];
 		$ticks = $this->chartData($symbol, $interval, $response);
 		return $ticks;
 	}
