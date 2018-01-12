@@ -73,12 +73,16 @@ class CandlestickNodeRepository extends BaseRepository implements RepositoryInte
 		if ($end_time == null) $end_time = time() + $interval * 60;
 		if ($start_time == null) $start_time = $end_time - ($interval * 60 * (CandlestickNodeRepository::CANDLESTICK_TICKS + 1));
 
-		$res = \DB::table('candlestick_nodes')->whereBetween('close_time', [$start_time, $end_time])
+		$res = \DB::table('candlestick_nodes')/*->whereBetween('close_time', [$start_time, $end_time])*/
+			->where('close_time', '>', $start_time)
+			->where('open_time', '<=', $end_time)
 			->where([
 				'interval' => $this->getIntervalId($interval),
 				'valuta_pair_id' => $market->id
 			])->limit(500)->orderBy('close_time', 'ASC')->get()->all();
-		return (!$full_period || count($res) >= CandlestickNodeRepository::CANDLESTICK_TICKS) ? $res : [];
+
+		$minCount = $full_period ? count($res) : floor(($end_time - $start_time) / ($interval * 60));
+		return ($minCount <= CandlestickNodeRepository::CANDLESTICK_TICKS) ? $res : [];
 	}
 
 	public function getIntervalId($interval)

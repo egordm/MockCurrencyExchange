@@ -54,6 +54,7 @@ class BinanceAPI
 		$nodes = $this->candleRepo->getNodes($market, $interval_time, $start_time, $end_time);
 
 		if (empty($nodes) || count($nodes) == 1) {
+			$nodes = [];
 			$interval_id = $this->candleRepo->getIntervalId($interval_time);
 			$ticks = $this->requestCandlesticks($market->external_symbol->symbol, $interval, $start_time, $end_time);
 			if(!empty($ticks)) {
