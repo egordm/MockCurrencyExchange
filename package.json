@@ -34,11 +34,13 @@
     "prop-types": "^15.6.0",
     "react-addons-update": "^15.6.2",
     "react-redux": "^5.0.6",
+    "react-refetch": "^1.0.4",
     "react-stockcharts": "^0.7.0-beta.22",
     "redux": "^3.7.2",
     "redux-axios-middleware": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^5.0.0",
+    "redux-saga": "^0.16.0",
     "redux-sequence-action": "^0.2.1",
     "redux-thunk": "^2.2.0"
   }
