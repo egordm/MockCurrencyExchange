@@ -40,5 +40,7 @@ Route::group(['prefix' => 'markets'], function () {
 	Route::get('/', 'MarketController@index')->name('markets');
 	Route::get('/{market}', 'MarketController@view')->name('markets.view');
 	Route::get('/{market}/depth', 'MarketController@depth')->name('markets.depth');
+	Route::get('/{market}/history', 'MarketController@history')->name('markets.history');
 	Route::get('/{market}/candlesticks', 'MarketController@candlesticks')->name('markets.candlesticks');
+	Route::get('/{market}/poll', 'MarketController@poll')->name('markets.poll');
 });

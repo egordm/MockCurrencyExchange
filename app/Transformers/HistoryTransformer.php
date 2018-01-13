@@ -2,17 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: egordm
- * Date: 10-12-2017
- * Time: 00:25
+ * Date: 13-1-2018
+ * Time: 23:38
  */
 
 namespace App\Transformers;
 
-
-use App\Models\Order;
 use League\Fractal\TransformerAbstract;
 
-class DepthOrderTransformer extends TransformerAbstract
+class HistoryTransformer extends TransformerAbstract
 {
 	/**
 	 * Transform the Order entity
@@ -23,8 +21,10 @@ class DepthOrderTransformer extends TransformerAbstract
 	public function transform($model)
 	{
 		return [
-			'price' => $model['price'],
-			'quantity' => $model['quantity']
+			'buy' => (bool)$model['buy'],
+			'price' => (double)$model['price'],
+			'quantity' => (double)$model['quantity'],
+			'time' => $model['updated_at']->timestamp
 		];
 	}
 }
