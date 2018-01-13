@@ -5,7 +5,10 @@ namespace App\Repositories;
 use App\Models\Balance;
 use App\Models\Order;
 use App\Models\OrderFill;
+use App\Models\ValutaPair;
+use App\Repositories\Criteria\ActiveOrderCriteria;
 use App\Repositories\Criteria\AvailableFillOrdersCriteria;
+use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\Presenters\OrderPresenter;
 use App\User;
 use App\Validators\OrderValidator;
@@ -97,7 +100,7 @@ class OrderRepository extends AdvancedRepository
 				$available_qty = $available_fill->quantity - $available_fill->getFilledQuantity(); // Calculate quantity left to fill for the filler
 				$quantity_to_fill = $order->quantity - $filled_qty; // Calculate quantity left to fill for the order
 				$fill_qty = max(0, min($available_qty, $quantity_to_fill)); // Calculate quantity we will fill. Smallest of the upper 2
-				if($fill_qty <= 0) continue;
+				if ($fill_qty <= 0) continue;
 
 				OrderFill::create([
 					'order_primary_id' => $order->buy ? $available_fill->id : $order->id, // Seller fills buyer
@@ -116,8 +119,9 @@ class OrderRepository extends AdvancedRepository
 		return $order;
 	}
 
-	private function updateStatus(Order $order) {
-		if($order->status == Order::STATUS_OPEN && $order->quantity <= $order->getFilledQuantity()) {
+	private function updateStatus(Order $order)
+	{
+		if ($order->status == Order::STATUS_OPEN && $order->quantity <= $order->getFilledQuantity()) {
 			$this->closeOrder($order);
 		}
 	}
@@ -130,7 +134,7 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function closeOrder(Order $order)
 	{
-		if($order->status != Order::STATUS_OPEN) throw new \Exception('Order is already closed');
+		if ($order->status != Order::STATUS_OPEN) throw new \Exception('Order is already closed');
 		$cancel = $order->quantity > $order->getFilledQuantity();
 		$order->status = $cancel ? Order::STATUS_CANCELLED : Order::STATUS_FILLED;
 		$order->save();
@@ -159,7 +163,39 @@ class OrderRepository extends AdvancedRepository
 	public function getOrder(User $user, int $id)
 	{
 		$ret = $this->with(['valuta_pair'])->findWhere(['orders.user_id' => $user->id, 'orders.id' => $id])->first();
-		if(empty($ret)) throw new ResourceNotFoundException();
+		if (empty($ret)) throw new ResourceNotFoundException();
 		return $ret;
+	}
+
+	/**
+	 * @param ValutaPair $market
+	 * @return Order[]
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
+	public function getOpenOrders($market)
+	{
+		$this->pushCriteria(FilledQuantityCriteria::class);
+		$this->pushCriteria(ActiveOrderCriteria::class);
+		$ret = $this->findWhere(['orders.valuta_pair_id' => $market->id], ['id', 'quantity', 'price', 'buy'])->groupBy('buy');
+		$this->clearCriteria();
+		return $ret;
+	}
+
+	/**
+	 * @param $market
+	 * @param int $limit
+	 * @param null $start_time
+	 * @param null $end_time
+	 * @return mixed
+	 */
+	public function getHistory($market, $limit = 60, $start_time = null, $end_time = null)
+	{
+		return $this->model->where(['orders.valuta_pair_id' => $market->id, 'orders.status' => Order::STATUS_FILLED])
+			->when(!empty($start_time), function ($query) use ($start_time) {
+				return $query->where('updated_at', '>', $start_time);
+			})->when(!empty($end_time), function ($query) use ($end_time) {
+				return $query->where('updated_at', '<=', $end_time);
+			})
+			->orderBy('updated_at', 'DESC')->limit($limit)->get();
 	}
 }
