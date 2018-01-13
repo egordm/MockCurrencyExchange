@@ -4,7 +4,7 @@ import {POLL_DATA_STOP, SET_INTERVAL} from "../constants/ChartActionTypes";
 import {pollInterval} from "../constants/ChartSettings";
 import {pollData as pollDataAction} from '../actions/ChartActions';
 
-const dataFetchParams = (state) => [state.charting.market, state.charting.interval, state.charting.last_updated];
+const dataFetchParams = (state) => [state.market_data.market, state.market_data.interval, state.market_data.last_updated];
 
 function* pollData() {
 	const params = yield select(dataFetchParams);

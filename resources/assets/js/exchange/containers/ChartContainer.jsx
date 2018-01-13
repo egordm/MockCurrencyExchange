@@ -8,7 +8,9 @@ import ChartWidget from "../components/ChartWidget";
 import ChartSettings from "../components/ChartSettings";
 import {chartSettingHeight} from "../constants/ChartStyles";
 
-@connect((store) => store.charting, (dispatch) => {
+@connect((store) => {
+	return {...store.charting, ...store.market_data};
+}, (dispatch) => {
 	return {
 		pollData: bindActionCreators(ChartActions.pollData, dispatch),
 	};
@@ -17,10 +19,6 @@ export default class ChartContainer extends Component {
 	static propTypes = {
 		index: PropTypes.number.isRequired,
 	};
-
-	/*componentDidMount() {
-		//if (!this.props.data) this.props.pollData(this.props.market, this.props.interval);
-	}*/
 
 	shouldComponentUpdate(nextProps) {
 		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data

@@ -9,9 +9,6 @@ import {defaultInterval} from "../constants/ChartSettings";
 const initialState = {
 	width: 100,
 	height: 100,
-	market: 'USD_BTC',
-	interval: defaultInterval, // TODO: move interval into charts since we can stack charts
-	last_updated: null,
 	charts: [
 		{
 			type: ChartTypes.CANDLESTICK,
@@ -29,16 +26,10 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-	console.log(action);
-	let data, last_updated;
 	switch (action.type) {
 		case CHART_RESIZE:
 			const {width, height} = action.payload;
 			return {...state, width, height};
-		case POLL_DATA_SUCCESS:
-			data = mergeCandles(state.data, processCandles(action.payload.data.data));
-			last_updated = data[data.length - 1].open_time; // TODO: there might be an empty array which would be terrible
-			return {...state, data: data, last_updated};
 		case ADD_INDICATOR:
 			return update(state, {
 				charts: {
@@ -47,8 +38,6 @@ export default function (state = initialState, action) {
 					}
 				}
 			});
-		case SET_INTERVAL:
-			return {...state, interval: action.payload};
 		default:
 			return state;
 	}

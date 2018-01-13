@@ -15,21 +15,15 @@ export function addIndicator(type, index) {
 }
 
 export function setInterval(interval) {
-	return [
-		(dispatch, getState) => {
-			const market = getState().charting.market;
-			dispatch(pollData(market, interval))
-		},
-		{
-			type: SET_INTERVAL,
-			payload: interval
-		}
-	]
+	return {
+		type: SET_INTERVAL,
+		payload: interval
+	}
 }
 
 export function pollData(market, interval, last_updated) {
 	let url = `/markets/${market}/candlesticks?interval=${interval.value}`;
-	if(last_updated) {
+	if (last_updated) {
 		const end_time = parseInt(new Date().getTime() / 1000, 10);
 		url += `&start_time=${last_updated}&end_time=${end_time}`
 	}
