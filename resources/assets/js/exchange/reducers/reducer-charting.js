@@ -3,8 +3,6 @@ import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
 import {createIndicator, LinearIndicator} from '../presenters/IndicatorPresenter';
 import update from 'react-addons-update';
-import {processCandles, mergeCandles} from "../utils/DataProcessing";
-import {defaultInterval} from "../constants/ChartSettings";
 
 const initialState = {
 	width: 100,

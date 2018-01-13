@@ -1,19 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {bindActionCreators} from "redux";
 
-import * as ChartActions from "../actions/ChartActions";
 import ChartWidget from "../components/ChartWidget";
 import ChartSettings from "../components/ChartSettings";
 import {chartSettingHeight} from "../constants/ChartStyles";
 
 @connect((store) => {
 	return {...store.charting, ...store.market_data};
-}, (dispatch) => {
-	return {
-		pollData: bindActionCreators(ChartActions.pollData, dispatch),
-	};
 })
 export default class ChartContainer extends Component {
 	static propTypes = {

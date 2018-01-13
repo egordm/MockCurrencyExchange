@@ -2,6 +2,30 @@ export const CHART_RESIZE = 'CHART_RESIZE';
 export const ADD_INDICATOR = 'ADD_INDICATOR';
 export const SET_INTERVAL = 'SET_INTERVAL';
 export const SET_MARKET = 'SET_MARKET';
+
 export const POLL_DATA = 'POLL_DATA';
 export const POLL_DATA_SUCCESS = 'POLL_DATA_SUCCESS';
 export const POLL_DATA_STOP = 'POLL_DATA_STOP';
+
+export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
+export const LOGOUT = 'LOGOUT';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+
+export const GET_BALANCE = 'GET_BALANCE';
+export const GET_BALANCE_SUCCESS = 'GET_BALANCE_SUCCESS';
+
+export const GET_ORDERS = 'GET_ORDERS';
+export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';
+
+export const CREATE_ORDER = 'CREATE_ORDER';
+export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
+
+export const CANCEL_ORDER = 'CANCEL_ORDER';
+export const CANCEL_ORDER_SUCCESS = 'CANCEL_ORDER_SUCCESS';
+
+export const GET_MARKETS = 'GET_MARKETS';
+export const GET_MARKETS_SUCCESS = 'GET_MARKETS_SUCCESS';
+
+

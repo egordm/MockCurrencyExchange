@@ -18,7 +18,6 @@ import Exchange from './containers/Exchange';
 import pollSaga from './sagas/saga-poll-exchange';
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
-	baseURL: '/api',
 	responseType: 'json'
 });
 

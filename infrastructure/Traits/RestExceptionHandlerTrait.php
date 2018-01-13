@@ -39,7 +39,8 @@ trait RestExceptionHandlerTrait
 
 	protected function validationException($exception)
 	{
-		return $this->jsonException($exception->getMessageBag(), 400);
+		$errors = method_exists($exception,'errors') ? $exception->errors() : $exception->getMessageBag();
+		return $this->jsonException($errors, 400);
 	}
 
 	protected function notFoundExeption($exception)
