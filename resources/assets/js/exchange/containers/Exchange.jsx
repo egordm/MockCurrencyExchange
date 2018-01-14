@@ -4,6 +4,8 @@ import Navbar from './Navbar';
 import OrderHistory from "./OrderHistory";
 import OpenOrders from "./OpenOrders";
 import ChartPanel from "./ChartPanel";
+import TradePanel from "./TradePanel";
+import TradeWidget from "../components/TradeWidget";
 
 export default class Exchange extends Component {
 	render() {
@@ -22,7 +24,7 @@ export default class Exchange extends Component {
 						<OrderHistory/>
 					</div>
 					<div className="trade-panel">
-
+						<TradePanel/>
 					</div>
 				</div>
 			</div>

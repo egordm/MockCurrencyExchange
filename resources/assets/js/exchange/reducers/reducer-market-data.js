@@ -10,6 +10,7 @@ const initialState = {
 	last_polled: null,
 	logged_in: false,
 	market: 'USD_BTC',
+	market_id: 1,
 
 	// Market data
 	interval: defaultInterval,
