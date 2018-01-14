@@ -19,7 +19,7 @@ Route::post('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');
-Route::get('/register', 'AuthController @register')->name('register');
+Route::get('/create', 'AuthController@create')->name('create');
 
 Route::get('/test', function () {
 	return Response::download(public_path('downloads/BTCUSDT_15m_1513316700_1514397599.csv'));
