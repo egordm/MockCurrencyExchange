@@ -42,9 +42,21 @@
                 <li class="nav-item">
                     <a href="#about" class="nav-link">About</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#login{{--{{route('login')}}--}}" class="nav-link">Account</a>
-                </li>
+                @if (Auth::check())
+                    <li class="nav-item">
+                        <a href="#account{{--{{route('account')}}--}}" class="nav-link">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link">Logout</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/register"class="nav-link">Register</a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{route('exchange')}}" class="btn btn-primary btn-round">Exchange</a>
                 </li>
@@ -55,7 +67,7 @@
 
 @yield('header')
 
-<div class="main root">
+<section class="section section-gray text-center">
     <h1>Register</h1>
 
     <form method="POST" action="/register">
@@ -84,7 +96,7 @@
             <button type="submit" class="btn btn-primary">Register</button>
         </div>
     </form>
-</div>
+</section>
 
 <footer class="footer section-dark">
     <div class="container">

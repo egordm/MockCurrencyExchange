@@ -49,4 +49,10 @@ class AuthController extends Controller
     {
         return view('register');
     }
+
+    public function destroy()
+    {
+        auth()->logout();
+        return redirect()->home();
+    }
 }
