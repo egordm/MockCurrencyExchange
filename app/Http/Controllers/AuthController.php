@@ -32,15 +32,21 @@ class AuthController extends Controller
 		else  return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
 	}
 
-	public function register(RegisterRequest $request, UserRepository $userRepository)
-	{
-		/*event(new Registered($user = $userRepository->create($request->all())));
+    public function register(RegisterRequest $request, UserRepository $userRepository)
+    {
 
-		$this->guard()->login($user);
 
-		if ($request->acceptsJson()) return ['success' => true];
-		else return $this->registered($request, $user) ?: redirect($this->redirectPath());*/
+        event(new Registered($user = $userRepository->create($request->all())));
 
-		return view('register');
-	}
+        $this->guard()->login($user);
+
+        if ($request->acceptsJson()) return view('thanks');
+        else return $this->registered($request, $user) ?: redirect($this->redirectPath());
+
+    }
+
+    public function create()
+    {
+        return view('register');
+    }
 }
