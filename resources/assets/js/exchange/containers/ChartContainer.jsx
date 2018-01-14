@@ -7,7 +7,12 @@ import ChartSettings from "../components/ChartSettings";
 import {chartSettingHeight} from "../constants/ChartStyles";
 
 @connect((store) => {
-	return {...store.charting, ...store.market_data};
+	return {
+		width: store.charting.width,
+		height: store.charting.height,
+		charts: store.charting.charts,
+		candles: store.market_data.candles,
+	};
 })
 export default class ChartContainer extends Component {
 	static propTypes = {
@@ -15,17 +20,17 @@ export default class ChartContainer extends Component {
 	};
 
 	shouldComponentUpdate(nextProps) {
-		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.data !== nextProps.data
+		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.candles !== nextProps.candles
 			|| this.getChartSettings() !== nextProps.charts[this.props.index];
 	}
 
 	getChartSettings = () => this.props.charts[this.props.index];
 
 	renderChart = () => {
-		if (!this.props.data) return <p>Loading...</p>;
+		if (!this.props.candles) return <p>Loading...</p>;
 		return <ChartWidget index={this.props.index} ref={(el) => { this.chartComponent = el;}}
 		                    width={this.props.width} height={this.props.height - chartSettingHeight}
-		                    data={this.props.data}
+		                    data={this.props.candles}
 		                    settings={this.getChartSettings()}/>;
 	};
 

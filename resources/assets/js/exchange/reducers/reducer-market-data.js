@@ -4,30 +4,37 @@ import {
 	SET_MARKET
 } from "../constants/ChartActionTypes";
 import {defaultInterval} from "../constants/ChartSettings";
-import {mergeBalance, mergeCandles, mergeMarkets, mergeOrders, processCandles} from "../utils/DataProcessing";
+import {mergeBalance, mergeCandles, mergeHistory, mergeMarkets, mergeOrders, processCandles} from "../utils/DataProcessing";
 
 const initialState = {
-	market: 'USD_BTC',
-	interval: defaultInterval,
 	last_polled: null,
-
 	logged_in: false,
-	balance: [],
-	orders: [],
-	markets: []
+	market: 'USD_BTC',
+
+	// Market data
+	interval: defaultInterval,
+	candles: null,
+	depth: null,
+	history: null,
+
+	// Global Data
+	balance: null,
+	orders: null,
+	markets: null
 };
 
 export default function (state = initialState, action) {
-	console.log(action);
 	switch (action.type) {
 		case SET_MARKET:
 			return {...state, data: null, last_polled: null, market: action.payload};
 		case SET_INTERVAL:
 			return {...state, data: null, last_polled: null, interval: action.payload};
 		case POLL_DATA_SUCCESS:
-			const data = mergeCandles(state.data, processCandles(action.payload.data.data));
-			const last_polled = data.length !== 0 ? data[data.length - 1].open_time : state.last_polled;
-			return {...state, data, last_polled};
+			const candles = mergeCandles(state.candles, processCandles(action.payload.data.data.candles));
+			const depth = action.payload.data.data.depth;
+			const history = mergeHistory(state.history, action.payload.data.data.history);
+			const last_polled = candles.length !== 0 ? candles[candles.length - 1].open_time : state.last_polled;
+			return {...state, candles, depth, history, last_polled};
 		case LOGIN_SUCCESS:
 			return {...state, logged_in: true};
 		case LOGOUT_SUCCESS:
