@@ -34,11 +34,13 @@ class AuthController extends Controller
 
 	public function register(RegisterRequest $request, UserRepository $userRepository)
 	{
-		event(new Registered($user = $userRepository->create($request->all())));
+		/*event(new Registered($user = $userRepository->create($request->all())));
 
 		$this->guard()->login($user);
 
 		if ($request->acceptsJson()) return ['success' => true];
-		else return $this->registered($request, $user) ?: redirect($this->redirectPath());
+		else return $this->registered($request, $user) ?: redirect($this->redirectPath());*/
+
+		return view('register');
 	}
 }
