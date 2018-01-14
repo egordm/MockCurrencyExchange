@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         $this->guard()->login($user);
 
-        if ($request->acceptsJson()) return view('thanks');
+        if ($request->acceptsJson()) return redirect('/');
         else return $this->registered($request, $user) ?: redirect($this->redirectPath());
 
     }
