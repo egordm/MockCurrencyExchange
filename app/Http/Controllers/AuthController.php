@@ -28,9 +28,20 @@ class AuthController extends Controller
 		$request->session()->regenerate();
 		$this->clearLoginAttempts($request);
 
+        if (! auth()->attempt(request(['email', 'password'])))
+        {
+            return back() ->withErrors([
+                'message' => 'no correct'
+            ]);
+        }
+
 		if ($request->acceptsJson()) return ['success' => true];
 		else  return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
 	}
+
+	public function login(){
+	    return view('login');
+    }
 
     public function register(RegisterRequest $request, UserRepository $userRepository)
     {

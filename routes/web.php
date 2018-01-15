@@ -12,7 +12,7 @@
 */
 //Auth::routes();
 
-Route::post('/login', 'AuthController@login')->name('login');
+Route::post('/login', 'AuthController@sendLoginResponse')->name('login');
 Route::post('/register', 'AuthController@register')->name('register1');
 
 Route::get('/', 'MainController@index')->name('home');
