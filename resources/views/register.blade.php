@@ -1,122 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.default')
 
-    <title>{{config('branding.title')}} - @yield('title')</title>
-    <meta name="description" content="@yield('meta_description')">
-    <meta name="keywords" content="@yield('meta_keywords')">
+@section('content')
+    <section class="section section-gray text-center">
+        <h1>Register</h1>
+        <form method="POST" action="/register">
+            {{csrf_field()}}
 
-    <!-- Style -->
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-
-    <!-- Javascript -->
-    <script src="{{ asset('/js/manifest.js') }}"></script>
-    <script src="{{ asset('/js/vendor.js') }}"></script>
-
-    <script>
-        window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>;
-    </script>
-</head>
-<body>
-<nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="500">
-    <div class="container">
-        <div class="navbar-translate">
-            <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse"
-                    data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-bar"></span>
-                <span class="navbar-toggler-bar"></span>
-                <span class="navbar-toggler-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{route('home')}}">{{config('branding.title')}}</a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="{{route('home')}}" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
-                </li>
-                @if (Auth::check())
-                    <li class="nav-item">
-                        <a href="#account{{--{{route('account')}}--}}" class="nav-link">Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/logout" class="nav-link">Logout</a>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a href="/login" class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/register"class="nav-link">Register</a>
-                    </li>
-                @endif
-                <li class="nav-item">
-                    <a href="{{route('exchange')}}" class="btn btn-primary btn-round">Exchange</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-@yield('header')
-
-<section class="section section-gray text-center">
-    <h1>Register</h1>
-
-    <form method="POST" action="/register">
-        {{csrf_field()}}
-
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-
-        <div class="form-group">
-            <label for="password_confirmation">Password Confirmation:</label>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Register</button>
-        </div>
-    </form>
-</section>
-
-<footer class="footer section-dark">
-    <div class="container">
-        <div class="row">
-            <nav class="footer-nav">
-                <ul>
-                    <li><a href="{{route('home')}}">Home</a></li>
-                    <li><a href="{{route('exchange')}}">Exchange</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </nav>
-            <div class="credits ml-auto">
-					<span class="copyright">
-						© <script>document.write(new Date().getFullYear())</script>, C-MEX
-					</span>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
-        </div>
-    </div>
-</footer>
 
-<script src="{{ asset('/js/app.js') }}"></script>
-</body>
-</html>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirmation">Password Confirmation:</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                       required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </section>
+@endsection

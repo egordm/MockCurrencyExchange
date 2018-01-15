@@ -26,8 +26,8 @@
 	<div class="container">
 		<div class="navbar-translate">
 			<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse"
-			        data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
-			        aria-label="Toggle navigation">
+					data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
+					aria-label="Toggle navigation">
 				<span class="navbar-toggler-bar"></span>
 				<span class="navbar-toggler-bar"></span>
 				<span class="navbar-toggler-bar"></span>
@@ -42,9 +42,21 @@
 				<li class="nav-item">
 					<a href="#about" class="nav-link">About</a>
 				</li>
-				<li class="nav-item">
-					<a href="#login{{--{{route('login')}}--}}" class="nav-link">Account</a>
-				</li>
+				@if (Auth::check())
+					<li class="nav-item">
+						<a href="#account{{--{{route('account')}}--}}" class="nav-link">Account</a>
+					</li>
+					<li class="nav-item">
+						<a href="/logout" class="nav-link">Logout</a>
+					</li>
+				@else
+					<li class="nav-item">
+						<a href="/login" class="nav-link">Login</a>
+					</li>
+					<li class="nav-item">
+						<a href="/register"class="nav-link">Register</a>
+					</li>
+				@endif
 				<li class="nav-item">
 					<a href="{{route('exchange')}}" class="btn btn-primary btn-round">Exchange</a>
 				</li>
