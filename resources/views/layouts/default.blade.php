@@ -44,7 +44,7 @@
 				</li>
 				@if (Auth::check())
 					<li class="nav-item">
-						<a href="#account{{--{{route('account')}}--}}" class="nav-link">Account</a>
+						<a href="/account{{--{{route('account')}}--}}" class="nav-link">Account</a>
 					</li>
 					<li class="nav-item">
 						<a href="/logout" class="nav-link">Logout</a>

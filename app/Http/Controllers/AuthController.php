@@ -23,7 +23,7 @@ class AuthController extends Controller
 		AuthenticatesUsers::redirectPath insteadof RegistersUsers;
 	}
 
-	public function sendLoginResponse(Request $request)
+	public function postLogin(Request $request)
 	{
 		$request->session()->regenerate();
 		$this->clearLoginAttempts($request);
@@ -36,6 +36,8 @@ class AuthController extends Controller
         }
 
 		if ($request->acceptsJson()) return ['success' => true];
+
+
 		else  return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
 	}
 
@@ -43,7 +45,7 @@ class AuthController extends Controller
 	    return view('login');
     }
 
-    public function register(RegisterRequest $request, UserRepository $userRepository)
+    public function postRegister(RegisterRequest $request, UserRepository $userRepository)
     {
 
 
@@ -51,7 +53,7 @@ class AuthController extends Controller
 
         $this->guard()->login($user);
 
-        if ($request->acceptsJson()) return redirect('/');
+        if ($request->acceptsJson()) return ['success' => true];
         else return $this->registered($request, $user) ?: redirect($this->redirectPath());
 
     }
