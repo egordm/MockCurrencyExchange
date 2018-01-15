@@ -19,6 +19,7 @@ $font-family-sans-serif: 'Roboto', sans-serif;
 @import "components/chart";
 @import "components/exchange-chart";
 @import "components/exchange-navbar";
+@import "components/exchange-loader";
 
 // Layout
 @import "layout/exchange-panels";
