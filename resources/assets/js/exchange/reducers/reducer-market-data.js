@@ -9,8 +9,7 @@ import {mergeBalance, mergeCandles, mergeHistory, mergeMarkets, mergeOrders, pro
 const initialState = {
 	last_polled: null,
 	logged_in: false,
-	market: 'USD_BTC',
-	market_id: 1,
+	market: {symbol: 'USD_BTC', id: 1},
 
 	// Market data
 	interval: defaultInterval,
@@ -27,7 +26,7 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case SET_MARKET:
-			return {...state, data: null, last_polled: null, market: action.payload};
+			return {...state, data: null, last_polled: null, history: null, depth: null, candles: null, market: action.payload};
 		case SET_INTERVAL:
 			return {...state, data: null, last_polled: null, interval: action.payload};
 		case POLL_DATA_SUCCESS:

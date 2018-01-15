@@ -130,9 +130,10 @@
 }
 
 .price-bar {
+  background-color: $exchange-light-bg;
+
   @extend .bright;
   th {
-
 	font-size: $spacing * 2.5;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;

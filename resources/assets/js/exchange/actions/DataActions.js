@@ -1,7 +1,7 @@
 import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, POLL_DATA} from "../constants/ChartActionTypes";
 
 export function pollData(market, interval, last_polled) {
-	let url = `/api/markets/${market}/poll?interval=${interval.value}`;
+	let url = `/api/markets/${market.symbol}/poll?interval=${interval.value}`;
 	if (last_polled) {
 		const end_time = parseInt(new Date().getTime() / 1000, 10);
 		url += `&start_time=${last_polled}&end_time=${end_time}`

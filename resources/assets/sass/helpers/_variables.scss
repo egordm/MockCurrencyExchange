@@ -7,12 +7,14 @@ $dark-light-color: #0e1416;
 // Typography
 //$dark-gray: #333;
 $font-color: #333;
+$font-light-color: white;
 
 
 // Exchange
 $exchange-bg: /*$dark-color;*/#202226;
 $exchange-panel-bg: lighten($exchange-bg, 3%);
 $exchange-light-bg: lighten($exchange-bg, 7%);
+$exchange-nav-bg: darken($exchange-bg, 3%);
 $exchange-text-color: white;
 
 $buy-color: #8ec919;
@@ -21,7 +23,7 @@ $sell-color: #ff007a;
 $exchange-sidebar-width: 500px;
 $exchange-trade-panel-height: 256px;
 $exchange-nav-height: 48px;
-
+$exchange-market-width: 254px;
 
 $spacing: 8px;
 

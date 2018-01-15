@@ -27,7 +27,7 @@ export default class ChartContainer extends Component {
 	getChartSettings = () => this.props.charts[this.props.index];
 
 	renderChart = () => {
-		if (!this.props.candles) return <p>Loading...</p>;
+		if (!this.props.candles || this.props.candles.length === 0) return <p>Loading...</p>;
 		return <ChartWidget index={this.props.index} ref={(el) => { this.chartComponent = el;}}
 		                    width={this.props.width} height={this.props.height - chartSettingHeight}
 		                    data={this.props.candles}
