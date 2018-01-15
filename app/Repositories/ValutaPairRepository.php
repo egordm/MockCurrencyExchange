@@ -42,7 +42,7 @@ class ValutaPairRepository extends PresentableRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function all_display() {
+    public function allDisplay() {
     	return $this->with(['valuta_primary', 'valuta_secondary'])->all();
     }
 

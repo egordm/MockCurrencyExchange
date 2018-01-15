@@ -21,8 +21,11 @@ class ValutaPairTransformer extends TransformerAbstract
 	 */
 	public function transform(ValutaPair $model)
 	{
+		$last_order = $model->history()->limit(1)->get()->first();
+		$price = !empty($last_order) ? (int)$last_order->price : null;
 		return [
 			'id' => (int)$model->id,
+			'price' => $price
 		];
 	}
 
