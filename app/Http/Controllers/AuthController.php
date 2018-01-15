@@ -23,7 +23,7 @@ class AuthController extends Controller
 		AuthenticatesUsers::redirectPath insteadof RegistersUsers;
 	}
 
-	public function sendLoginResponse(Request $request)
+	public function postLogin(Request $request)
 	{
 		$request->session()->regenerate();
 		$this->clearLoginAttempts($request);

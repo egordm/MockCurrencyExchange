@@ -21,6 +21,7 @@ Route::get('/exchange', 'MainController@exchange')->name('exchange');
 Route::get('/register', 'AuthController@create')->name('register');
 Route::get('/logout', 'AuthController@destroy')->name('logout');
 Route::get('/login', 'AuthController@login')->name('login');
+Route::get('/account', 'AccountController@overview')->name('account');
 
 
 Route::get('/test', function () {
