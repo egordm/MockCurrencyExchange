@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {format} from "d3-format";
 import * as DataActions from "../actions/DataActions";
 import * as ExchangeAction from "../actions/ExchangeActions";
 
@@ -25,7 +26,7 @@ export default class MarketSelector extends Component {
 		const identifier = `${market.valuta_primary.symbol}_${market.valuta_secondary.symbol}`;
 		return <tr key={identifier} onClick={() => this.props.setMarket(market.id, identifier)}>
 			<td>{identifier.replace('_', '/')}</td>
-			<td>13299.00</td>
+			<td>{market.price ? format("(.2f")(market.price) : '-'}</td>
 		</tr>
 	};
 
