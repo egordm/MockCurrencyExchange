@@ -46,7 +46,7 @@ class MarketController extends APIController
 
 	public function index()
 	{
-		return $this->present($this->repository->all_display());
+		return $this->present($this->repository->allDisplay());
 	}
 
 	protected function getMarket($with = []) {
