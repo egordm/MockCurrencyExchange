@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
-    public function overview()
+    public function show()
     {
         return view('/account');
     }
@@ -43,7 +43,7 @@ class AccountController extends Controller
 
             //Change Password
             $user = Auth::user();
-            $user->password = bcrypt($request->get('new-password'));
+            $user->password = ($request->get('new-password'));
             $user->save();
             return ['success' => true];
         }
