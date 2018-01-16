@@ -24,9 +24,9 @@ export default class TradePanel extends Component {
 	};
 
 	render() {
-		return [
+		return <div className="trade-panel">
 			<TradeWidget key="buy" defaultPrice={999} submitCallback={this.onBuy} submitText="Buy"/>,
 			<TradeWidget key="sell" defaultPrice={999} submitCallback={this.onSell} submitText="Sell"/>
-		];
+		</div>;
 	}
 }
