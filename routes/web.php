@@ -21,8 +21,8 @@ Route::get('/exchange', 'MainController@exchange')->name('exchange');
 Route::get('/register', 'AuthController@create')->name('register');
 Route::get('/logout', 'AuthController@destroy')->name('logout');
 Route::get('/login', 'AuthController@login')->name('login');
-Route::get('/account', 'AccountController@overview')->name('account');
-
+Route::get('/account', 'AccountController@show')->name('account');
+Route::get('/portfolio', 'PortfolioController@show')->name('portfolio');
 
 Route::get('/test', function () {
 	return Response::download(public_path('downloads/BTCUSDT_15m_1513316700_1514397599.csv'));
