@@ -31,7 +31,7 @@ export default class MarketSelector extends Component {
 	};
 
 	render() {
-		return <div className="dropdown market-selector">
+		return <div className="dropdown dropdown-menu-right market-selector">
 			<button className="btn dropdown-toggle" type="button" id="market-selection" data-toggle="dropdown">{this.props.market.symbol.replace('_', '/')}</button>
 			<div className="dropdown-menu" aria-labelledby="market-selection">
 				<table>

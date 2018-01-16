@@ -1,29 +1,31 @@
 import React, {Component} from 'react';
 import MarketSelector from "./MarketSelector";
+import {connect} from "react-redux";
 
+@connect((store) => {
+	return {
+		logged_in: store.market_data.logged_in,
+	};
+})
 export default class Navbar extends Component {
 	render() {
-		return <nav>
-            <ul>
-                <li>
-                    <a className= "logo" href="https://crypto-mex.ml/" >
-						<img src="/images/logo.png" width="40" hight="40" alt="LOGO"></img>
-                    </a>
-                </li>
+		const navItems = this.props.logged_in ? [
+			<li className="nav-item"><a className="nav-link">Portfolio</a></li>,
+			<li className="nav-item"><a className="nav-link">Account</a></li>,
+			<li className="nav-item"><a className="nav-link">Logout</a></li>,
+		] : [
+			<li className="nav-item"><a className="nav-link login">Login</a></li>,
+			<li className="nav-item"><a className="nav-link">Register</a></li>,
+		];
 
-                <li><MarketSelector/></li>
-
-
-                <li><a href="url">Portfolio</a></li>
-                <li><a href="url">Trade History</a></li>
-                <li><a href="url">Wallet</a></li>
-                <li><a href="url">Account</a></li>
-                <li><a href="url">Settings</a></li>
-                <li><a href="url">Logout</a></li>
-
-                <li className="float-right"><a href="url">Register</a></li>
-                <li className="loginbutton"><a href="url">Login</a></li>
-            </ul>
-		</nav>;
+		return <nav className="navbar navbar-dark">
+			<a className="navbar-brand" href="https://crypto-mex.ml/">
+				<img className="logo" src="/images/logo.png" width="40" height="40" alt="C-MEX"/> Crypto-MEX
+			</a>
+			<ul className="navbar-nav ml-auto">
+				<li className="nav-item"><MarketSelector/></li>
+				{navItems}
+			</ul>
+		</nav>
 	}
 }
