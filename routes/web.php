@@ -14,7 +14,7 @@
 
 Route::post('/login', 'AuthController@postLogin')->name('login');
 Route::post('/register', 'AuthController@postRegister')->name('register1');
-Route::post('/account', 'AccountController@postChangeName')->name('changename');
+Route::post('/account', 'AccountController@postChange')->name('changename');
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');
