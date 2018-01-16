@@ -10,12 +10,12 @@ import {connect} from "react-redux";
 export default class Navbar extends Component {
 	render() {
 		const navItems = this.props.logged_in ? [
-			<li className="nav-item"><a className="nav-link">Portfolio</a></li>,
-			<li className="nav-item"><a className="nav-link">Account</a></li>,
-			<li className="nav-item"><a className="nav-link">Logout</a></li>,
+			<li key="portfolio" className="nav-item"><a className="nav-link">Portfolio</a></li>,
+			<li key="account" className="nav-item"><a className="nav-link">Account</a></li>,
+			<li key="logout" className="nav-item"><a className="nav-link">Logout</a></li>,
 		] : [
-			<li className="nav-item"><a className="nav-link login">Login</a></li>,
-			<li className="nav-item"><a className="nav-link">Register</a></li>,
+			<li key="login" className="nav-item"><a className="nav-link login">Login</a></li>,
+			<li key="register" className="nav-item"><a className="nav-link">Register</a></li>,
 		];
 
 		return <nav className="navbar navbar-dark">
