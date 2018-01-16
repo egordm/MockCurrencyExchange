@@ -48,13 +48,13 @@ export default class MyOrdersPanel extends Component {
 		const orders = this.props.orders ? this.props.orders : [];
 
 		return <div className="secondary-panel">
-			<div class="nav nav-tabs" id="nav-tab" role="tablist">
-				<a class="nav-item nav-link active" data-toggle="tab" href="#open-orders" role="tab" aria-selected="true">Open Orders</a>
-				<a class="nav-item nav-link" data-toggle="tab" href="#order-history" role="tab" aria-selected="false">Order History</a>
-				<a class="nav-item nav-link" data-toggle="tab" href="#balance" role="tab" aria-selected="false">Balance</a>
+			<div className="nav nav-tabs" id="nav-tab" role="tablist">
+				<a className="nav-item nav-link active" data-toggle="tab" href="#open-orders" role="tab" aria-selected="true">Open Orders</a>
+				<a className="nav-item nav-link" data-toggle="tab" href="#order-history" role="tab" aria-selected="false">Order History</a>
+				<a className="nav-item nav-link" data-toggle="tab" href="#balance" role="tab" aria-selected="false">Balance</a>
 			</div>
-			<div class="tab-content" id="nav-tabContent">
-				<div class="tab-pane fade show active" id="open-orders" role="tabpanel">
+			<div className="tab-content" id="nav-tabContent">
+				<div className="tab-pane fade show active" id="open-orders" role="tabpanel">
 					<table className="table order-table">
 						<tbody>
 						<tr>
@@ -73,11 +73,11 @@ export default class MyOrdersPanel extends Component {
 					<OrderList data={openOrders} dataFormatter={orderFormatter}
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
-				<div class="tab-pane fade" id="order-history" role="tabpanel">
+				<div className="tab-pane fade" id="order-history" role="tabpanel">
 					<OrderList data={orders} dataFormatter={orderFormatter}
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
-				<div class="tab-pane fade" id="balance" role="tabpanel">
+				<div className="tab-pane fade" id="balance" role="tabpanel">
 					<h1>Balance</h1>
 				</div>
 			</div>
