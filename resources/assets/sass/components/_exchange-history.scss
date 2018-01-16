@@ -1,0 +1,23 @@
+.secondary-panel {
+  .nav.nav-tabs {
+	background-color: $exchange-bg;
+	border: 0;
+
+	.nav-link {
+	  border: 0;
+	  border-radius: 0;
+	  padding: .2rem .6rem;
+	  font-size: .8rem;
+	  color: transparentize($exchange-text-color, 0.6);
+
+	   &.active {
+		 background-color: $exchange-panel-bg;
+		 color: $exchange-text-color;
+	   }
+	}
+  }
+
+  .tab-content {
+	padding: 0 1.5rem;
+  }
+}
