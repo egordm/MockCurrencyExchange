@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
 import MarketSelector from "./MarketSelector";
 import {connect} from "react-redux";
-
-<<<<<<< HEAD
 import Login from './Login';
 
-export default class Navbar extends Component {
-	render() {
-		return <nav><Login/></nav>;
-=======
+//TODO: is het merge-conflict opgelost?
+
 @connect((store) => {
 	return {
 		logged_in: store.market_data.logged_in,
@@ -21,7 +17,7 @@ export default class Navbar extends Component {
 			<li key="account" className="nav-item"><a className="nav-link">Account</a></li>,
 			<li key="logout" className="nav-item"><a className="nav-link">Logout</a></li>,
 		] : [
-			<li key="login" className="nav-item"><a className="nav-link login">Login</a></li>,
+			<li key="login" className="nav-item"><a className="nav-link login"><Login/></a></li>,
 			<li key="register" className="nav-item"><a className="nav-link">Register</a></li>,
 		];
 
@@ -34,6 +30,6 @@ export default class Navbar extends Component {
 				{navItems}
 			</ul>
 		</nav>
->>>>>>> 6e7f14fec9292a1937ef0ecee04e3366add274e8
+
 	}
 }
