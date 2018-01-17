@@ -1,0 +1,61 @@
+#wrap {
+	width: 560px;
+	height: 210px;
+	background-color: black;
+	border: 5px black solid;
+	border-radius: 5px;
+}
+.buy {
+	width: 240px;
+	height: 170px;
+	background-color: #444;
+	float: left;
+	/* border: 5px black solid; */
+}
+.sell {
+	width: 240px;
+	height: 170px;
+	background-color: #444;
+	float:right;
+	/* border: 5px black solid; */
+}
+	h3, h4, h5, h6 {
+	display: inline;
+	color: #ddd;
+}
+
+#form {
+	width: 238px;
+	padding: 20px;
+}
+#form label {
+	color: #777;
+}
+	.block {
+	display: block;
+}
+.money {
+	float: right;
+	display: inline;
+	width: 160px;
+}
+.submitpurchase {
+	background-color: #0d0;
+	color: #eee;
+	width: 238px;
+	height: 40px;
+	font-size: 1em;
+	border: 2px #0d0 solid;
+	border-radius: 5px;
+	font-weight: bold;
+}
+.submitsale {
+	background-color: red;
+	color: #eee;
+	width: 238px;
+	height: 40px;
+	font-size: 1em;
+	border: 2px red solid;
+	border-radius: 5px;
+	font-weight: bold;
+}
