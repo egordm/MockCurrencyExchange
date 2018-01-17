@@ -50,7 +50,7 @@
   }
 
   .trade-panel {
-	background-color: darkblue;
+	background-color: $exchange-panel-bg;
 	@include flex-basis($exchange-trade-panel-height);
 	@include flex-shrink(0);
   }

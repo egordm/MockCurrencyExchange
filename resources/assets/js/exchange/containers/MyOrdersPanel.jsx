@@ -53,7 +53,7 @@ export default class MyOrdersPanel extends Component {
 				<a className="nav-item nav-link" data-toggle="tab" href="#order-history" role="tab" aria-selected="false">Order History</a>
 				<a className="nav-item nav-link" data-toggle="tab" href="#balance" role="tab" aria-selected="false">Balance</a>
 			</div>
-			<div className="tab-content" id="nav-tabContent">
+			<div className="tab-content">
 				<div className="tab-pane fade show active" id="open-orders" role="tabpanel">
 					<table className="table order-table">
 						<tbody>

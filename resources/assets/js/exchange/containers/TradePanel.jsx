@@ -25,8 +25,15 @@ export default class TradePanel extends Component {
 
 	render() {
 		return <div className="trade-panel">
-			<TradeWidget key="buy" defaultPrice={999} submitCallback={this.onBuy} submitText="Buy"/>,
-			<TradeWidget key="sell" defaultPrice={999} submitCallback={this.onSell} submitText="Sell"/>
+			<div className="nav nav-tabs" id="nav-tab" role="tablist">
+				<a className="nav-item nav-link active" data-toggle="tab" href="#limit-order" role="tab" aria-selected="true">Limit Order</a>
+			</div>
+			<div className="tab-content">
+				<div className="tab-pane fade show active" id="limit-order" role="tabpanel">
+					<TradeWidget key="buy" type="buy" defaultPrice={999} submitCallback={this.onBuy} submitText="Buy"/>
+					<TradeWidget key="sell" type="sell" defaultPrice={999} submitCallback={this.onSell} submitText="Sell"/>
+				</div>
+			</div>
 		</div>;
 	}
 }

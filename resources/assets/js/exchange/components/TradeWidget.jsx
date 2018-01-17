@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from "prop-types";
+import {format} from "d3-format";
 
 export default class TradeWidget extends Component {
 	static propTypes = {
 		submitCallback: PropTypes.func.isRequired,
+		type: PropTypes.string.isRequired,
 		submitText: PropTypes.string,
 		defaultPrice: PropTypes.number,
-		availableQuantity: PropTypes.number,
+		availableQuantity: PropTypes.number
 	};
 
 	static defaultProps = {
@@ -18,7 +19,7 @@ export default class TradeWidget extends Component {
 
 	state = {
 		price: this.props.defaultPrice,
-		quantity: 0
+		quantity: null
 	};
 
 	handleSubmit = (e) => {
@@ -31,11 +32,46 @@ export default class TradeWidget extends Component {
 	};
 
 	render() {
-		return <form onSubmit={this.handleSubmit}>
-			<input type="text" name="price" value={this.state.price} onChange={this.handleChange}/>
-			<input type="text" name="quantity" value={this.state.quantity} onChange={this.handleChange}/>
-			<p>Total: {this.state.price * this.state.quantity}</p>
-			<button type="submit">{this.props.submitText}</button>
-		</form>;
+		const actionName = this.props.type.replace(/\b\w/g, l => l.toUpperCase());
+		return <div className="trade-widget" id="form">
+			<div className="row trade-header">
+				<div className="col-3">
+					<h4 className="title">{actionName} BTC</h4>
+				</div>
+				<div className="col-9">
+
+				</div>
+			</div>
+			<form onSubmit={this.handleSubmit}>
+				<div className="form-group row">
+					<label className="col-3 col-form-label" for={`price-${this.props.type}`}>Price:</label>
+					<div className="col-9 input-group">
+						<input type="text" id={`price-${this.props.type}`} name="price" class="form-control" placeholder="0.00" autocomplete="off"
+						       value={this.state.price} onChange={this.handleChange}/>
+						<div className="input-group-append">
+							<div className="input-group-text">USDT</div>
+						</div>
+					</div>
+				</div>
+				<div className="form-group row">
+					<label className="col-3 col-form-label" for={`amount-${this.props.type}`}>Amount:</label>
+					<div className="col-9 input-group">
+						<input type="text" id={`amount-${this.props.type}`} name="quantity" class="form-control" placeholder="0.00" autocomplete="off"
+						       value={this.state.quantity} onChange={this.handleChange}/>
+						<div className="input-group-append">
+							<div className="input-group-text">BTC</div>
+						</div>
+					</div>
+				</div>
+				<div className="form-group trade-total row">
+					<div className="col-3 col-form-label">Total:</div>
+					<div className="col-9 col-form-label display-label">{format("(.2f")(this.state.price * this.state.quantity)} USDT</div>
+				</div>
+
+				<button type="submit" className={`btn ${this.props.type}`}>{actionName}</button>
+			</form>
+		</div>;
+
 	}
 }
+
