@@ -30,31 +30,23 @@ export default class Login extends Component {
 	render() {
 		return <li key="login" className="nav-item">
 			<a className="nav-link login" data-toggle="modal" data-target="#myModal">Login</a>
-			<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div className="modal modal-login fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div className="modal-dialog">
 					<div className="modal-content">
 						<div className="modal-body">
 							<form onSubmit={this.handleSubmit}>
-								<label>
-									Email:
-									<input
-										name="Email"
-										type="text"
-										value={this.state.email}
-										onChange={this.handleInputChange}/>
-								</label>
-								<br/>
-								<label>
-									Password:
-									<input
-										name="Password"
-										type="password"
-										value={this.state.password}
-										onChange={this.handleInputChange}/>
-								</label>
-								<br/>
-								<input type="submit" value="Login"/>
+								<div class="form-group">
+									<input type="email" class="form-control" id="email" placeholder="Enter email" value={this.state.email}
+									       onChange={this.handleInputChange}/>
+								</div>
+								<div class="form-group">
+									<input type="password" class="form-control" id="email" placeholder="Password" value={this.state.password}
+									       onChange={this.handleInputChange}/>
+								</div>
+
+								<button type="submit" class="btn btn-primary">Login</button>
 							</form>
+							<small className="register-link">Or <a href="#">register</a>.</small>
 						</div>
 					</div>
 				</div>
