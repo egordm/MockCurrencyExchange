@@ -19,7 +19,7 @@ export default class TradeWidget extends Component {
 
 	state = {
 		price: this.props.defaultPrice,
-		quantity: null
+		quantity: undefined
 	};
 
 	handleSubmit = (e) => {
@@ -44,9 +44,9 @@ export default class TradeWidget extends Component {
 			</div>
 			<form onSubmit={this.handleSubmit}>
 				<div className="form-group row">
-					<label className="col-3 col-form-label" for={`price-${this.props.type}`}>Price:</label>
+					<label className="col-3 col-form-label" htmlFor={`price-${this.props.type}`}>Price:</label>
 					<div className="col-9 input-group">
-						<input type="text" id={`price-${this.props.type}`} name="price" class="form-control" placeholder="0.00" autocomplete="off"
+						<input type="text" id={`price-${this.props.type}`} name="price" className="form-control" placeholder="0.00" autoComplete="off"
 						       value={this.state.price} onChange={this.handleChange}/>
 						<div className="input-group-append">
 							<div className="input-group-text">USDT</div>
@@ -54,9 +54,9 @@ export default class TradeWidget extends Component {
 					</div>
 				</div>
 				<div className="form-group row">
-					<label className="col-3 col-form-label" for={`amount-${this.props.type}`}>Amount:</label>
+					<label className="col-3 col-form-label" htmlFor={`amount-${this.props.type}`}>Amount:</label>
 					<div className="col-9 input-group">
-						<input type="text" id={`amount-${this.props.type}`} name="quantity" class="form-control" placeholder="0.00" autocomplete="off"
+						<input type="text" id={`amount-${this.props.type}`} name="quantity" className="form-control" placeholder="0.00" autoComplete="off"
 						       value={this.state.quantity} onChange={this.handleChange}/>
 						<div className="input-group-append">
 							<div className="input-group-text">BTC</div>

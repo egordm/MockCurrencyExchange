@@ -13,7 +13,8 @@
 //Auth::routes();
 
 Route::post('/login', 'AuthController@login')->name('login');
-Route::post('/register', 'AuthController@register')->name('register');
+Route::post('/login', 'AuthController@login')->name('login');
+Route::post('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');

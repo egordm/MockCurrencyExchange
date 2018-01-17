@@ -1,6 +1,6 @@
 import {AREA, CANDLESTICK, HEIKIN_ASHI, KAGI, LINE, POINT_FIGURE, RENKO} from "./ChartTypes";
 
-export const chartSettingHeight = 26;
+export const chartSettingHeight = 34;
 
 export const chartMargin = {left: 30, right: 50, top: 0, bottom: 30};
 

@@ -13,6 +13,11 @@
   .modal-content {
     background-color: $exchange-panel-bg;
 
+    .title {
+      margin-bottom: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
     .form-control, .btn {
       width: 100%;
       border-radius: 0;
@@ -21,6 +26,7 @@
     .form-control {
       border: 0;
       background-color: $exchange-light-bg;
+      color: transparentize($font-light-color, 0.6);
     }
 
     .register-link {
