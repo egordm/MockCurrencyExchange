@@ -16,15 +16,15 @@ class DepthOrderTransformer extends TransformerAbstract
 {
 	/**
 	 * Transform the Order entity
-	 * @param Order $model
+	 * @param $model
 	 *
 	 * @return array
 	 */
-	public function transform(Order $model)
+	public function transform($model)
 	{
 		return [
-			'price' => $model->price,
-			'quantity' => $model->quantity
+			'price' => $model['price'],
+			'quantity' => $model['quantity']
 		];
 	}
 }

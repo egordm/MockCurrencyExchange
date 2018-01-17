@@ -15,6 +15,8 @@ use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderRepository;
 use App\Repositories\Presenters\CandleNodePresenter;
 use App\Repositories\Presenters\DepthPresenter;
+use App\Repositories\Presenters\HistoryPresenter;
+use App\Repositories\Presenters\PollDataPresenter;
 use App\Repositories\Presenters\ValutaPairPresenter;
 use App\Repositories\ValutaPairRepository;
 use Illuminate\Support\Facades\Input;
@@ -44,7 +46,7 @@ class MarketController extends APIController
 
 	public function index()
 	{
-		return $this->present($this->repository->all_display());
+		return $this->present($this->repository->allDisplay());
 	}
 
 	protected function getMarket($with = []) {
@@ -60,6 +62,22 @@ class MarketController extends APIController
 	}
 
 	/**
+	 * @param $market
+	 * @return mixed
+	 * @throws \Exception
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 */
+	public function history($market)
+	{
+		$start_time = Input::get('start_time', null);
+		$end_time = Input::get('end_time', null);
+		$orderRepository = \App::get(OrderRepository::class);
+		$orders = $orderRepository->getHistory($this->getMarket(), 60, $start_time, $end_time);
+		return (new HistoryPresenter())->present($orders);
+	}
+
+	/**
 	 * Get depth of the market. Basically current open orders
 	 * @link https://www.investopedia.com/terms/d/depth.asp
 	 * @param $market
@@ -71,9 +89,7 @@ class MarketController extends APIController
 	public function depth($market)
 	{
 		$orderRepository = \App::get(OrderRepository::class);
-		$orderRepository->pushCriteria(FilledQuantityCriteria::class);
-		$orderRepository->pushCriteria(ActiveOrderCriteria::class);
-		$orders = $orderRepository->findWhere(['orders.valuta_pair_id' => $this->getMarket()->id], ['id', 'quantity', 'price', 'buy'])->groupBy('buy');
+		$orders = $orderRepository->getOpenOrders($this->getMarket());
 		return (new DepthPresenter())->present($orders->all());
 	}
 
@@ -88,8 +104,40 @@ class MarketController extends APIController
 	public function candlesticks($market, BinanceAPI $bac)
 	{
 		$market = $this->getMarket(['external_symbol']);
-		$nodes = $bac->candlesticks($market, Input::get('interval', '15m'),
-			Input::get('start_time', null), Input::get('end_time', null));
+		$interval = Input::get('interval', '15m');
+		$start_time = Input::get('start_time', null);
+		$end_time = Input::get('end_time', null);
+		$nodes = $bac->candlesticks($market, $interval, $start_time, $end_time);
 		return (new CandleNodePresenter())->present($nodes);
+	}
+
+	/**
+	 * @param $market
+	 * @param BinanceAPI $bac
+	 * @return mixed
+	 * @throws \Exception
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 */
+	public function poll($market, BinanceAPI $bac)
+	{
+		$market = $this->getMarket(['external_symbol']);
+		$interval = Input::get('interval', '15m');
+		$start_time = Input::get('start_time', null);
+		$end_time = Input::get('end_time', null);
+		//$include = Input::get('include', ['depth', 'candles', 'history']);
+		//if(is_string($include)) $include = explode(',', $include);
+		$ret = [];
+		$orderRepository = \App::get(OrderRepository::class);
+
+		/*if(in_array('depth', $include))*/
+		/*if(in_array('history', $include)) */
+		/*if(in_array('candles', $include))*/
+
+		$ret['depth'] = $orders = $orderRepository->getOpenOrders($market);
+		$ret['candles'] = $bac->candlesticks($market, $interval, $start_time, $end_time);
+		$ret['history'] = $orderRepository->getHistory($market, 60, $start_time, $end_time);
+
+		return (new PollDataPresenter())->present($ret);
 	}
 }

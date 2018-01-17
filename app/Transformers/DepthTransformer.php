@@ -13,7 +13,17 @@ use League\Fractal\TransformerAbstract;
 
 class DepthTransformer extends TransformerAbstract
 {
-	protected $defaultIncludes = ['demand', 'supply'];
+	//protected $defaultIncludes = ['bid', 'ask'];
+
+	private function clean($orders)
+	{
+		$ret = [];
+		foreach ($orders as $order) {
+			if(empty($ret[$order->price])) $ret[$order->price] = ['price' => $order->price, 'quantity' => 0];
+			$ret[$order->price]['quantity'] += $order->quantity;
+		}
+		return array_values($ret);
+	}
 
 	/**
 	 * @param array $model
@@ -23,14 +33,8 @@ class DepthTransformer extends TransformerAbstract
 	public function transform($model)
 	{
 		return [
+			'bids' => !empty($model[0]) ? $this->collection($this->clean($model[0]), new DepthOrderTransformer())->getData() : [],
+			'asks' => !empty($model[1]) ? $this->collection($this->clean($model[1]), new DepthOrderTransformer())->getData() : []
 		];
-	}
-
-	public function includeDemand($model) {
-		return  $this->collection(isset($model[0]) ? $model[0] : [], new DepthOrderTransformer());
-	}
-
-	public function includeSupply($model) {
-		return  $this->collection(isset($model[1]) ? $model[1] : [], new DepthOrderTransformer());
 	}
 }

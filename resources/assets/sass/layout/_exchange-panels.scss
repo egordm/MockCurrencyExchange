@@ -20,12 +20,12 @@
   }
 
   .chart-panel {
-	height: calc(100% - #{$exchange-trade-panel-height});
+	height: calc(100% - #{$exchange-order-history-height});
   }
 
   .secondary-panel {
 	background-color: $exchange-panel-bg;
-	height: $exchange-trade-panel-height;
+	height: $exchange-order-history-height;
   }
 }
 
@@ -130,9 +130,10 @@
 }
 
 .price-bar {
+  background-color: $exchange-light-bg;
+
   @extend .bright;
   th {
-
 	font-size: $spacing * 2.5;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;

@@ -41,4 +41,9 @@ class ValutaPair extends Model implements Transformable
 	public function external_symbol() {
 		return $this->hasOne(ExternalSymbol::class);
 	}
+
+	public function history() {
+		return $this->hasMany(Order::class)->where('status', 1)
+			->orderBy('updated_at', 'DESC');
+	}
 }

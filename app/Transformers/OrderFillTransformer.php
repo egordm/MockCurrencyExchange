@@ -20,14 +20,6 @@ class OrderFillTransformer extends TransformerAbstract
      */
     public function transform(OrderFill $model)
     {
-        return [
-        	'hello' => 'world'
-            //'id'         => (int) $model->,
-
-            /* place your other model properties here */
-
-            //'created_at' => $model->created_at,
-            //'updated_at' => $model->updated_at
-        ];
+        return [];
     }
 }
