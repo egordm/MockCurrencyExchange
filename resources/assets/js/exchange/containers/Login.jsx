@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
 import {login} from "../actions/DataActions"
@@ -9,73 +9,63 @@ import {login} from "../actions/DataActions"
 //TODO: Betere startwaarde van email en ww in constructor this.state
 
 export default class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            Email: undefined,
-            Password: undefined
-        };
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: null,
+			password: null
+		};
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
+		this.handleInputChange = this.handleInputChange.bind(this);
+	}
 
-    handleInputChange(event) {
-        const target = event.target;
-        const name = target.name;
+	handleInputChange(e) {
+		this.setState({[e.target.name]: e.target.value});
+	}
 
-        this.setState({
-            [name]: value
-        });
-    }
-    handleSubmit(event){
-        login(this.state.Email, this.state.Password);
-    }
+	handleSubmit(event) {
+		login(this.state.email, this.state.password);
+	}
 
-    render() {
-        return [
-            <div>
-                <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Login
-                </button>
-
-                <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-body">
-                                <form onSubmit={this.handleSubmit}>
-                                    <label>
-                                        Email:
-                                        <input
-                                            name="Email"
-                                            type="text"
-                                            value={this.state.Email}
-                                            onChange={this.handleInputChange} />
-                                    </label>
-                                    <br />
-                                    <label>
-                                        Password:
-                                        <input
-                                            name="Password"
-                                            type="password"
-                                            value={this.state.Password}
-                                            onChange={this.handleInputChange} />
-                                    </label>
-                                    <br />
-                                    <input type="submit" value="Login" />
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        ];
-    }
+	render() {
+		return <li key="login" className="nav-item">
+			<a className="nav-link login" data-toggle="modal" data-target="#myModal">Login</a>
+			<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div className="modal-dialog">
+					<div className="modal-content">
+						<div className="modal-body">
+							<form onSubmit={this.handleSubmit}>
+								<label>
+									Email:
+									<input
+										name="Email"
+										type="text"
+										value={this.state.email}
+										onChange={this.handleInputChange}/>
+								</label>
+								<br/>
+								<label>
+									Password:
+									<input
+										name="Password"
+										type="password"
+										value={this.state.password}
+										onChange={this.handleInputChange}/>
+								</label>
+								<br/>
+								<input type="submit" value="Login"/>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>;
+	}
 }
 
 
 if (document.getElementById('login')) {
-    ReactDOM.render(<Login />, document.getElementById('login'));
+	ReactDOM.render(<Login/>, document.getElementById('login'));
 }
 
 

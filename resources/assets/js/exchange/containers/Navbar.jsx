@@ -17,7 +17,7 @@ export default class Navbar extends Component {
 			<li key="account" className="nav-item"><a className="nav-link">Account</a></li>,
 			<li key="logout" className="nav-item"><a className="nav-link">Logout</a></li>,
 		] : [
-			<li key="login" className="nav-item"><a className="nav-link login"><Login/></a></li>,
+			<Login/>,
 			<li key="register" className="nav-item"><a className="nav-link">Register</a></li>,
 		];
 
