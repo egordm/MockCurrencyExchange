@@ -23,7 +23,7 @@ use Prettus\Repository\Traits\PresentableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Valuta whereSymbol($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Valuta whereUpdatedAt($value)
  */
-class Valuta extends Model implements Presentable
+class Valuta extends BaseModel implements Presentable
 {
 	use PresentableTrait;
 

@@ -21,7 +21,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderFill whereQuantity($value)
  */
-class OrderFill extends Model implements Transformable
+class OrderFill extends BaseModel implements Transformable
 {
     use TransformableTrait;
 

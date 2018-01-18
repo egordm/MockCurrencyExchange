@@ -26,7 +26,7 @@ use Prettus\Repository\Traits\PresentableTrait;
  * @property-read \App\User $user
  * @property-read \App\Models\Valuta $valuta
  */
-class Balance extends Model implements Presentable
+class Balance extends BaseModel implements Presentable
 {
 	use PresentableTrait;
 
@@ -46,7 +46,7 @@ class Balance extends Model implements Presentable
 	{
 		$query = 'INSERT INTO balances (user_id, valuta_id, quantity, created_at, updated_at) ' .
 			'VALUES (?,?,?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)' .
-			' ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)';
+			' ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), updated_at = CURRENT_TIMESTAMP()';
 		\DB::insert($query, [$this->user_id, $this->valuta_id, $mutation]);
 		$this->quantity += $mutation;
 	}

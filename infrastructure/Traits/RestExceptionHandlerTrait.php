@@ -28,13 +28,13 @@ trait RestExceptionHandlerTrait
 	 */
 	protected function getJsonResponseForException($request, \Exception $e)
 	{
-		if($this->isHttpException($e)) return $this->jsonException($e->getMessage(), $e->getCode());
+		if($this->isHttpException($e) && $e->getCode() < 600) return $this->jsonException($e->getMessage(), $e->getCode());
 		if ($e instanceof AuthenticationException) return $this->jsonException($e->getMessage(),401);
 		if ($e instanceof ValidationException || $e instanceof ValidatorException) return $this->validationException($e);
 		if($e instanceof ResourceNotFoundException || $e instanceof NotFoundHttpException ||$e instanceof ModelNotFoundException)
 			return $this->notFoundExeption($e);
 
-		return $this->jsonException($e->getMessage(), $e->getCode() > 0 ?  $e->getCode() : 400);
+		return $this->jsonException($e->getMessage(), 400);
 	}
 
 	protected function validationException($exception)

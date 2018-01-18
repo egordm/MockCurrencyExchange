@@ -114,12 +114,12 @@ class MarketController extends APIController
 	/**
 	 * @param $market
 	 * @param BinanceAPI $bac
+	 * @param OrderRepository $orderRepository
 	 * @return mixed
 	 * @throws \Exception
-	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
-	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
 	 */
-	public function poll($market, BinanceAPI $bac)
+	public function poll($market, BinanceAPI $bac, OrderRepository $orderRepository)
 	{
 		$market = $this->getMarket(['external_symbol']);
 		$interval = Input::get('interval', '15m');
@@ -128,7 +128,6 @@ class MarketController extends APIController
 		//$include = Input::get('include', ['depth', 'candles', 'history']);
 		//if(is_string($include)) $include = explode(',', $include);
 		$ret = [];
-		$orderRepository = \App::get(OrderRepository::class);
 
 		/*if(in_array('depth', $include))*/
 		/*if(in_array('history', $include)) */

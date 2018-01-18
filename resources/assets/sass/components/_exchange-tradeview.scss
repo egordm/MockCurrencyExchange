@@ -1,0 +1,61 @@
+.trade-panel {
+  .tab-pane {
+	@include flexbox;
+	@include flex-direction(row);
+  }
+}
+
+.trade-widget {
+  padding: 1rem 0.5rem;
+  .trade-header {
+    .title {
+	  font-size: 0.9rem;
+	  font-weight: 600;
+	}
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control, .input-group-text {
+    border: 0;
+    border-radius: 0;
+    background-color: $exchange-light-bg;
+  }
+
+  .col-form-label, .input-group, .trade-header >div {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .col-form-label {
+    font-size: 0.8rem;
+  }
+
+  .form-control, .col-form-label, .input-group-text {
+    color: transparentize($font-light-color, 0.6);
+  }
+
+  .display-label {
+    font-size: 0.9rem;
+    color: $font-light-color;
+  }
+
+  .btn {
+    width: 100%;
+    color: $font-light-color;
+
+    &.buy {
+      background-color: $buy-color;
+    }
+    &.sell {
+      background-color: $sell-color;
+    }
+  }
+}

@@ -11,11 +11,13 @@ export default class OrderList extends Component {
 		data: PropTypes.array.isRequired,
 		columns: PropTypes.array.isRequired,
 		typeField: PropTypes.string, // TODO: get type recognizer function instead
-		dataFormatter: PropTypes.func
+		dataFormatter: PropTypes.func,
+		renderHeader: PropTypes.bool,
 	};
 
 	static defaultProps = {
-		dataFormatter: formatData
+		dataFormatter: formatData,
+		renderHeader: false
 	};
 
 	renderOrder = (order, i) => {
@@ -25,14 +27,21 @@ export default class OrderList extends Component {
 		return <tr key={i} className={type}>{columnData}</tr>;
 	};
 
-	shouldComponentUpdate() {
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return this.props.data !== nextProps.data;
+	}
+
+	renderHeader() {
+		return <tr>
+				{this.props.columns.map((el) => <th key={el}>{el}</th>)}
+			</tr>;
 	}
 
 	render() {
 		return <div className="table-wrapper">
 			<table className={'table order-table ' + this.props.tableClass}>
 				<tbody>
+				{this.props.renderHeader ? this.renderHeader() : null}
 				{this.props.data.map(this.renderOrder)}
 				</tbody>
 			</table>

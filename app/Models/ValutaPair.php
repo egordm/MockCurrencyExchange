@@ -24,7 +24,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property-read \App\Models\Valuta $valuta_secondary
  * @property-read \App\Models\ExternalSymbol $external_symbol
  */
-class ValutaPair extends Model implements Transformable
+class ValutaPair extends BaseModel implements Transformable
 {
     use TransformableTrait;
 

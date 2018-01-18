@@ -1,21 +1,34 @@
 import React, {Component} from 'react';
 import MarketSelector from "./MarketSelector";
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as DataActions from "../actions/DataActions";
+
+//TODO: is het merge-conflict opgelost?
 
 @connect((store) => {
 	return {
-		logged_in: store.market_data.logged_in,
+		logged_in: store.user_data.logged_in,
 	};
+}, (dispatch) => {
+	return {
+		logout: bindActionCreators(DataActions.logout, dispatch),
+		user: bindActionCreators(DataActions.user, dispatch)
+	}
 })
 export default class Navbar extends Component {
+	componentDidMount() {
+		this.props.user();
+	}
+
 	render() {
 		const navItems = this.props.logged_in ? [
-			<li key="portfolio" className="nav-item"><a className="nav-link">Portfolio</a></li>,
-			<li key="account" className="nav-item"><a className="nav-link">Account</a></li>,
-			<li key="logout" className="nav-item"><a className="nav-link">Logout</a></li>,
+			<li key="portfolio" className="nav-item"><a className="nav-link" href='/portfolio'>Portfolio</a></li>,
+			<li key="account" className="nav-item"><a className="nav-link" href='/account'>Account</a></li>,
+			<li key="logout" className="nav-item"><a className="nav-link" onClick={this.props.logout}>Logout</a></li>,
 		] : [
-			<li key="login" className="nav-item"><a className="nav-link login">Login</a></li>,
-			<li key="register" className="nav-item"><a className="nav-link">Register</a></li>,
+			<li key="login" className="nav-item"><a className="nav-link login" data-toggle="modal" data-target="#login-modal">Login</a></li>,
+			<li key="register" className="nav-item"><a className="nav-link" href="/register">Register</a></li>,
 		];
 
 		return <nav className="navbar navbar-dark">
@@ -27,5 +40,6 @@ export default class Navbar extends Component {
 				{navItems}
 			</ul>
 		</nav>
+
 	}
 }

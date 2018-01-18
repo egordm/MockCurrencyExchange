@@ -9,9 +9,11 @@ use App\Models\ValutaPair;
 use App\Repositories\Criteria\ActiveOrderCriteria;
 use App\Repositories\Criteria\AvailableFillOrdersCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
+use App\Repositories\Criteria\LimitWindowCriteria;
 use App\Repositories\Presenters\OrderPresenter;
 use App\User;
 use App\Validators\OrderValidator;
+use Doctrine\Common\Util\Debug;
 use Illuminate\Database\Eloquent\Collection;
 use Infrastructure\Exceptions\InsufficientFundsException;
 use Mockery\Exception;
@@ -190,6 +192,8 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function getHistory($market, $limit = 60, $start_time = null, $end_time = null)
 	{
+		//$this->pushCriteria(new LimitWindowCriteria($limit, $start_time, $end_time));
+		//$this->findWhere(['orders.valuta_pair_id' => $market->id, 'orders.status' => Order::STATUS_FILLED])
 		return $this->model->where(['orders.valuta_pair_id' => $market->id, 'orders.status' => Order::STATUS_FILLED])
 			->when(!empty($start_time), function ($query) use ($start_time) {
 				return $query->where('updated_at', '>', $start_time);

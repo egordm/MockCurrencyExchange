@@ -49,7 +49,7 @@ use Psy\Exception\RuntimeException;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders_filling
  * @property mixed pivot
  */
-class Order extends Model implements Transformable, Presentable
+class Order extends BaseModel implements Transformable, Presentable
 {
     use TransformableTrait, PresentableTrait;
 

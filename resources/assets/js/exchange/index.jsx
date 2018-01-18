@@ -15,7 +15,8 @@ import createSagaMiddleware from 'redux-saga'
 import reducer from './reducers';
 import Exchange from './containers/Exchange';
 
-import pollSaga from './sagas/saga-poll-exchange';
+import pollMarketSaga from './sagas/saga-poll-exchange';
+import pollUserSaga from './sagas/saga-poll-user';
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
 	responseType: 'json'
@@ -26,6 +27,7 @@ const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(logger, promise(), thunk, sequenceAction, axiosMiddleware(client), sagaMiddleware);
 const store = createStore(reducer, middleware);
 
-sagaMiddleware.run(pollSaga);
+sagaMiddleware.run(pollMarketSaga);
+sagaMiddleware.run(pollUserSaga);
 
 ReactDOM.render(<Provider store={store}><Exchange/></Provider>, document.getElementById('root'));

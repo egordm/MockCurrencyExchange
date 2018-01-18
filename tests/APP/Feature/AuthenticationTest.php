@@ -23,6 +23,10 @@ class AuthenticationTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertJsonFragment(['success' => true]);
+
+		$response = $this->getJson(route('api.user'));
+		$response->assertStatus(200);
+		echo json_encode($response->json());
 	}
 
 	public function testRegister() {

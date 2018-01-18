@@ -39,6 +39,16 @@ class AuthController extends Controller
 		$this->guard()->login($user);
 
 		if ($request->acceptsJson()) return ['success' => true];
-		else return $this->registered($request, $user) ?: redirect($this->redirectPath());
+		return $this->registered($request, $user) ?: redirect($this->redirectPath());
+	}
+
+	public function logout(Request $request)
+	{
+		$this->guard()->logout();
+
+		// $request->session()->invalidate(); TODO: this fuckign bullshit kills my csrf token.
+
+		if ($request->acceptsJson()) return ['success' => true];
+		return redirect('/');
 	}
 }

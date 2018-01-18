@@ -3,6 +3,9 @@ $primary-color: #4CAF50;
 $dark-color: #0b1011;
 $dark-light-color: #0e1416;
 
+// Bootstrap coloring
+$primary: $primary-color;
+
 
 // Typography
 //$dark-gray: #333;
@@ -29,6 +32,7 @@ $exchange-trade-panel-height: 256px;
 $exchange-order-history-height: 256px;
 $exchange-nav-height: 48px;
 $exchange-market-width: 254px;
+$exchange-nav-tabs-height: 24px;
 
 $spacing: 8px;
 

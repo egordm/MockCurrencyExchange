@@ -26,6 +26,16 @@
   .secondary-panel {
 	background-color: $exchange-panel-bg;
 	height: $exchange-order-history-height;
+	@include flexbox;
+	@include flex-direction(column);
+
+	.nav-tabs {
+	  @include flex-basis($exchange-nav-tabs-height);
+	  @include flex-shrink(0);
+	}
+	.tab-content {
+		overflow: auto;
+	}
   }
 }
 
@@ -50,7 +60,7 @@
   }
 
   .trade-panel {
-	background-color: darkblue;
+	background-color: $exchange-panel-bg;
 	@include flex-basis($exchange-trade-panel-height);
 	@include flex-shrink(0);
   }
@@ -81,6 +91,10 @@
   th {
 	padding: $spacing/2 $spacing;
   }
+
+  td {
+	padding: 0 $spacing/2;
+  }
 }
 
 .table-wrapper {
@@ -88,13 +102,11 @@
   overflow: auto;
 }
 
-
-
 .order-table.table {
   @extend .text-center;
 
   th {
-	text-align: center;
+	text-align: right;
   }
 
   td {

@@ -1,0 +1,47 @@
+.modal-dialog {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: auto;
+  @media(max-width: 768px) {
+    min-height: calc(100vh - 20px);
+  }
+}
+
+.modal-login {
+  .modal-content {
+    background-color: $exchange-panel-bg;
+
+    .title {
+      margin-bottom: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .form-control, .btn {
+      width: 100%;
+      border-radius: 0;
+    }
+
+    .form-control {
+      border: 0;
+      background-color: $exchange-light-bg;
+      color: transparentize($font-light-color, 0.6);
+    }
+
+    .register-link {
+      text-align: right;
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+
+      padding: 0.375rem 0.75rem;
+
+      background-color: $danger;
+      color: white;
+    }
+  }
+}
