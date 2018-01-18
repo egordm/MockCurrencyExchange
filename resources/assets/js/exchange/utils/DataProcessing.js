@@ -18,8 +18,7 @@ export function mergeCandles(oldData, newData) {
 export function mergeBalance(oldData, newData) {
 	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {};
-	for(const balance of oldData) ret[balance.valuta.id] = balance;
+	let ret = {...oldData};
 	for(const balance of newData) ret[balance.valuta.id] = balance;
 	return ret;
 }
@@ -27,8 +26,7 @@ export function mergeBalance(oldData, newData) {
 export function mergeOrders(oldData, newData) {
 	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {};
-	for(const order of oldData) ret[order.id] = order;
+	let ret = {...oldData};
 	for(const order of newData) ret[order.id] = order;
 	return ret;
 }
@@ -36,8 +34,7 @@ export function mergeOrders(oldData, newData) {
 export function mergeMarkets(oldData, newData) {
 	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {};
-	for(const market of oldData) ret[market.id] = market;
+	let ret = {...oldData};
 	for(const market of newData) ret[market.id] = market;
 	return ret;
 }
