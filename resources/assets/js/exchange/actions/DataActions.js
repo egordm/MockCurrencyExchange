@@ -1,4 +1,4 @@
-import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_DATA} from "../constants/ChartActionTypes";
+import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_DATA, USER} from "../constants/ChartActionTypes";
 
 export function pollData(market, interval, last_polled) {
 	let url = `/api/markets/${market.symbol}/poll?interval=${interval.value}`;
@@ -25,6 +25,17 @@ export function login(email, password) {
 				method: 'post',
 				url: '/login',
 				data: {email, password}
+			}
+		}
+	}
+}
+
+export function user() {
+	return {
+		type: USER,
+		payload: {
+			request: {
+				url: '/api/user',
 			}
 		}
 	}

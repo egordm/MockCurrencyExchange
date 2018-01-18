@@ -10,6 +10,9 @@ export const POLL_DATA_STOP = 'POLL_DATA_STOP';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
+export const USER = 'USER';
+export const USER_SUCCESS = 'USER_SUCCESS';
+
 export const LOGOUT = 'LOGOUT';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 

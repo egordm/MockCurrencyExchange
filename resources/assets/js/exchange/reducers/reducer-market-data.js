@@ -1,7 +1,7 @@
 import {
 	CANCEL_ORDER_SUCCESS,
 	CREATE_ORDER_SUCCESS, GET_BALANCE_SUCCESS, GET_MARKETS_SUCCESS, GET_ORDERS_SUCCESS, LOGIN_SUCCESS, LOGOUT_SUCCESS, POLL_DATA_SUCCESS, SET_INTERVAL,
-	SET_MARKET
+	SET_MARKET, USER_SUCCESS
 } from "../constants/ChartActionTypes";
 import {defaultInterval} from "../constants/ChartSettings";
 import {mergeBalance, mergeCandles, mergeHistory, mergeMarkets, mergeOrders, processCandles} from "../utils/DataProcessing";
@@ -36,6 +36,8 @@ export default function (state = initialState, action) {
 			const last_polled = candles.length !== 0 ? candles[candles.length - 1].open_time : state.last_polled;
 			return {...state, candles, depth, history, last_polled};
 		case LOGIN_SUCCESS:
+			return {...state, logged_in: true};
+		case USER_SUCCESS:
 			return {...state, logged_in: true};
 		case LOGOUT_SUCCESS:
 			return {...state, logged_in: false, balance: [], orders: []};
