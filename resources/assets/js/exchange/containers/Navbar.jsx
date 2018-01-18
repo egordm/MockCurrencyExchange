@@ -22,7 +22,6 @@ export default class Navbar extends Component {
 	}
 
 	render() {
-		if(this.props.logged_in) this.props.user();
 		const navItems = this.props.logged_in ? [
 			<li key="portfolio" className="nav-item"><a className="nav-link" href='/portfolio'>Portfolio</a></li>,
 			<li key="account" className="nav-item"><a className="nav-link" href='/account'>Account</a></li>,

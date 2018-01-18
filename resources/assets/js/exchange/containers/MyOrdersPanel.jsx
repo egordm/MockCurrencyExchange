@@ -35,12 +35,8 @@ function orderFormatter(column, data) {
 	}
 })
 export default class MyOrdersPanel extends Component {
-	componentDidMount() {
-		if(this.props.logged_in) this.props.getOrders();
-	}
-
 	shouldComponentUpdate(nextProps) {
-		return this.props.logged_in !== nextProps.logged_in || this.props.market !== nextProps.market;
+		return this.props.logged_in !== nextProps.logged_in || this.props.orders !== nextProps.orders;
 	}
 
 	render() {
@@ -74,6 +70,21 @@ export default class MyOrdersPanel extends Component {
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
 				<div className="tab-pane fade" id="order-history" role="tabpanel">
+					<table className="table order-table">
+						<tbody>
+						<tr>
+							<th>Date</th>
+							<th>Pair</th>
+							<th>Side</th>
+							<th>Price</th>
+							<th>Amount</th>
+							<th>Filled%</th>
+							<th>Total</th>
+							<th>State</th>
+							<th>Actions</th>
+						</tr>
+						</tbody>
+					</table>
 					<OrderList data={orders} dataFormatter={orderFormatter}
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
