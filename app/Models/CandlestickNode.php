@@ -29,7 +29,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CandlestickNode whereVolume($value)
  * @mixin \Eloquent
  */
-class CandlestickNode extends Model implements Transformable
+class CandlestickNode extends BaseModel implements Transformable
 {
     use TransformableTrait;
 

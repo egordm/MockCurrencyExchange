@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ExternalSymbol whereValutaPairId($value)
  * @mixin \Eloquent
  */
-class ExternalSymbol extends Model
+class ExternalSymbol extends BaseModel
 {
 	public function valuta_pair() {
 		return $this->belongsTo(ValutaPair::class);
