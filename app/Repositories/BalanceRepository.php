@@ -79,16 +79,4 @@ class BalanceRepository extends PresentableRepository
 		foreach ($orders as $order) $ret += $order->sellQuantity();
 		return $ret;
 	}
-
-	public function mutateBalances(array $mutations) // TODO: use models
-	{
-		$values = [];
-		foreach ($mutations as $mutation) {
-			$values = array_merge($values, [$mutation['user_id'], $mutation['valuta_id'], $mutation['quantity']]);
-		}
-		$query = 'INSERT INTO balances (user_id, valuta_id, quantity, created_at, updated_at) VALUES ' .
-			implode(',', array_fill(0, count($mutations), '(?,?,?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)')) .
-			' ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)';
-		\DB::insert($query, $values);
-	}
 }

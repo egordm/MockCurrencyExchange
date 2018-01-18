@@ -19,8 +19,12 @@ Route::post('/login/refresh', 'AuthController@refresh')->name('api.refresh');
 Route::group(['middleware' => 'multi-auth'], function () {
 	Route::post('/logout', 'AuthController@logout')->middleware('guest')->name('api.logout');
 
-	Route::get('/user', function (Request $request) {
-		return $request->user();
+
+	Route::prefix('user')->group(function () {
+		Route::get('/', function (Request $request) {
+			return $request->user();
+		});
+		Route::get('/poll', 'UserController@poll')->name('user.poll');
 	});
 
 	Route::prefix('balance')->group(function () {
