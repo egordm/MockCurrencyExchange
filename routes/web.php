@@ -12,8 +12,9 @@
 */
 //Auth::routes();
 
+
 Route::post('/login', 'AuthController@login')->name('login');
-Route::post('/login', 'AuthController@login')->name('login');
+Route::post('/register', 'AuthController@register')->name('register');
 Route::post('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/', 'MainController@index')->name('home');
