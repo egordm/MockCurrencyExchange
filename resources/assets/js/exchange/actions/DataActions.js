@@ -1,6 +1,6 @@
-import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_DATA, USER} from "../constants/ChartActionTypes";
+import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_MARKET_DATA, POLL_USER_DATA, USER} from "../constants/ChartActionTypes";
 
-export function pollData(market, interval, last_polled) {
+export function pollMarketData(market, interval, last_polled) {
 	let url = `/api/markets/${market.symbol}/poll?interval=${interval.value}`;
 	if (last_polled) {
 		const end_time = parseInt(new Date().getTime() / 1000, 10);
@@ -8,7 +8,24 @@ export function pollData(market, interval, last_polled) {
 	}
 
 	return {
-		type: POLL_DATA,
+		type: POLL_MARKET_DATA,
+		payload: {
+			request: {
+				url: url
+			}
+		}
+	}
+}
+
+export function pollUserData(last_polled) {
+	let url = `/api/user/poll`;
+	if (last_polled) {
+		const end_time = parseInt(new Date().getTime() / 1000, 10);
+		url += `&start_time=${last_polled}&end_time=${end_time}`
+	}
+
+	return {
+		type: POLL_USER_DATA,
 		payload: {
 			request: {
 				url: url

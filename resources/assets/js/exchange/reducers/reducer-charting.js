@@ -1,4 +1,4 @@
-import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS, REQUEST_DATA, POLL_DATA, POLL_DATA_SUCCESS} from "../constants/ChartActionTypes";
+import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS, REQUEST_DATA, POLL_MARKET_DATA, POLL_MARKET_DATA_SUCCESS} from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
 import {createIndicator, LinearIndicator} from '../presenters/IndicatorPresenter';

@@ -3,9 +3,12 @@ export const ADD_INDICATOR = 'ADD_INDICATOR';
 export const SET_INTERVAL = 'SET_INTERVAL';
 export const SET_MARKET = 'SET_MARKET';
 
-export const POLL_DATA = 'POLL_DATA';
-export const POLL_DATA_SUCCESS = 'POLL_DATA_SUCCESS';
+export const POLL_MARKET_DATA = 'POLL_MARKET_DATA';
+export const POLL_MARKET_DATA_SUCCESS = 'POLL_MARKET_DATA_SUCCESS';
 export const POLL_DATA_STOP = 'POLL_DATA_STOP';
+
+export const POLL_USER_DATA = 'POLL_USER_DATA';
+export const POLL_USER_DATA_SUCCESS = 'POLL_USER_DATA_SUCCESS';
 
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

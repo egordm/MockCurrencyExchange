@@ -7,7 +7,7 @@ import * as DataActions from "../actions/DataActions";
 
 @connect((store) => {
 	return {
-		market_id: store.market_data.market_id
+		market: store.market_data.market
 	}
 }, (dispatch) => {
 	return {
@@ -16,11 +16,11 @@ import * as DataActions from "../actions/DataActions";
 })
 export default class TradePanel extends Component {
 	onBuy = (price, quantity) => {
-		this.props.createOrder(this.props.market_id, price, quantity, true);
+		this.props.createOrder(this.props.market.id, price, quantity, true);
 	};
 
 	onSell = (price, quantity) => {
-		this.props.createOrder(this.props.market_id, price, quantity, false);
+		this.props.createOrder(this.props.market.id, price, quantity, false);
 	};
 
 	render() {

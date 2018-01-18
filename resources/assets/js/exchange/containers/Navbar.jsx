@@ -8,7 +8,7 @@ import * as DataActions from "../actions/DataActions";
 
 @connect((store) => {
 	return {
-		logged_in: store.market_data.logged_in,
+		logged_in: store.user_data.logged_in,
 	};
 }, (dispatch) => {
 	return {

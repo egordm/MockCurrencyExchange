@@ -19,7 +19,7 @@ export default class TradeWidget extends Component {
 
 	state = {
 		price: this.props.defaultPrice,
-		quantity: undefined
+		quantity: ''
 	};
 
 	handleSubmit = (e) => {

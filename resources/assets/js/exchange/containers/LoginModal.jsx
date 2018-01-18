@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import * as DataActions from "../actions/DataActions";
 import {bindActionCreators} from "redux";
 
-@connect((store) => store.market_data, (dispatch) => {
+@connect((store) => store.user_data, (dispatch) => {
 	return {
 		login: bindActionCreators(DataActions.login, dispatch)
 	}
