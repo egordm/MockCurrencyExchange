@@ -24,7 +24,7 @@ const client = axios.create({ //all axios can be used, shown in axios documentat
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = applyMiddleware(logger, promise(), thunk, sequenceAction, axiosMiddleware(client), sagaMiddleware);
+const middleware = applyMiddleware(/*logger,*/ promise(), thunk, sequenceAction, axiosMiddleware(client), sagaMiddleware);
 const store = createStore(reducer, middleware);
 
 sagaMiddleware.run(pollMarketSaga);
