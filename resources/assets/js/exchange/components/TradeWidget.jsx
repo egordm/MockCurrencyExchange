@@ -26,7 +26,7 @@ export default class TradeWidget extends Component {
 	};
 
 	handleChange = (e) => {
-		this.setState({[e.target.name]: e.target.value});
+		if(e.target.value < 99999999999) this.setState({[e.target.name]: e.target.value});
 	};
 
 	render() {
@@ -41,7 +41,7 @@ export default class TradeWidget extends Component {
 				</div>
 				<div className="col-9 balance">
 					<i className="material-icons">&#xE850;</i>
-					<span> {balance ? format("(.2f")(balance) : '-'}</span>
+					<span> {balance ? format("(,.2f")(balance) : '-'}</span>
 					<span> {this.props.type === 'buy' ? market.valuta_primary.symbol : market.valuta_secondary.symbol}</span>
 				</div>
 			</div>
@@ -69,7 +69,7 @@ export default class TradeWidget extends Component {
 				<div className="form-group trade-total row">
 					<div className="col-3 col-form-label">Total:</div>
 					<div className="col-9 col-form-label display-label">
-						<span>{format("(.2f")(this.state.price * this.state.quantity)}</span>
+						<span>{format("(,.2f")(this.state.price * this.state.quantity)}</span>
 						<span> {this.props.type === 'buy' ? market.valuta_primary.symbol : market.valuta_secondary.symbol}</span>
 					</div>
 				</div>
