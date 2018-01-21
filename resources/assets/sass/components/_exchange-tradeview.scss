@@ -12,6 +12,15 @@
 	  font-size: 0.9rem;
 	  font-weight: 600;
 	}
+
+    .balance {
+      text-align: right;
+      color: transparentize($font-light-color, 0.6);
+      font-size: 0.8rem;
+      i {
+        font-size: 1rem;
+      }
+    }
   }
 
   .row {

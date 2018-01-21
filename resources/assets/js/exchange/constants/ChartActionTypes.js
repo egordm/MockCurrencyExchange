@@ -9,9 +9,11 @@ export const POLL_DATA_STOP = 'POLL_DATA_STOP';
 
 export const POLL_USER_DATA = 'POLL_USER_DATA';
 export const POLL_USER_DATA_SUCCESS = 'POLL_USER_DATA_SUCCESS';
+export const POLL_USER_DATA_FAIL = 'POLL_USER_DATA_FAIL';
 
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export const USER = 'USER';
 export const USER_SUCCESS = 'USER_SUCCESS';
@@ -27,9 +29,12 @@ export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';
 
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
+export const CREATE_ORDER_FAIL = 'CREATE_ORDER_FAIL';
 
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const CANCEL_ORDER_SUCCESS = 'CANCEL_ORDER_SUCCESS';
 
 export const GET_MARKETS = 'GET_MARKETS';
 export const GET_MARKETS_SUCCESS = 'GET_MARKETS_SUCCESS';
+
+export const HIDE_MESSAGE = 'HIDE_MESSAGE';

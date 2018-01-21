@@ -33,7 +33,8 @@ export default class Navbar extends Component {
 
 		return <nav className="navbar navbar-dark">
 			<a className="navbar-brand" href="https://crypto-mex.ml/">
-				<img className="logo" src="/images/logo.png" width="40" height="40" alt="C-MEX"/> Crypto-MEX
+				<img className="logo" src="/images/logo.png" width="40" height="40" alt="C-MEX"/>
+				<span className="brand-title"> Crypto-MEX</span>
 			</a>
 			<ul className="navbar-nav ml-auto">
 				<li className="nav-item"><MarketSelector/></li>

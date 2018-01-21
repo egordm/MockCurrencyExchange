@@ -1,10 +1,15 @@
-import { GET_MARKETS_SUCCESS, POLL_MARKET_DATA_SUCCESS, SET_INTERVAL, SET_MARKET} from "../constants/ChartActionTypes";
+import {GET_MARKETS_SUCCESS, POLL_MARKET_DATA_SUCCESS, SET_INTERVAL, SET_MARKET} from "../constants/ChartActionTypes";
 import {defaultInterval} from "../constants/ChartSettings";
-import {mergeCandles, mergeHistory, mergeMarkets, processCandles} from "../utils/DataProcessing";
+import {mergeCandles, mergeHistory, mergeMarkets, processCandles, processMarkets} from "../utils/DataProcessing";
 
 const initialState = {
 	last_polled: null,
-	market: {symbol: 'USD_BTC', id: 1},
+	market: {
+		id: 1,
+		valuta_primary: {id: 9, symbol: "USD", name: "US Dollar"},
+		valuta_secondary: {id: 7, symbol: "BTC", name: "Bitcoin"},
+		symbol: "USD_BTC"
+	},
 
 	// Market data
 	interval: defaultInterval,
@@ -29,7 +34,8 @@ export default function (state = initialState, action) {
 			const last_polled = candles.length !== 0 ? candles[candles.length - 1].open_time : state.last_polled;
 			return {...state, candles, depth, history, last_polled};
 		case GET_MARKETS_SUCCESS:
-			return {...state, markets: mergeMarkets(state.markets, action.payload.data.data)};
+			const markets = mergeMarkets(state.markets, action.payload.data.data);
+			return {...state, markets, market: markets[state.market.id]};
 		default:
 			return state;
 	}

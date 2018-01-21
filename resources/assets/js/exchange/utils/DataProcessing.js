@@ -16,26 +16,25 @@ export function mergeCandles(oldData, newData) {
 }
 
 export function mergeBalance(oldData, newData) {
-	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {...oldData};
-	for(const balance of newData) ret[balance.valuta.id] = balance;
+	let ret = oldData ? {...oldData} : {};
+	for(const balance of Object.values(newData)) ret[balance.valuta.id] = balance;
 	return ret;
 }
 
 export function mergeOrders(oldData, newData) {
-	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {...oldData};
+	let ret = oldData ? {...oldData} : {};
 	for(const order of newData) ret[order.id] = order;
 	return ret;
 }
 
 export function mergeMarkets(oldData, newData) {
-	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	let ret = {...oldData};
-	for(const market of newData) ret[market.id] = market;
+	let ret = oldData ? {...oldData} : {};
+	for(const market of newData) {
+		ret[market.id] = {...market, symbol: `${market.valuta_primary.symbol}_${market.valuta_secondary.symbol}`};
+	}
 	return ret;
 }
 

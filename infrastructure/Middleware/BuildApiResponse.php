@@ -27,11 +27,12 @@ class BuildApiResponse
 		$response = $next($request);
 		if($response instanceof JsonResponse) {
 			$original = $response->getOriginalContent();
-
-			$response->setData([
-				'success' => true,
-				'data' => $original
-			]);
+			if(!isset($original['success'])) {
+				$response->setData([
+					'success' => true,
+					'data' => $original
+				]);
+			}
 		}
 		return $response;
 	}

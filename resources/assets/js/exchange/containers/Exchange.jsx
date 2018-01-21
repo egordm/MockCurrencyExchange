@@ -5,9 +5,9 @@ import OrderHistory from "./OrderHistory";
 import OpenOrders from "./OpenOrders";
 import ChartPanel from "./ChartPanel";
 import TradePanel from "./TradePanel";
-import TradeWidget from "../components/TradeWidget";
 import MyOrdersPanel from "./MyOrdersPanel";
 import LoginModal from "./LoginModal";
+import MessageModal from "./MessageModal";
 
 export default class Exchange extends Component {
 	render() {
@@ -26,7 +26,8 @@ export default class Exchange extends Component {
 					<TradePanel/>
 				</div>
 			</div>,
-			<LoginModal/>
+			<LoginModal/>,
+			<MessageModal/>
 		];
 	}
 }
