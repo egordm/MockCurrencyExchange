@@ -9,9 +9,11 @@ export const POLL_DATA_STOP = 'POLL_DATA_STOP';
 
 export const POLL_USER_DATA = 'POLL_USER_DATA';
 export const POLL_USER_DATA_SUCCESS = 'POLL_USER_DATA_SUCCESS';
+export const POLL_USER_DATA_FAIL = 'POLL_USER_DATA_FAIL';
 
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export const USER = 'USER';
 export const USER_SUCCESS = 'USER_SUCCESS';

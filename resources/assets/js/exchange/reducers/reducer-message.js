@@ -11,8 +11,9 @@ function prefabMessages(code, action) {
 		case 401:
 			return {title: 'Unauthorized', message: 'You are not logged in to do that.'};
 		case 400:
-			const message = <div className="text-center">{Object.values(action.error.response.data.message).map((el, i) => <p key={i}>{el}</p>)}</div>;
-			return {title: 'Validation errors', message: message};
+			const messageData = action.error.response.data.message;
+			const message = messageData instanceof Object ? Object.values(messageData).map((el, i) => <p key={i}>{el}</p>) : messageData;
+			return {title: 'Validation errors', message: <div className="text-center">{message}</div>};
 		default:
 			return null;
 	}
