@@ -47,8 +47,8 @@ export default class TradeWidget extends Component {
 			</div>
 			<form onSubmit={this.handleSubmit}>
 				<div className="form-group row">
-					<label className="col-3 col-form-label" htmlFor={`price-${this.props.type}`}>Price:</label>
-					<div className="col-9 input-group">
+					<label className="col-4 col-sm-3 col-form-label" htmlFor={`price-${this.props.type}`}>Price:</label>
+					<div className="col-8 col-sm-9 input-group">
 						<input type="text" id={`price-${this.props.type}`} name="price" className="form-control" placeholder="0.00" autoComplete="off"
 						       value={price} onChange={this.handleChange}/>
 						<div className="input-group-append">
@@ -57,8 +57,8 @@ export default class TradeWidget extends Component {
 					</div>
 				</div>
 				<div className="form-group row">
-					<label className="col-3 col-form-label" htmlFor={`amount-${this.props.type}`}>Amount:</label>
-					<div className="col-9 input-group">
+					<label className="col-4 col-sm-3 col-form-label" htmlFor={`amount-${this.props.type}`}>Amount:</label>
+					<div className="col-8 col-sm-9 input-group">
 						<input type="text" id={`amount-${this.props.type}`} name="quantity" className="form-control" placeholder="0.00" autoComplete="off"
 						       value={this.state.quantity} onChange={this.handleChange}/>
 						<div className="input-group-append">
