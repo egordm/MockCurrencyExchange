@@ -1,7 +1,9 @@
 import {
-	CANCEL_ORDER_SUCCESS, CREATE_ORDER_SUCCESS, GET_BALANCE_SUCCESS, GET_ORDERS_SUCCESS, LOGIN_SUCCESS, LOGOUT_SUCCESS, POLL_USER_DATA_SUCCESS,
+	CANCEL_ORDER_SUCCESS, CREATE_ORDER_FAIL, CREATE_ORDER_SUCCESS, GET_BALANCE_SUCCESS, GET_ORDERS_SUCCESS, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, POLL_USER_DATA_FAIL,
+	POLL_USER_DATA_SUCCESS,
 	USER_SUCCESS
 } from "../constants/ChartActionTypes";
+import update from 'react-addons-update';
 import {mergeBalance, mergeOrders} from "../utils/DataProcessing";
 
 const initialState = {
@@ -14,6 +16,10 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+	if([POLL_USER_DATA_FAIL, LOGIN_FAIL, CREATE_ORDER_FAIL].includes(action.type) && action.error.response.status === 401) {
+		return {...state, logged_in: false};
+	}
+
 	switch(action.type) {
 		case LOGIN_SUCCESS:
 			return {...state, logged_in: true};
@@ -26,9 +32,13 @@ export default function (state = initialState, action) {
 		case GET_ORDERS_SUCCESS:
 			return {...state, orders: mergeOrders(state.orders, action.payload.data.data)};
 		case CREATE_ORDER_SUCCESS:
-			return {...state, orders: {[action.payload.data.data.id]: action.payload.data.data, ...state.orders}};
+			return update(state, {
+				orders: {$merge: {[action.payload.data.data.id]: action.payload.data.data}}
+			});
 		case CANCEL_ORDER_SUCCESS:
-			return {...state, orders: {[action.payload.data.data.id]: action.payload.data.data}, ...state.orders};
+			return update(state, {
+				orders: {$merge: {[action.payload.data.data.id]: action.payload.data.data}}
+			});
 		case POLL_USER_DATA_SUCCESS:
 			return {
 				...state,

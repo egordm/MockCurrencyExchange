@@ -1,6 +1,6 @@
 import {delay} from 'redux-saga';
 import {put, call, take, race, fork, all, select} from 'redux-saga/effects';
-import {CREATE_ORDER, POLL_DATA_STOP, SET_INTERVAL, SET_MARKET} from "../constants/ChartActionTypes";
+import {CREATE_ORDER, CREATE_ORDER_SUCCESS, POLL_DATA_STOP, SET_INTERVAL, SET_MARKET} from "../constants/ChartActionTypes";
 import {pollInterval} from "../constants/ChartSettings";
 import {pollMarketData as pollDataAction} from '../actions/DataActions';
 
@@ -19,7 +19,7 @@ function* watchPollData() {
 			take(POLL_DATA_STOP),
 			take(SET_INTERVAL),
 			take(SET_MARKET),
-			take(CREATE_ORDER),
+			take(CREATE_ORDER_SUCCESS),
 		]);
 	}
 }
