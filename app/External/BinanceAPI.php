@@ -77,14 +77,16 @@ class BinanceAPI
 			}
 		} catch (\Exception $e) {}
 
-
 		return $nodes;
 	}
 
 	public function requestCandlesticks($symbol, $interval = '15m', $start_time = null, $end_time = null)
 	{
 		$params = ["symbol" => $symbol, "interval" => $interval];
-		if(!empty($start_time)) $params['startTime'] = $start_time * 1000;
+		$interval_time = CandlestickNodeRepository::INTERVALS[$interval];
+
+		// TODO: remove magic number (3)
+		if(!empty($start_time)) $params['startTime'] = ($start_time - ($interval_time * 60 * 4)) * 1000;
 		if(!empty($end_time)) $params['endTime'] = $end_time * 1000;
 		$response = $this->request("v1/klines", $params);
 		if(empty($response)) return [];
