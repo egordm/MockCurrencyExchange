@@ -24,8 +24,8 @@ class BalanceTransformer extends TransformerAbstract
     public function transform(Balance $model)
     {
 	    return [
-	        'quantity' => $model->quantity,
-	        'halted' => $model->halted_quantity
+	        'quantity' => (float)$model->quantity,
+	        'halted' => (float)$model->halted_quantity
         ];
     }
 

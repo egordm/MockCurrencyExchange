@@ -19,10 +19,10 @@ class DepthTransformer extends TransformerAbstract
 	{
 		$ret = [];
 		foreach ($orders as $order) {
-			if(empty($ret[$order->price])) $ret[$order->price] = ['price' => $order->price, 'quantity' => 0];
+			if(empty($ret[$order->price])) $ret[$order->price] = ['price' => (double)$order->price, 'quantity' => 0];
 			$ret[$order->price]['quantity'] += $order->quantity - $order->getFilledQuantity();
 		}
-		return array_values($ret);
+		return array_values(collect(array_values($ret))->sortByDesc('price')->toArray());
 	}
 
 	/**
