@@ -9,31 +9,10 @@ import {orderStates} from "../constants/MarketConstants";
 
 const timeFormatter = timeFormat('%e-%m-%Y %H:%M:%S');
 
-function orderFormatter(column, data) {
-	switch (column) {
-		case 'date': return timeFormatter(new Date(data['updated_at']['date']));
-		case 'pair': return `${data.valuta_pair.valuta_primary.symbol}/${data.valuta_pair.valuta_secondary.symbol}`; // TODO: full name
-		case 'side': return <span className={data.buy ? 'green' : 'red'}>{data.buy ? 'buy' : 'sell'}</span>;
-		case 'price': return format("(.2f")(data.price);
-		case 'amount': return format("(.4f")(data.quantity);
-		case 'filled': return format("(.2%")(data.filled_quantity / data.quantity);
-		case 'total': return format("(.4f")(data.price * data.quantity);
-		case 'state':
-			let stateClass = '';
-			if(data.status === 2) stateClass = 'red'; // TODO: magic strings
-			if(data.status === 0) stateClass = 'green'; // TODO: magic strings
-			return <span className={stateClass}>{orderStates[data.status]}</span>;
-		case 'actions':
-			return null;
-		default:
-			return null;
-	}
-}
-
 function balanceFormatter(column, data) {
 	switch (column) {
 		case 'currency': return data.valuta.name;
-		case 'quantity': return `${format("(.4f")(data.quantity)} ${data.valuta.symbol}`;
+		case 'quantity': return `${format("(,.4f")(data.quantity)} ${data.valuta.symbol}`;
 		case 'liquid_quantity': return `${format("(.4f")(data.quantity - data.halted)} ${data.valuta.symbol}`;
 	}
 }
@@ -47,15 +26,34 @@ function balanceFormatter(column, data) {
 }, (dispatch) => {
 	return {
 		getOrders: bindActionCreators(DataActions.getOrders, dispatch),
+		cancelOrder: bindActionCreators(DataActions.cancelOrder, dispatch),
 	}
 })
 export default class MyOrdersPanel extends Component {
-	shouldComponentUpdate(nextProps) {
-		return this.props.logged_in !== nextProps.logged_in || this.props.orders !== nextProps.orders;
-	}
+	orderFormatter = (column, data) => {
+		switch (column) {
+			case 'date': return timeFormatter(new Date(data['updated_at']['date']));
+			case 'pair': return `${data.valuta_pair.valuta_primary.symbol}/${data.valuta_pair.valuta_secondary.symbol}`; // TODO: full name
+			case 'side': return <span className={data.buy ? 'green' : 'red'}>{data.buy ? 'buy' : 'sell'}</span>;
+			case 'price': return format("(,.2f")(data.price);
+			case 'amount': return format("(.4f")(data.quantity);
+			case 'filled': return format("(.2%")(data.filled_quantity / data.quantity);
+			case 'total': return format("(,.4f")(data.price * data.quantity);
+			case 'state':
+				let stateClass = '';
+				if(data.status === 2) stateClass = 'red'; // TODO: magic strings
+				if(data.status === 0) stateClass = 'green'; // TODO: magic strings
+				return <span className={stateClass}>{orderStates[data.status]}</span>;
+			case 'actions':
+				return data.status === 0 ?
+					<button className="btn btn-danger btn-cancel" onClick={() => this.props.cancelOrder(data.id)}>Cancel</button> : null;
+			default:
+				return null;
+		}
+	};
 
 	render() {
-		const orders = this.props.orders ? Object.values(this.props.orders) : [];
+		const orders = this.props.orders ? Object.values(this.props.orders).reverse() : [];
 		const openOrders = this.props.orders ? orders.filter((el) => el.status === 0) : [];
 		const balance = this.props.balance ? Object.values(this.props.balance) : [];
 
@@ -66,12 +64,12 @@ export default class MyOrdersPanel extends Component {
 				<a className="nav-item nav-link" data-toggle="tab" href="#balance" role="tab" aria-selected="false">Balance</a>
 			</div>
 			<div className="tab-content">
-				<div className="tab-pane fade show active" id="open-orders" role="tabpanel">
-					<OrderList data={openOrders} dataFormatter={orderFormatter} renderHeader={true}
+				<div className="tab-pane user-order-list fade show active" id="open-orders" role="tabpanel">
+					<OrderList data={openOrders} dataFormatter={this.orderFormatter} renderHeader={true}
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
-				<div className="tab-pane fade" id="order-history" role="tabpanel">
-					<OrderList data={orders} dataFormatter={orderFormatter} renderHeader={true}
+				<div className="tab-pane user-order-list fade" id="order-history" role="tabpanel">
+					<OrderList data={orders} dataFormatter={this.orderFormatter} renderHeader={true}
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
 				<div className="tab-pane fade" id="balance" role="tabpanel">
