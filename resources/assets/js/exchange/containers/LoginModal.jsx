@@ -24,6 +24,8 @@ export default class LoginModal extends Component {
 	};
 
 	render() {
+		if(this.props.logged_in) $('#login-modal').modal('hide');
+
 		return <div className="modal modal-login fade" id="login-modal" tabIndex="-1" role="dialog" aria-hidden="true">
 				<div className="modal-dialog">
 					<div className="modal-content">
