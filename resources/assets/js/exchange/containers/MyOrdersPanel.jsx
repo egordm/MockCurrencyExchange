@@ -11,20 +11,13 @@ const timeFormatter = timeFormat('%e-%m-%Y %H:%M:%S');
 
 function orderFormatter(column, data) {
 	switch (column) {
-		case 'date':
-			return timeFormatter(new Date(data['updated_at']['date']));
-		case 'pair':
-			return `${data.valuta_pair.valuta_primary.symbol}/${data.valuta_pair.valuta_secondary.symbol}`; // TODO: full name
-		case 'side':
-			return <span className={data.buy ? 'green' : 'red'}>{data.buy ? 'buy' : 'sell'}</span>;
-		case 'price':
-			return format("(.2f")(data.price);
-		case 'amount':
-			return format("(.4f")(data.quantity);
-		case 'filled':
-			return format("(.2%")(data.filled_quantity / data.quantity);
-		case 'total':
-			return format("(.4f")(data.price * data.quantity);
+		case 'date': return timeFormatter(new Date(data['updated_at']['date']));
+		case 'pair': return `${data.valuta_pair.valuta_primary.symbol}/${data.valuta_pair.valuta_secondary.symbol}`; // TODO: full name
+		case 'side': return <span className={data.buy ? 'green' : 'red'}>{data.buy ? 'buy' : 'sell'}</span>;
+		case 'price': return format("(.2f")(data.price);
+		case 'amount': return format("(.4f")(data.quantity);
+		case 'filled': return format("(.2%")(data.filled_quantity / data.quantity);
+		case 'total': return format("(.4f")(data.price * data.quantity);
 		case 'state':
 			let stateClass = '';
 			if(data.status === 2) stateClass = 'red'; // TODO: magic strings
@@ -37,10 +30,19 @@ function orderFormatter(column, data) {
 	}
 }
 
+function balanceFormatter(column, data) {
+	switch (column) {
+		case 'currency': return data.valuta.name;
+		case 'quantity': return `${format("(.4f")(data.quantity)} ${data.valuta.symbol}`;
+		case 'liquid_quantity': return `${format("(.4f")(data.quantity - data.halted)} ${data.valuta.symbol}`;
+	}
+}
+
 @connect((store) => {
 	return {
 		logged_in: store.user_data.logged_in,
 		orders: store.user_data.orders,
+		balance: store.user_data.balance,
 	};
 }, (dispatch) => {
 	return {
@@ -55,6 +57,7 @@ export default class MyOrdersPanel extends Component {
 	render() {
 		const orders = this.props.orders ? Object.values(this.props.orders) : [];
 		const openOrders = this.props.orders ? orders.filter((el) => el.status === 0) : [];
+		const balance = this.props.balance ? Object.values(this.props.balance) : [];
 
 		return <div className="secondary-panel">
 			<div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -72,7 +75,8 @@ export default class MyOrdersPanel extends Component {
 					           columns={['date', 'pair', 'side', 'price', 'amount', 'filled', 'total', 'state', 'actions']}/>
 				</div>
 				<div className="tab-pane fade" id="balance" role="tabpanel">
-					<h1>Balance</h1>
+					<OrderList data={balance} dataFormatter={balanceFormatter} renderHeader={true}
+					           columns={['currency', 'quantity', 'liquid_quantity']}/>
 				</div>
 			</div>
 		</div>;

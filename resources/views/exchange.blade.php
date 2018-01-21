@@ -12,6 +12,7 @@
 
 	<!-- Style -->
 	<link href="{{ asset('/css/exchange.css') }}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<!-- Javascript -->
 	<script src="{{ asset('/js/manifest.js') }}"></script>

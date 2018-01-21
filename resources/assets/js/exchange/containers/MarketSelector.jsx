@@ -17,15 +17,13 @@ import * as ExchangeAction from "../actions/ExchangeActions";
 	}
 })
 export default class MarketSelector extends Component {
-
 	componentDidMount() {
 		this.props.getMarkets();
 	}
 
 	renderMarket = market => {
-		const identifier = `${market.valuta_primary.symbol}_${market.valuta_secondary.symbol}`;
-		return <tr key={identifier} onClick={() => this.props.setMarket(market.id, identifier)}>
-			<td>{identifier.replace('_', '/')}</td>
+		return <tr key={market.symbol} onClick={() => this.props.setMarket(market)}>
+			<td>{market.symbol.replace('_', '/')}</td>
 			<td>{market.price ? format("(.2f")(market.price) : '-'}</td>
 		</tr>
 	};
@@ -40,7 +38,7 @@ export default class MarketSelector extends Component {
 						<th>Pair</th>
 						<th>Price</th>
 					</tr>
-					{this.props.markets ? this.props.markets.map(market => this.renderMarket(market)) : <tr><td><p>Loading</p></td></tr>}
+					{this.props.markets ? Object.values(this.props.markets).map(market => this.renderMarket(market)) : <tr><td><p>Loading</p></td></tr>}
 					</tbody>
 				</table>
 
