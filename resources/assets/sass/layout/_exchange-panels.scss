@@ -100,6 +100,23 @@
 	  @include order(-1);
 	}
   }
+
+  .trade-panel {
+	border-bottom: 24px solid $exchange-bg;
+	.input-group .input-group-text {
+		padding-left: 0.3rem;
+		padding-right: 0.3rem;
+	}
+  }
+
+  .market-panel {
+	.orders-panel .table-wrapper {
+		height: 180px;
+	}
+	.orders-history-panel .table-wrapper {
+	  height: 398px;
+	}
+  }
 }
 
 @include media-breakpoint-down(sm) {
