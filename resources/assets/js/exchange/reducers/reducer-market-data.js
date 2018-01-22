@@ -24,9 +24,9 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case SET_MARKET:
-			return {...state, data: null, last_polled: null, history: null, depth: null, candles: null, market: action.payload};
+			return {...state, candles: null, last_polled: null, history: null, depth: null, candles: null, market: action.payload};
 		case SET_INTERVAL:
-			return {...state, data: null, last_polled: null, interval: action.payload};
+			return {...state, candles: null, last_polled: null, interval: action.payload};
 		case POLL_MARKET_DATA_SUCCESS:
 			const candles = mergeCandles(state.candles, processCandles(action.payload.data.data.candles));
 			const depth = action.payload.data.data.depth;
