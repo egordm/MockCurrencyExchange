@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\AccountUpdateRequest;
 use Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
@@ -14,44 +12,19 @@ class AccountController extends Controller
         $this->middleware('auth');
     }
 
-    public function show()
+    public function edit()
     {
-        return view('/account');
+        return view('account');
     }
 
-    public function postChange(request $request)
+    public function update(AccountUpdateRequest $request)
     {
-        if (Input::get('name')) {
+	    $user = Auth::user();
+	    if(!empty($request->get('name'))) $user->name = $request->get('name');
+	    if(!empty($request->get('new_password'))) $user->password = $request->get('new-password');
+	    $user->save();
 
-            if (strcmp(Auth::user()->name, $request->get('new-name')) == 0) {
-                //Current name and new name are same
-                return redirect()->back()->with("error", "New Name cannot be same as your current password. Please choose a different name.");
-            }
-
-            //Change Name
-            $user = Auth::user();
-            $user->Name = $request->get('new-name');
-            $user->save();
-
-            return redirect()->back()->with("success", "Name changed successfully !");
-        }
-        else {
-            if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
-                // The passwords matches
-                return ['matches' => true];
-            }
-
-            if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
-                //Current password and new password are same
-                return ['matches2' => true];
-            }
-
-            //Change Password
-            $user = Auth::user();
-            $user->password = ($request->get('new-password'));
-            $user->save();
-            return ['success' => true];
-        }
+	    return redirect()->back()->with("success", "Account has been updated succesfully");
     }
 
 }

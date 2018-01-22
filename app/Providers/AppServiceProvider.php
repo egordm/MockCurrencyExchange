@@ -20,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
 		    // The environment is local
 		    \DB::enableQueryLog();
 	    }
-        //
+
+	    \Validator::extend('old_password', function($attribute, $value, $parameters, $validator) {
+		    return \Hash::check($value, \Auth::user()->password);
+	    });
 
     }
 

@@ -1,34 +1,36 @@
-@extends('layouts.default')
+@extends('layouts.form')
+
+@section('navbar_class', 'fixed-top navbar-transparent')
 
 @section('content')
-    <section class="section section-gray text-center">
-        <h1>{{Auth::user()->name}}</h1>
-        <form method="POST" action="/account">
-            {{csrf_field()}}
-            <div class="form-group">
-                <label for="new-name">new Name:</label>
-                <input type="text" class="form-control" id="new-name" name="new-name" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" name="name" value="name">Change</button>
-            </div>
-        </form>
+	<h3 class="title">
+		<small>Hello</small><br>
+		<span>{{Auth::user()->name}}</span>
+	</h3>
 
-        <form method="POST" action="/account">
-            {{csrf_field()}}
-            <div class="form-group">
-                <label for="current-password">Current Password:</label>
-                <input type="password" class="form-control" id="current-password" name="current-password" required>
-            </div>
-            <div class="form-group">
-                <label for="new-password">New Password:</label>
-                <input type="password" class="form-control" id="new-password" name="new-password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" name="password" value="password">Change</button>
-            </div>
-        </form>
-
-    </section>
-
+	{!! Form::open(['route' => 'account.post']) !!}
+	<div class="form-group {{$errors->has('name') ? 'has-danger' : ''}}">
+		{{ Form::label('name', 'Name', ['class' => 'control-label']) }}
+		{{ Form::text('name', Auth::user()->name, ['class' => 'form-control'])}}
+		{!! $errors->first('name', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group {{$errors->has('password') ? 'has-danger' : ''}}">
+		{{ Form::label('password', 'Current password', ['class' => 'control-label']) }}
+		{{ Form::password('password', ['class' => 'form-control'])}}
+		{!! $errors->first('password', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group {{$errors->has('new_password') ? 'has-danger' : ''}}">
+		{{ Form::label('new_password', 'New password', ['class' => 'control-label']) }}
+		{{ Form::password('new_password', ['class' => 'form-control'])}}
+		{!! $errors->first('new_password', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group {{$errors->has('new_password_confirmation') ? 'has-danger' : ''}}">
+		{{ Form::label('new_password_confirmation', 'Confirm password', ['class' => 'control-label']) }}
+		{{ Form::password('new_password_confirmation', ['class' => 'form-control'])}}
+		{!! $errors->first('new_password_confirmation', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group">
+		{{Form::submit('Change', ['class' => 'btn btn-primary btn-block btn-round'])}}
+	</div>
+	{!! Form::close() !!}
 @endsection
