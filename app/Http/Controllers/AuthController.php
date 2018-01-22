@@ -23,10 +23,12 @@ class AuthController extends Controller
 		AuthenticatesUsers::redirectPath insteadof RegistersUsers;
 	}
 
-    public function __construct()
+	protected $redirectTo = '/';
+
+	public function __construct()
     {
-        $this->middleware('auth')->only('destroy' );
-        $this->middleware('guest')->except('destroy');
+        $this->middleware('auth')->only('logout' );
+        $this->middleware('guest')->except('logout');
     }
 
 	public function sendLoginResponse(Request $request)
@@ -34,7 +36,7 @@ class AuthController extends Controller
 		$request->session()->regenerate();
 		$this->clearLoginAttempts($request);
 
-		if ($request->acceptsJson()) return ['success' => true];
+		if ($request->ajax()) return ['success' => true];
 		return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
 	}
 
@@ -44,7 +46,7 @@ class AuthController extends Controller
 
 		$this->guard()->login($user);
 
-		if ($request->acceptsJson()) return ['success' => true];
+		if ($request->ajax()) return ['success' => true];
 		return $this->registered($request, $user) ?: redirect($this->redirectPath());
 	}
 
@@ -54,7 +56,7 @@ class AuthController extends Controller
 
 		// $request->session()->invalidate(); TODO: this fuckign bullshit kills my csrf token.
 
-		if ($request->acceptsJson()) return ['success' => true];
+		if ($request->ajax()) return ['success' => true];
 		return redirect('/');
 	}
 
