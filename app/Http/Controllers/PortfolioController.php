@@ -9,6 +9,12 @@ use App\Repositories\OrderRepository;
 
 class PortfolioController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function showbalance(BalanceRepository $balancerepository, OrderRepository $orderrepository)
     {
         $balances = $balancerepository->getBalances(\Auth::user());
