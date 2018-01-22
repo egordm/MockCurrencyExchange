@@ -15,7 +15,7 @@
     "jaggedsoft/php-binance-api": "@dev",
     "kirkbushell/eloquence": "^2.0",
     "laravel/framework": "5.5.*",
-    "laravel/passport": "5.0.x-dev",
+    "laravel/passport": "4.0.*",
     "laravel/tinker": "~1.0",
     "laravelcollective/html": "^5.5",
     "optimus/api-consumer": "dev-master",
