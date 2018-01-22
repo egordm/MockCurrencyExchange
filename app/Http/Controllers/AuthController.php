@@ -29,13 +29,13 @@ class AuthController extends Controller
         $this->middleware('guest')->except('destroy');
     }
 
-	public function postLogin(Request $request)
+	public function sendLoginResponse(Request $request)
 	{
 		$request->session()->regenerate();
 		$this->clearLoginAttempts($request);
 
 		if ($request->acceptsJson()) return ['success' => true];
-		else  return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
+		return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
 	}
 
 	public function register(RegisterRequest $request, UserRepository $userRepository)
@@ -56,5 +56,15 @@ class AuthController extends Controller
 
 		if ($request->acceptsJson()) return ['success' => true];
 		return redirect('/');
+	}
+
+	public function loginView()
+	{
+		return view('login');
+	}
+
+	public function registerView()
+	{
+		return view('register');
 	}
 }

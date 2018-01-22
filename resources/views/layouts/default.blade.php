@@ -22,7 +22,9 @@
     </script>
 </head>
 <body>
-<nav class="navbar navbar-expand-md fixed-top navbar" color-on-scroll="500">
+
+
+<nav class="navbar navbar-expand-md fixed-top @yield('navbar_class')" color-on-scroll="500">
     <div class="container">
         <div class="navbar-translate">
             <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse"

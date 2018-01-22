@@ -11,16 +11,6 @@ namespace App\Http\Controllers;
 
 class MainController extends Controller
 {
-
-
-	/**
-	 * MainController constructor.
-	 */
-	public function __construct()
-	{
-		//$this->middleware('auth');
-	}
-
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
