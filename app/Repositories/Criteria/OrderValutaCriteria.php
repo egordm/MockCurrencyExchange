@@ -45,10 +45,12 @@ class OrderValutaCriteria implements CriteriaInterface
 	{
 		$valuta_id = $this->valuta->id;
 		$ret = $model->join('valuta_pairs', 'valuta_pair_id', '=', 'valuta_pairs.id')
-			->where(function($query) use ($valuta_id) {
-				$query->where(['valuta_secondary_id' => $valuta_id, 'buy' => false]);
-			})->orWhere(function ($query) use ($valuta_id) {
-				$query->where(['valuta_primary_id' => $valuta_id, 'buy' => true]);
+			->where(function ($query) use ($valuta_id) {
+				$query
+					->where(['valuta_secondary_id' => $valuta_id, 'buy' => false])
+					->orWhere(function ($query) use ($valuta_id) {
+						$query->where(['valuta_primary_id' => $valuta_id, 'buy' => true]);
+					});
 			});
 		return $ret;
 	}

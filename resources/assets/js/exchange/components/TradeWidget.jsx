@@ -70,7 +70,7 @@ export default class TradeWidget extends Component {
 					<div className="col-3 col-form-label">Total:</div>
 					<div className="col-9 col-form-label display-label">
 						<span>{format("(,.2f")(this.state.price * this.state.quantity)}</span>
-						<span> {this.props.type === 'buy' ? market.valuta_primary.symbol : market.valuta_secondary.symbol}</span>
+						<span> {market.valuta_primary.symbol}</span>
 					</div>
 				</div>
 

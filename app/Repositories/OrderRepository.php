@@ -142,9 +142,9 @@ class OrderRepository extends AdvancedRepository
 		$order->save();
 
 		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_primary_id]))
-			->mutate($order->buy ? -$order->sellQuantity() : $order->buyQuantity());
+			->mutate($order->buy ? -$order->filledSellQuantity() : $order->filledBuyQuantity());
 		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_secondary_id]))
-			->mutate($order->buy ? $order->buyQuantity() : -$order->sellQuantity());
+			->mutate($order->buy ? $order->filledBuyQuantity() : -$order->filledSellQuantity());
 	}
 
 	/**
