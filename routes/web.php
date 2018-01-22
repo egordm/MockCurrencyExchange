@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -12,14 +12,23 @@
 */
 //Auth::routes();
 
+Route::get('/login', 'AuthController@loginView')->name('login');
 Route::post('/login', 'AuthController@login')->name('login.post');
+Route::get('/register', 'AuthController@registerView')->name('register');
 Route::post('/register', 'AuthController@register')->name('register.post');
-Route::post('/logout', 'AuthController@logout')->name('logout');
+
+Route::group(['middleware' => 'auth'], function () {
+	Route::post('/logout', 'AuthController@logout')->name('logout');
+
+	Route::get('/account', 'AccountController@edit')->name('account');
+	Route::post('/account', 'AccountController@update')->name('account.post');
+
+	Route::get('/portfolio', 'PortfolioController@showbalance')->name('portfolio');
+});
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');
 
-Route::get('/register', 'AuthController@registerView')->name('register');
-Route::get('/login', 'AuthController@loginView')->name('login');
-Route::get('/account', 'AccountController@show')->name('account');
-Route::get('/portfolio', 'PortfolioController@showbalance')->name('portfolio');
+
+
+
