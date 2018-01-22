@@ -23,6 +23,12 @@ class AuthController extends Controller
 		AuthenticatesUsers::redirectPath insteadof RegistersUsers;
 	}
 
+    public function __construct()
+    {
+        $this->middleware('auth')->only('destroy' );
+        $this->middleware('guest')->except('destroy');
+    }
+
 	public function postLogin(Request $request)
 	{
 		$request->session()->regenerate();
