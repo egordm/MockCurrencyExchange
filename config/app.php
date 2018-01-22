@@ -174,6 +174,7 @@ return [
 
 	    //
 	    \App\Providers\BinanceServiceProvider::class,
+	    //Collective\Html\HtmlServiceProvider::class,
 
 
 	    /*
