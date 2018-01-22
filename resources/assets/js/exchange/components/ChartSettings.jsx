@@ -44,7 +44,7 @@ export default class ChartSettings extends Component {
 	render() {
 		const settings = [
 			{label: 'Minute', value: 'INTERVAL', options: intervalMinutes},
-			{label: 'Days', value: 'INTERVAL', options: intervalDays},
+			{label: 'Hour', value: 'INTERVAL', options: intervalHours},
 			{label: 'Indicator', value: 'INDICATOR', options: Indicators},
 			{label: 'Tool', value: 'TOOL', options: Tools},
 		];

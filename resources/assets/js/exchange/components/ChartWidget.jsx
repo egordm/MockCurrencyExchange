@@ -27,6 +27,11 @@ export default class ChartWidget extends PureComponent {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
 		settings: PropTypes.object,
+		loadMore: PropTypes.func,
+	};
+
+	handleLoadMore = (start, end) => {
+		if(this.props.loadMore) this.props.loadMore();
 	};
 
 	render() {
@@ -63,6 +68,7 @@ export default class ChartWidget extends PureComponent {
 		                    xAccessor={xAccessor}
 		                    displayXAccessor={displayXAccessor}
 		                    xExtents={xExtents}
+		                    onLoadMore={this.handleLoadMore}
 		                    type="hybrid"
 		                    seriesName="BTCUSDT">
 			<CrossHairCursor snapX={true} {...xhairStyle}/>
