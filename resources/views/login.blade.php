@@ -1,26 +1,24 @@
-@extends ('layouts.default')
+@extends ('layouts.form')
+
+@section('navbar_class', 'fixed-top navbar-transparent')
+@section('form_class', 'card-form-small')
 
 @section('content')
-    <div class="col-sm-8 blog-main">
-        <h1>Sign In</h1>
+	<h3 class="title">Login</h3>
 
-        <form action="/login" method="POST">
-            {{csrf_field()}}
-
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-    </div>
+	{!! Form::open(['route' => 'login', 'class' => 'register-form']) !!}
+	<div class="form-group {{$errors->has('email') ? 'has-danger' : ''}}">
+		{{ Form::label('email', 'Email', ['class' => 'control-label']) }}
+		{{ Form::text('email', null, ['class' => 'form-control'])}}
+		{!! $errors->first('email', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group {{$errors->has('password') ? 'has-danger' : ''}}">
+		{{ Form::label('password', 'Current password', ['class' => 'control-label']) }}
+		{{ Form::password('password', ['class' => 'form-control'])}}
+		{!! $errors->first('password', '<p class="form-control-feedback">:message</p>') !!}
+	</div>
+	<div class="form-group">
+		{{Form::submit('Login', ['class' => 'btn btn-primary btn-block btn-round'])}}
+	</div>
+	{!! Form::close() !!}
 @endsection

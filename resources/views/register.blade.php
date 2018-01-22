@@ -1,34 +1,29 @@
-@extends('layouts.default')
+@extends ('layouts.form')
+
+@section('navbar_class', 'fixed-top navbar-transparent')
+@section('form_class', 'card-form-small')
 
 @section('content')
-    <section class="section section-gray text-center">
-        <h1>Register</h1>
-        <form method="POST" action="/register">
-            {{csrf_field()}}
+    <h3 class="title">Register</h3>
 
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirmation">Password Confirmation:</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                       required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Register</button>
-            </div>
-        </form>
-    </section>
+    {!! Form::open(['route' => 'register.post', 'class' => 'register-form']) !!}
+    <div class="form-group {{$errors->has('name') ? 'has-danger' : ''}}">
+        {{ Form::label('name', 'Name', ['class' => 'control-label']) }}
+        {{ Form::text('name', null, ['class' => 'form-control'])}}
+        {!! $errors->first('name', '<p class="form-control-feedback">:message</p>') !!}
+    </div>
+    <div class="form-group {{$errors->has('email') ? 'has-danger' : ''}}">
+        {{ Form::label('email', 'Email', ['class' => 'control-label']) }}
+        {{ Form::text('email', null, ['class' => 'form-control'])}}
+        {!! $errors->first('email', '<p class="form-control-feedback">:message</p>') !!}
+    </div>
+    <div class="form-group {{$errors->has('password') ? 'has-danger' : ''}}">
+        {{ Form::label('password', 'Password', ['class' => 'control-label']) }}
+        {{ Form::password('password', ['class' => 'form-control'])}}
+        {!! $errors->first('password', '<p class="form-control-feedback">:message</p>') !!}
+    </div>
+    <div class="form-group">
+        {{Form::submit('Register', ['class' => 'btn btn-primary btn-block btn-round'])}}
+    </div>
+    {!! Form::close() !!}
 @endsection

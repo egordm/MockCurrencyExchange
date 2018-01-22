@@ -24,6 +24,6 @@
 </head>
 <body>
 <div id="root" class="exchange"></div>
-<script src="{{ asset('/js/app.js') }}"></script>
+<script src="{{ asset('/js/exchange.js') }}"></script>
 </body>
 </html>
