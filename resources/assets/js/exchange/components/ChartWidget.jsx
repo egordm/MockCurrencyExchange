@@ -12,21 +12,71 @@ import {XAxis, YAxis} from "react-stockcharts/es/lib/axes";
 import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockcharts/lib/coordinates";
 
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
-import {last} from "react-stockcharts/lib/utils/index";
+import {last, toObject} from "react-stockcharts/lib/utils";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
-import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType} from "../constants/ChartStyles";
+import {
+	chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType,
+	fibStyle, trendStyle, eqdsStyle, stdevStyle, ganfanStyle
+} from "../constants/ChartStyles";
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
 import {BarSeries} from "react-stockcharts/es/lib/series";
 import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
+import {FibonacciRetracement, GannFan, TrendLine, EquidistantChannel, StandardDeviationChannel, DrawingObjectSelector} from "react-stockcharts/es/lib/interactive";
+import * as ToolTypes from "../constants/ToolTypes";
 
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as ChartActions from "../actions/ChartActions";
+
+@connect((store) => {return {}}, (dispatch) => {
+	return {
+		setTool: bindActionCreators(ChartActions.setTool, dispatch),
+	}
+})
 export default class ChartWidget extends PureComponent {
 	static propTypes = {
 		data: PropTypes.array.isRequired,
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
 		settings: PropTypes.object,
+		loadMore: PropTypes.func,
+		tool: PropTypes.object,
+	};
+
+	state = {};
+
+	componentDidMount() {
+		document.addEventListener("keyup", this.onKeyPress);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("keyup", this.onKeyPress);
+	}
+
+	handleLoadMore = (start, end) => {
+		if (this.props.loadMore) this.props.loadMore();
+	};
+
+	onKeyPress = (e) => {
+		const keyCode = e.which;
+		switch (keyCode) {
+			case 46: {
+				let state = {};
+				for(const key in this.state) {
+					state[key] = this.state[key].filter(each => !each.selected);
+				}
+
+				this.setState({...state});
+				break;
+			}
+		}
+	};
+
+	onDrawToolComplete = (toolType, tool) => {
+		if (this.props.tool.value !== ToolTypes.NONE.value) this.props.setTool(ToolTypes.NONE);
+		this.setState({[toolType.value]: tool});
 	};
 
 	render() {
@@ -63,6 +113,7 @@ export default class ChartWidget extends PureComponent {
 		                    xAccessor={xAccessor}
 		                    displayXAccessor={displayXAccessor}
 		                    xExtents={xExtents}
+		                    onLoadMore={this.handleLoadMore}
 		                    type="hybrid"
 		                    seriesName="BTCUSDT">
 			<CrossHairCursor snapX={true} {...xhairStyle}/>
@@ -79,6 +130,25 @@ export default class ChartWidget extends PureComponent {
 				{Object.values(tooltips)}
 
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
+				{/*Tools*/}
+				<FibonacciRetracement
+					enabled={this.props.tool.value === ToolTypes.FIB.value} retracements={this.state[ToolTypes.FIB.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.FIB, tool)} {...fibStyle}/>
+				<TrendLine
+					enabled={this.props.tool.value === ToolTypes.TRENDLINE.value} trends={this.state[ToolTypes.TRENDLINE.value]}
+					type="RAY"
+					snap={false}
+					snapTo={d => [d.high, d.low]} {...trendStyle}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.TRENDLINE, tool)}/>
+				<EquidistantChannel
+					enabled={this.props.tool.value === ToolTypes.EQDC.value} channels={this.state[ToolTypes.EQDC.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.EQDC, tool)}  {...eqdsStyle}/>
+				<StandardDeviationChannel
+					enabled={this.props.tool.value === ToolTypes.STDEV.value} channels={this.state[ToolTypes.STDEV.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.STDEV, tool)} {...stdevStyle}/>
+				<GannFan
+					enabled={this.props.tool.value === ToolTypes.GANNFAN.value} fans={this.state[ToolTypes.GANNFAN.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.GANNFAN, tool)} {...ganfanStyle}/>
 			</Chart>
 			<Chart id={1} yExtents={[d => d.volume]} height={secondaryChartHeight} origin={(w, h) => [0, h - secondaryChartHeight]}>
 				<YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".2s")} {...axisStyle} />

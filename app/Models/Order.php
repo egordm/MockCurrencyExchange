@@ -133,6 +133,17 @@ class Order extends BaseModel implements Transformable, Presentable
 	}
 
 	/**
+	 * Quantity of valuta that is bought and filled
+	 * @return float|int
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function filledBuyQuantity()
+	{
+		return !$this->buy ? $this->getFilledQuantity() * $this->price : $this->getFilledQuantity();
+	}
+
+	/**
 	 * Valuta that is bought
 	 * @return Valuta
 	 */
@@ -143,11 +154,23 @@ class Order extends BaseModel implements Transformable, Presentable
 
 	/**
 	 * Quantity of valuta that is sold
+	 * @return float|int
 	 */
 	public function sellQuantity()
 	{
 		return $this->buy ? $this->quantity * $this->price : $this->quantity;
     }
+
+	/**
+	 * Quantity of valuta that is sold and filled
+	 * @return float|int
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function filledSellQuantity()
+	{
+		return $this->buy ? $this->getFilledQuantity() * $this->price : $this->getFilledQuantity();
+	}
 
 	/**
 	 * Valuta that is bought

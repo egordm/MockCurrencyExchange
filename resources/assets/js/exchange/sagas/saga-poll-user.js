@@ -1,6 +1,6 @@
 import {delay} from 'redux-saga';
 import {put, call, take, race, fork, all, select} from 'redux-saga/effects';
-import {LOGIN_SUCCESS, CREATE_ORDER_SUCCESS, LOGOUT_SUCCESS, USER_SUCCESS} from "../constants/ChartActionTypes";
+import {LOGIN_SUCCESS, CREATE_ORDER_SUCCESS, LOGOUT_SUCCESS, USER_SUCCESS, CANCEL_ORDER_SUCCESS} from "../constants/ChartActionTypes";
 import {userPollInterval} from "../constants/ChartSettings";
 import {pollUserData as pollDataAction} from '../actions/DataActions';
 
@@ -20,6 +20,7 @@ function* watchPollData() {
 		yield race([
 			call(pollData),
 			take(CREATE_ORDER_SUCCESS),
+			take(CANCEL_ORDER_SUCCESS),
 			take(LOGOUT_SUCCESS),
 			take(LOGIN_SUCCESS),
 		]);

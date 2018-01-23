@@ -11,8 +11,14 @@ export function processCandles(data) {
 export function mergeCandles(oldData, newData) {
 	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
-	while(oldData.length > 0 && oldData[oldData.length - 1].close_time > newData[0].open_time) oldData.pop();
-	return oldData.concat(newData);
+
+	if(oldData && oldData.length > 0 && newData[newData.length - 1].open_time < oldData[oldData.length - 1].open_time) {
+		while(oldData.length > 0 && oldData[0].close_time < newData[newData.length - 1].close_time) oldData.splice(0,1);
+		return newData.concat(oldData);
+	} else {
+		while(oldData.length > 0 && oldData[oldData.length - 1].close_time >= newData[0].open_time) oldData.pop();
+		return oldData.concat(newData);
+	}
 }
 
 export function mergeBalance(oldData, newData) {

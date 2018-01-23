@@ -1,4 +1,7 @@
-import {GET_MARKETS_SUCCESS, POLL_MARKET_DATA_SUCCESS, SET_INTERVAL, SET_MARKET} from "../constants/ChartActionTypes";
+import {
+	GET_CANDLE_DATA, GET_CANDLE_DATA_FAIL, GET_CANDLE_DATA_SUCCESS, GET_MARKETS_SUCCESS, POLL_MARKET_DATA_SUCCESS, SET_INTERVAL,
+	SET_MARKET
+} from "../constants/ChartActionTypes";
 import {defaultInterval} from "../constants/ChartSettings";
 import {mergeCandles, mergeHistory, mergeMarkets, processCandles, processMarkets} from "../utils/DataProcessing";
 
@@ -12,6 +15,7 @@ const initialState = {
 	},
 
 	// Market data
+	loading_more: false,
 	interval: defaultInterval,
 	candles: null,
 	depth: null,
@@ -24,9 +28,15 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case SET_MARKET:
-			return {...state, data: null, last_polled: null, history: null, depth: null, candles: null, market: action.payload};
+			return {...state, candles: null, last_polled: null, history: null, depth: null, candles: null, market: action.payload};
 		case SET_INTERVAL:
-			return {...state, data: null, last_polled: null, interval: action.payload};
+			return {...state, candles: null, last_polled: null, interval: action.payload};
+		case GET_CANDLE_DATA:
+			return {...state, loading_more: true};
+		case GET_CANDLE_DATA_FAIL:
+			return {...state, loading_more: false};
+		case GET_CANDLE_DATA_SUCCESS:
+			return {...state, loading_more: false, candles: mergeCandles(state.candles, processCandles(action.payload.data.data))};
 		case POLL_MARKET_DATA_SUCCESS:
 			const candles = mergeCandles(state.candles, processCandles(action.payload.data.data.candles));
 			const depth = action.payload.data.data.depth;
