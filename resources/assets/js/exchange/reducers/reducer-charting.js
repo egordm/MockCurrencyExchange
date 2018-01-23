@@ -1,12 +1,15 @@
-import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS, REQUEST_DATA, POLL_MARKET_DATA, POLL_MARKET_DATA_SUCCESS} from "../constants/ChartActionTypes";
+import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS, REQUEST_DATA, POLL_MARKET_DATA, POLL_MARKET_DATA_SUCCESS, SET_TOOL} from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
 import {createIndicator, LinearIndicator} from '../presenters/IndicatorPresenter';
 import update from 'react-addons-update';
+import * as ToolTypes from "../constants/ToolTypes";
+
 
 const initialState = {
 	width: 100,
 	height: 100,
+	tool: ToolTypes.NONE,
 	charts: [
 		{
 			type: ChartTypes.CANDLESTICK,
@@ -36,6 +39,8 @@ export default function (state = initialState, action) {
 					}
 				}
 			});
+		case SET_TOOL:
+			return {...state, tool: action.payload};
 		default:
 			return state;
 	}

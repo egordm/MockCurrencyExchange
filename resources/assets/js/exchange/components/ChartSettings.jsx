@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 	return {
 		addIndicator: bindActionCreators(ChartActions.addIndicator, dispatch),
 		setInterval: bindActionCreators(ChartActions.setInterval, dispatch),
+		setTool: bindActionCreators(ChartActions.setTool, dispatch),
 	};
 })
 export default class ChartSettings extends Component {
@@ -25,6 +26,8 @@ export default class ChartSettings extends Component {
 				return this.props.addIndicator(option, this.props.index);
 			case 'INTERVAL':
 				return this.props.setInterval(option);
+			case 'TOOL':
+				return this.props.setTool(option);
 			default:
 				console.log('Indicator selected ' + option.value)
 		}

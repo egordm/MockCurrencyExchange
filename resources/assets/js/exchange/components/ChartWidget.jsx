@@ -14,13 +14,28 @@ import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockch
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
 import {last} from "react-stockcharts/lib/utils/index";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
-import {chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType} from "../constants/ChartStyles";
+import {
+	chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType,
+	fibStyle, trendStyle, eqdsStyle, stdevStyle, ganfanStyle
+} from "../constants/ChartStyles";
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
 import {BarSeries} from "react-stockcharts/es/lib/series";
 import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
+import {FibonacciRetracement, GannFan, TrendLine, EquidistantChannel, StandardDeviationChannel, DrawingObjectSelector} from "react-stockcharts/es/lib/interactive";
+import * as ToolTypes from "../constants/ToolTypes";
 
+import {saveInteractiveNodes, getInteractiveNodes} from "../utils/InteractiveUtils";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as ChartActions from "../actions/ChartActions";
+
+@connect((store) => {return {}}, (dispatch) => {
+	return {
+		setTool: bindActionCreators(ChartActions.setTool, dispatch),
+	}
+})
 export default class ChartWidget extends PureComponent {
 	static propTypes = {
 		data: PropTypes.array.isRequired,
@@ -28,10 +43,30 @@ export default class ChartWidget extends PureComponent {
 		height: PropTypes.number.isRequired,
 		settings: PropTypes.object,
 		loadMore: PropTypes.func,
+		tool: PropTypes.object,
 	};
 
+	state = {
+
+	};
+
+	constructor(props) {
+		super(props);
+		this.saveInteractiveNodes = saveInteractiveNodes.bind(this);
+		this.getInteractiveNodes = getInteractiveNodes.bind(this);
+	}
+
 	handleLoadMore = (start, end) => {
-		if(this.props.loadMore) this.props.loadMore();
+		if (this.props.loadMore) this.props.loadMore();
+	};
+
+	onDrawToolComplete = (toolType, tool) => {
+		if(this.props.tool.value !== ToolTypes.NONE.value) this.props.setTool(ToolTypes.NONE);
+		this.setState({[toolType.value]: tool});
+	};
+
+	handleSelection = (interactives) => {
+		console.log(interactives)
 	};
 
 	render() {
@@ -85,6 +120,30 @@ export default class ChartWidget extends PureComponent {
 				{Object.values(tooltips)}
 
 				<OHLCTooltip forChart={0} origin={[0, 10]} {...ohlcStyle}/>
+				{/*Tools*/}
+				<FibonacciRetracement
+					ref={this.saveInteractiveNodes("FibonacciRetracement", 1)}
+					enabled={this.props.tool.value === ToolTypes.FIB.value} retracements={this.state[ToolTypes.FIB.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.FIB, tool)} {...fibStyle}/>
+				<TrendLine
+					ref={this.saveInteractiveNodes("Trendline", 1)}
+					enabled={this.props.tool.value === ToolTypes.TRENDLINE.value} trends={this.state[ToolTypes.TRENDLINE.value]}
+					type="RAY"
+					snap={false}
+					snapTo={d => [d.high, d.low]} {...trendStyle}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.TRENDLINE, tool)}/>
+				<EquidistantChannel
+					ref={this.saveInteractiveNodes("EquidistantChannel", 1)}
+					enabled={this.props.tool.value === ToolTypes.EQDC.value} channels={this.state[ToolTypes.EQDC.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.EQDC, tool)}  {...eqdsStyle}/>
+				<StandardDeviationChannel
+					ref={this.saveInteractiveNodes("StandardDeviationChannel", 1)}
+					enabled={this.props.tool.value === ToolTypes.STDEV.value} channels={this.state[ToolTypes.STDEV.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.STDEV, tool)} {...stdevStyle}/>
+				<GannFan
+					ref={this.saveInteractiveNodes("GannFan", 1)}
+					enabled={this.props.tool.value === ToolTypes.GANNFAN.value} fans={this.state[ToolTypes.GANNFAN.value]}
+					onComplete={(tool) => this.onDrawToolComplete(ToolTypes.GANNFAN, tool)} {...ganfanStyle}/>
 			</Chart>
 			<Chart id={1} yExtents={[d => d.volume]} height={secondaryChartHeight} origin={(w, h) => [0, h - secondaryChartHeight]}>
 				<YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".2s")} {...axisStyle} />
@@ -94,6 +153,15 @@ export default class ChartWidget extends PureComponent {
 				<BarSeries yAccessor={d => d.volume} {...barStyle} />
 				<CurrentCoordinate yAccessor={d => d.volume} fill="#9B0A47"/>
 			</Chart>
+			<DrawingObjectSelector
+				enabled={!this.props.tool}
+				getInteractiveNodes={this.getInteractiveNodes}
+				drawingObjectMap={{
+					FibonacciRetracement: "retracements",
+					Trendline: "trends"
+				}}
+				onSelect={this.handleSelection}
+			/>
 		</ChartCanvas>;
 	}
 }

@@ -14,6 +14,7 @@ import {bindActionCreators} from "redux";
 		width: store.charting.width,
 		height: store.charting.height,
 		charts: store.charting.charts,
+		tool: store.charting.tool,
 		candles: store.market_data.candles,
 		market: store.market_data.market,
 		interval: store.market_data.interval,
@@ -31,7 +32,7 @@ export default class ChartContainer extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		return this.props.width !== nextProps.width || this.props.height !== nextProps.height || this.props.candles !== nextProps.candles
-			|| this.getChartSettings() !== nextProps.charts[this.props.index];
+			|| this.getChartSettings() !== nextProps.charts[this.props.index] || this.props.tool !== nextProps.tool;
 	}
 
 	getChartSettings = () => this.props.charts[this.props.index];
@@ -47,6 +48,7 @@ export default class ChartContainer extends Component {
 		                    width={this.props.width} height={this.props.height - chartSettingHeight}
 		                    data={this.props.candles}
 		                    settings={this.getChartSettings()}
+		                    tool={this.props.tool}
 		                    loadMore={this.loadMore}/>;
 	};
 

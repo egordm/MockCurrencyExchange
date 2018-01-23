@@ -1,4 +1,4 @@
-import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE} from "../constants/ChartActionTypes";
+import {ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, SET_TOOL} from "../constants/ChartActionTypes";
 
 export function resizeChart(width, height) {
 	return {
@@ -18,5 +18,12 @@ export function setInterval(interval) {
 	return {
 		type: SET_INTERVAL,
 		payload: interval
+	}
+}
+
+export function setTool(tool) {
+	return {
+		type: SET_TOOL,
+		payload: tool
 	}
 }
