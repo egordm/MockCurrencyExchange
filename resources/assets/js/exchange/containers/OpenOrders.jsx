@@ -48,7 +48,7 @@ export default class OpenOrders extends Component {
 				</tbody>
 			</table>
 
-			<OrderList tableClass={'ask'} dataFormatter={openOrderFormatter} data={this.props.open_orders.asks} columns={['price', 'amount', 'total']}/>
+			<OrderList tableClass={'ask'} dataFormatter={openOrderFormatter} data={this.props.open_orders.bids} columns={['price', 'amount', 'total']}/>
 			<table className="table price-bar">
 				<tbody>
 				<tr>
@@ -58,7 +58,7 @@ export default class OpenOrders extends Component {
 				</tr>
 				</tbody>
 			</table>
-			<OrderList tableClass={'bid'} dataFormatter={openOrderFormatter} data={this.props.open_orders.bids} columns={['price', 'amount', 'total']}/>
+			<OrderList tableClass={'bid'} dataFormatter={openOrderFormatter} data={this.props.open_orders.asks} columns={['price', 'amount', 'total']}/>
 		</div>;
 	}
 }
