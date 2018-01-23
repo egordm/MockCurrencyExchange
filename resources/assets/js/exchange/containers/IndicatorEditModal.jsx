@@ -12,10 +12,19 @@ import ColorPicker from "../components/ColorPicker";
 	}
 }, (dispatch) => {
 	return {
-		saveIndicator: bindActionCreators(ChartActions.saveIndicator, dispatch)
+		saveIndicator: bindActionCreators(ChartActions.saveIndicator, dispatch),
+		editIndicator: bindActionCreators(ChartActions.editIndicator, dispatch),
+		deleteIndicator: bindActionCreators(ChartActions.deleteIndicator, dispatch),
 	}
 })
 export default class IndicatorEditModal extends Component {
+	componentDidMount() {
+		const editIndicator = this.props.editIndicator;
+		$('#modal-indicator').on('hide.bs.modal', function (e) {
+			editIndicator(null);
+		})
+	}
+
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const indicator = this.props.charts[0].indicators[this.props.editing_indicator];
@@ -69,6 +78,7 @@ export default class IndicatorEditModal extends Component {
 				<form onSubmit={this.handleSubmit}>
 					{indicator.getFillableOptions().map(this.renderField)}
 					<button type="submit" className="btn btn-primary">Apply</button>
+					<button className="btn btn-danger" onClick={() => this.props.deleteIndicator(this.props.editing_indicator)}>Delete</button>
 				</form>
 			</div>
 		</div>

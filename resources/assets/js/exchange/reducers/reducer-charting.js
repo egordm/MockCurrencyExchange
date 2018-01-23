@@ -1,6 +1,6 @@
 import {
 	ADD_INDICATOR, SET_INTERVAL, CHART_RESIZE, REQUEST_DATA_SUCCESS, REQUEST_DATA, POLL_MARKET_DATA, POLL_MARKET_DATA_SUCCESS, SET_TOOL,
-	EDIT_INDICATOR, SAVE_INDICATOR
+	EDIT_INDICATOR, SAVE_INDICATOR, DELETE_INDICATOR
 } from "../constants/ChartActionTypes";
 import * as ChartTypes from "../constants/ChartTypes";
 import * as IndicatorTypes from "../constants/IndicatorTypes";
@@ -47,6 +47,21 @@ export default function (state = initialState, action) {
 			return {...state, tool: action.payload};
 		case EDIT_INDICATOR:
 			return {...state, editing_indicator: action.payload};
+		case DELETE_INDICATOR:
+			return {
+				...state,
+				editing_indicator: null,
+				charts: state.charts.map((el, i) => {
+					if(i !== 0) return el;
+					return {
+						...el,
+						indicators: [
+							...el.indicators.slice(0, action.payload),
+							...el.indicators.slice(action.payload + 1),
+						]
+					}
+				})
+			};
 		case SAVE_INDICATOR:
 			const newIndicator = createIndicator(action.payload.indicator.type, action.payload.indicator.options, action.payload.indicator.styling);
 			return {
