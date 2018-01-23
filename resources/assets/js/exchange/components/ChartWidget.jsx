@@ -29,10 +29,12 @@ import * as ToolTypes from "../constants/ToolTypes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as ChartActions from "../actions/ChartActions";
+import {LinearIndicator} from "../presenters/IndicatorPresenter";
 
 @connect((store) => {return {}}, (dispatch) => {
 	return {
 		setTool: bindActionCreators(ChartActions.setTool, dispatch),
+		editIndicator: bindActionCreators(ChartActions.editIndicator, dispatch),
 	}
 })
 export default class ChartWidget extends PureComponent {
@@ -79,6 +81,14 @@ export default class ChartWidget extends PureComponent {
 		this.setState({[toolType.value]: tool});
 	};
 
+	onClickIndicator = (event, index) => {
+		// Extract indicator
+		if('index' in event) {
+			index = event.index;
+		}
+		this.props.editIndicator(index);
+	};
+
 	render() {
 		let {width, height, data: initialData} = this.props;
 		let {type, indicators} = this.props.settings;
@@ -89,11 +99,14 @@ export default class ChartWidget extends PureComponent {
 		const mainChartSettings = settingFromType(type);
 		let calculatedData = transformForType(type, initialData);
 
-		let offset = {value: 24};
+		let offset = {value: 32};
 		let tooltips = {};
-		for (let indicator of indicators) {
+		let index = 0;
+		for (const indicator of indicators) {
 			calculatedData = indicator.calculator(calculatedData);
-			tooltips[indicator.tooltipKey] = indicator.renderTooltip(offset, tooltips[indicator.tooltipKey]);
+			const idx = index; // Javascript really is the worst language. It we dont use this it uses ref to index in anonymous function
+			tooltips[indicator.tooltipKey] = indicator.renderTooltip(index, offset, tooltips[indicator.tooltipKey], {onClick: (e) => this.onClickIndicator(e, idx)});
+			index++;
 		}
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
