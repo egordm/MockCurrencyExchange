@@ -33,6 +33,8 @@
     "paper-kit-2": "^2.0.0",
     "prop-types": "^15.6.0",
     "react-addons-update": "^15.6.2",
+    "react-color": "^2.13.8",
+    "react-color-input": "^0.1.3",
     "react-redux": "^5.0.6",
     "react-refetch": "^1.0.4",
     "react-stockcharts": "^0.7.0-beta.22",
