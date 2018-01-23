@@ -12,15 +12,23 @@
 */
 //Auth::routes();
 
+Route::get('/login', 'AuthController@loginView')->name('login');
+Route::post('/login', 'AuthController@login')->name('login.post');
+Route::get('/register', 'AuthController@registerView')->name('register');
+Route::post('/register', 'AuthController@register')->name('register.post');
 
-Route::post('/login', 'AuthController@login')->name('login');
-Route::post('/register', 'AuthController@register')->name('register');
-Route::post('/logout', 'AuthController@logout')->name('logout');
+Route::group(['middleware' => 'auth'], function () {
+	Route::post('/logout', 'AuthController@logout')->name('logout');
+
+	Route::get('/account', 'AccountController@edit')->name('account');
+	Route::post('/account', 'AccountController@update')->name('account.post');
+
+	Route::get('/portfolio', 'PortfolioController@showbalance')->name('portfolio');
+});
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('/exchange', 'MainController@exchange')->name('exchange');
 
-Route::get('/test', function () {
-	return Response::download(public_path('downloads/BTCUSDT_15m_1513316700_1514397599.csv'));
-});
+
+
 
