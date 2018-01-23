@@ -99,7 +99,7 @@ export default class ChartWidget extends PureComponent {
 		const mainChartSettings = settingFromType(type);
 		let calculatedData = transformForType(type, initialData);
 
-		let offset = {value: 24};
+		let offset = {value: 32};
 		let tooltips = {};
 		let index = 0;
 		for (const indicator of indicators) {

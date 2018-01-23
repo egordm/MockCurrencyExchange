@@ -124,7 +124,7 @@ class SimpleIndicator extends IndicatorPresenter {
 
 	renderTooltip(index, offset_ref = null, sibling = null, props = null) {
 		const offset = !offset_ref ? 0 : offset_ref.value;
-		if (offset_ref) offset_ref.value += 30;
+		if (offset_ref) offset_ref.value += 20;
 		const TooltipElement = this.tooltipElement;
 		return <TooltipElement key={this.tooltipKey} {...defaultTooltipStyle} {...this.tooltipProperties} origin={[0, offset]} {...props}/>;
 	}
