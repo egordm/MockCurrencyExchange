@@ -8,12 +8,13 @@ import TradePanel from "./TradePanel";
 import MyOrdersPanel from "./MyOrdersPanel";
 import LoginModal from "./LoginModal";
 import MessageModal from "./MessageModal";
+import IndicatorEditModal from "./IndicatorEditModal";
 
 export default class Exchange extends Component {
 	render() {
 		return [
-			<Navbar/>,
-			<div className="wrapper">
+			<Navbar key="navbar"/>,
+			<div key="main-content" className="wrapper">
 				<div className="main-panel">
 					<ChartPanel/>
 					<MyOrdersPanel/>
@@ -26,8 +27,9 @@ export default class Exchange extends Component {
 					<TradePanel/>
 				</div>
 			</div>,
-			<LoginModal/>,
-			<MessageModal/>
+			<LoginModal key="login"/>,
+			<MessageModal key="message"/>,
+			<IndicatorEditModal key="indicator"/>
 		];
 	}
 }

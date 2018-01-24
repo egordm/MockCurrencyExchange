@@ -25,6 +25,25 @@
 	  margin-bottom: 1.5rem;
 	  margin-top: 1.5rem;
 	}
+
+	.form-control {
+	  border: 0;
+	  background-color: $exchange-light-bg;
+	  color: transparentize($font-light-color, 0.6);
+	}
+
+	.form-control, .btn {
+	  width: 100%;
+	  border-radius: 0;
+	}
+
+	.btn-danger {
+	  margin-top: 0.5rem;
+	}
+
+	.form-control[type=color] {
+	  padding: 0;
+	}
   }
 }
 
@@ -40,17 +59,6 @@
 
 .modal-login {
   .modal-content {
-	.form-control, .btn {
-	  width: 100%;
-	  border-radius: 0;
-	}
-
-	.form-control {
-	  border: 0;
-	  background-color: $exchange-light-bg;
-	  color: transparentize($font-light-color, 0.6);
-	}
-
 	.register-link {
 	  text-align: right;
 	  display: block;

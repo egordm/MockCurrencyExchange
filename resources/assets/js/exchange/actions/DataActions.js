@@ -1,4 +1,7 @@
-import {CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_MARKET_DATA, POLL_USER_DATA, USER} from "../constants/ChartActionTypes";
+import {
+	CANCEL_ORDER, CREATE_ORDER, GET_BALANCE, GET_CANDLE_DATA, GET_MARKETS, GET_ORDERS, LOGIN, LOGOUT, POLL_MARKET_DATA, POLL_USER_DATA,
+	USER
+} from "../constants/ChartActionTypes";
 
 export function pollMarketData(market, interval, last_polled) {
 	let url = `/api/markets/${market.symbol}/poll?interval=${interval.value}`;
@@ -26,6 +29,21 @@ export function pollUserData(last_polled) {
 
 	return {
 		type: POLL_USER_DATA,
+		payload: {
+			request: {
+				url: url
+			}
+		}
+	}
+}
+
+export function getCandles(market, interval, start_time=null, end_time=null) {
+	let url = `/api/markets/${market.symbol}/candlesticks?interval=${interval.value}`;
+	if (end_time) url += `&end_time=${end_time}`;
+	if (start_time) url += `&start_time=${start_time}`;
+
+	return {
+		type: GET_CANDLE_DATA,
 		payload: {
 			request: {
 				url: url

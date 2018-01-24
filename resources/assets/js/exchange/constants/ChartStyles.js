@@ -118,3 +118,112 @@ export const lineIndicatorStyle = {
 	strokeWidth: 2,
 	stroke: "#ffc400",
 };
+
+
+export const fibStyle = {
+	currentPositionStroke: "#219fda",
+	currentPositionStrokeWidth: 2,
+	currentPositionRadius: 3,
+
+	appearance: {
+		stroke: '#FFFFFF',
+		strokeOpacity: 0.2,
+		strokeWidth: 1,
+		fontFamily: "'Roboto', sans-serif",
+		fontSize: 12,
+		fontFill: '#219fda',
+		edgeStroke: "#219fda",
+		edgeFill: "#FFFFFF00",
+		nsEdgeFill: "#219fda",
+		edgeStrokeWidth: 1,
+		r: 3,
+	}
+};
+
+export const trendStyle = {
+	currentPositionStroke: "#219fda",
+	currentPositionStrokeWidth: 2,
+	currentPositionRadius: 3,
+
+	appearance: {
+		stroke: "#FFFFFF",
+		strokeOpacity: 0.5,
+		strokeWidth: 1,
+		strokeDasharray: "Solid",
+		edgeStrokeWidth: 1,
+		edgeFill: "#FFFFFF00",
+		edgeStroke: "#219fda",
+		r: 3,
+	}
+};
+
+export const eqdsStyle = {
+	currentPositionStroke: "#219fda",
+	currentPositionStrokeWidth: 2,
+	currentPositionRadius: 3,
+
+	appearance: {
+		stroke: '#FFFFFF',
+		strokeOpacity: 0.2,
+		strokeWidth: 1,
+		fill: "#FFFFFF",
+		fillOpacity: 0.4,
+		edgeStroke: "#219fda",
+		edgeFill: "#FFFFFF00",
+		edgeFill2: "#219fda",
+		edgeStrokeWidth: 1,
+		r: 3,
+	}
+};
+
+export const stdevStyle = {
+	currentPositionStroke: "#219fda",
+	currentPositionStrokeWidth: 2,
+	currentPositionRadius: 3,
+
+	appearance: {
+		stroke: '#219fda',
+		strokeOpacity: 1,
+		strokeWidth: 1,
+		fill: "#FFFFFF",
+		fillOpacity: 0.4,
+		edgeStrokeWidth: 2,
+		edgeStroke: "#219fda",
+		edgeFill: "#FFFFFF00",
+		r: 3,
+	},
+
+};
+
+export const exchangeColors = [
+	'#cc0066',
+	'#0066cc',
+	'#aaff00',
+	'#6600cc',
+	'#cc401d',
+	'#6ddba5',
+	'#ffc400',
+	'#b21dcc'
+];
+
+export const ganfanStyle = {
+	currentPositionStroke: "#219fda",
+	currentPositionStrokeWidth: 2,
+	currentPositionRadius: 3,
+
+	appearance: {
+		stroke: '#FFFFFF',
+		strokeOpacity: 0.2,
+		strokeWidth: 1,
+
+		edgeStroke: "#219fda",
+		edgeFill: "#FFFFFF00",
+		edgeStrokeWidth: 1,
+		r: 3,
+		fill: ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf"],
+		fillOpacity: 0.2,
+		fontFamily: "'Roboto', sans-serif",
+		fontSize: 12,
+		fontFill: "#219fda"
+	}
+};
