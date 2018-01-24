@@ -3,7 +3,8 @@
 @section('content')
     <section class="section section-gray text-center">
         <h1>Balance</h1>
-        @foreach ($balances as $balance)
+
+      {{--  @foreach ($balances as $balance)
             <li class="list-group-item">
                 {{$balance->valuta->name}}
                 {{$balance->quantity}}
@@ -23,8 +24,6 @@
                 {{'closed'}}
                     @endif
             </li>
-        @endforeach
-        <h1>Total Balance</h1>
-        {{$convertedbalance}}
+        @endforeach--}}
     </section>
 @endsection
