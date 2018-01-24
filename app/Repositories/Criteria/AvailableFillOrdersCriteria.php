@@ -47,6 +47,7 @@ class AvailableFillOrdersCriteria implements CriteriaInterface
 			->groupBy('orders.id')
 			->orderBy('orders.price', $this->order->buy ? 'asc' : 'desc')
 			->where('orders.price', $this->order->buy ? '<=' : '>=', $this->order->price)
+			->where('orders.valuta_pair_id', $this->order->valuta_pair_id)
 			->where('orders.buy', !$this->order->buy);
 	}
 }
