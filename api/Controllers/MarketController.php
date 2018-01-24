@@ -63,16 +63,14 @@ class MarketController extends APIController
 
 	/**
 	 * @param $market
+	 * @param OrderRepository $orderRepository
 	 * @return mixed
 	 * @throws \Exception
-	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
-	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
 	 */
-	public function history($market)
+	public function history($market, OrderRepository $orderRepository)
 	{
 		$start_time = Input::get('start_time', null);
 		$end_time = Input::get('end_time', null);
-		$orderRepository = \App::get(OrderRepository::class);
 		$orders = $orderRepository->getHistory($this->getMarket(), 60, $start_time, $end_time);
 		return (new HistoryPresenter())->present($orders);
 	}
@@ -135,7 +133,7 @@ class MarketController extends APIController
 
 		$ret['depth'] = $orders = $orderRepository->getOpenOrders($market);
 		$ret['candles'] = $bac->candlesticks($market, $interval, $start_time, $end_time);
-		$ret['history'] = $orderRepository->getHistory($market, 60, $start_time, $end_time);
+		$ret['history'] = $orderRepository->getHistory($market, 60/*, $start_time, $end_time*/);
 
 		return (new PollDataPresenter())->present($ret);
 	}

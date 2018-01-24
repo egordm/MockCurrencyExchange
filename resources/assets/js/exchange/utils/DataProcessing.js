@@ -44,9 +44,10 @@ export function mergeMarkets(oldData, newData) {
 	return ret;
 }
 
+/*
 export function mergeHistory(oldData, newData) {
 	if(!oldData) return newData;
 	if(!newData || newData.length === 0) return oldData;
 	while(oldData.length > 0 && oldData[oldData.length - 1].time > newData[0].time) oldData.pop();
 	return oldData.concat(newData); // TODO: merge ones with the same time
-}
+}*/

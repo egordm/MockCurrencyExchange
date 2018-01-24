@@ -13,6 +13,7 @@ use App\Repositories\Criteria\LimitWindowCriteria;
 use App\Repositories\Presenters\OrderPresenter;
 use App\User;
 use App\Validators\OrderValidator;
+use Carbon\Carbon;
 use Doctrine\Common\Util\Debug;
 use Illuminate\Database\Eloquent\Collection;
 use Infrastructure\Exceptions\InsufficientFundsException;
@@ -193,11 +194,14 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function getHistory($market, $limit = 60, $start_time = null, $end_time = null)
 	{
+		$start_time = is_numeric($start_time) ? Carbon::createFromTimestamp($start_time) : $start_time;
+		$end_time = is_numeric($end_time) ? Carbon::createFromTimestamp($end_time) : $end_time;
+
 		//$this->pushCriteria(new LimitWindowCriteria($limit, $start_time, $end_time));
 		//$this->findWhere(['orders.valuta_pair_id' => $market->id, 'orders.status' => Order::STATUS_FILLED])
 		return $this->model->where(['orders.valuta_pair_id' => $market->id, 'orders.status' => Order::STATUS_FILLED])
 			->when(!empty($start_time), function ($query) use ($start_time) {
-				return $query->where('updated_at', '>', $start_time);
+				return $query->where('updated_at', '>=', $start_time);
 			})->when(!empty($end_time), function ($query) use ($end_time) {
 				return $query->where('updated_at', '<=', $end_time);
 			})

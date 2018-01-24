@@ -40,7 +40,7 @@ export default function (state = initialState, action) {
 		case POLL_MARKET_DATA_SUCCESS:
 			const candles = mergeCandles(state.candles, processCandles(action.payload.data.data.candles));
 			const depth = action.payload.data.data.depth;
-			const history = mergeHistory(state.history, action.payload.data.data.history);
+			const history = action.payload.data.data.history; //mergeHistory(state.history, action.payload.data.data.history);
 			const last_polled = candles.length !== 0 ? candles[candles.length - 1].open_time : state.last_polled;
 			return {...state, candles, depth, history, last_polled};
 		case GET_MARKETS_SUCCESS:
