@@ -19,7 +19,7 @@ function openOrderFormatter(column, data) {
 
 @connect((store) => {
 	return {
-		open_orders: store.market_data.depth,
+		open_orders: store.market_data.order_book,
 		order_history: store.market_data.history
 	};
 })

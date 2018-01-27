@@ -51,3 +51,23 @@ export function mergeHistory(oldData, newData) {
 	while(oldData.length > 0 && oldData[oldData.length - 1].time > newData[0].time) oldData.pop();
 	return oldData.concat(newData); // TODO: merge ones with the same time
 }*/
+
+export function processDepth(data) {
+	let asks = data.asks.sort((a, b) =>  a.price - b.price);
+	let cumSum = 0;
+	asks.slice(0).reverse().map((order) => {
+		cumSum += order.quantity;
+		order.quantity = cumSum;
+		order['buy'] = true;
+	});
+
+	cumSum = 0;
+	let bids = data.bids.sort((a, b) =>  a.price - b.price);
+	bids.map((order) => {
+		cumSum += order.quantity;
+		order.quantity = cumSum;
+		order['buy'] = false;
+	});
+
+	return asks.concat(bids);
+}
