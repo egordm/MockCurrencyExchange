@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\OrderCreated;
 use App\Repositories\Criteria\FilledQuantityCriteria;
 use App\Repositories\OrderFillRepository;
 use App\Repositories\OrderRepository;
@@ -63,6 +64,10 @@ class Order extends BaseModel implements Transformable, Presentable
     protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
 
     protected $filled_quantity = null;
+
+	protected $dispatchesEvents = [
+		'created' => OrderCreated::class,
+	];
 
 	public function user()
     {

@@ -23,6 +23,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property-read \App\Models\Valuta $valuta_primary
  * @property-read \App\Models\Valuta $valuta_secondary
  * @property-read \App\Models\ExternalSymbol $external_symbol
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $history
  */
 class ValutaPair extends BaseModel implements Transformable
 {

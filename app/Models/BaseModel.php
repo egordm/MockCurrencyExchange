@@ -11,6 +11,11 @@ namespace App\Models;
 
 use Eloquent;
 
+/**
+ * App\Models\BaseModel
+ *
+ * @mixin \Eloquent
+ */
 class BaseModel extends Eloquent
 {
 	public static function getTableName()

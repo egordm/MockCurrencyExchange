@@ -73,7 +73,8 @@ class CandlestickNodeRepository extends BaseRepository implements RepositoryInte
 		if ($end_time == null) $end_time = time() + $interval * 60;
 		if ($start_time == null) $start_time = $end_time - ($interval * 60 * (CandlestickNodeRepository::CANDLESTICK_TICKS + 1));
 
-		$res = \DB::table('candlestick_nodes')/*->whereBetween('close_time', [$start_time, $end_time])*/
+		// TODO: bug: sometimes on initial load we do get 300. but bot the recent ones :S
+		$res = \DB::table('candlestick_nodes')
 			->where('close_time', '>', $start_time)
 			->where('open_time', '<=', $end_time)
 			->where([

@@ -2,22 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Models\Balance;
+use App\Events\OrderClosed;
 use App\Models\Order;
 use App\Models\OrderFill;
 use App\Models\ValutaPair;
 use App\Repositories\Criteria\ActiveOrderCriteria;
 use App\Repositories\Criteria\AvailableFillOrdersCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
-use App\Repositories\Criteria\LimitWindowCriteria;
-use App\Repositories\Presenters\OrderPresenter;
 use App\User;
 use App\Validators\OrderValidator;
 use Carbon\Carbon;
-use Doctrine\Common\Util\Debug;
 use Illuminate\Database\Eloquent\Collection;
 use Infrastructure\Exceptions\InsufficientFundsException;
-use Mockery\Exception;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -78,10 +74,11 @@ class OrderRepository extends AdvancedRepository
 			throw new InsufficientFundsException();
 
 		$order = $this->saveInstance($order);
-		return $this->fillOrder($order)->presenter();
+		return $order->presenter(); //$this->fillOrder($order)->presenter();
 	}
 
 	/**
+	 * TODO: moar events?
 	 * @param Order $order
 	 * @return Order
 	 * @throws \Exception
@@ -142,10 +139,7 @@ class OrderRepository extends AdvancedRepository
 		$order->status = $cancel ? Order::STATUS_CANCELLED : Order::STATUS_FILLED;
 		$order->save();
 
-		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_primary_id]))
-			->mutate($order->buy ? -$order->filledSellQuantity() : $order->filledBuyQuantity());
-		(new Balance(['user_id' => $order->user_id, 'valuta_id' => $order->valuta_pair->valuta_secondary_id]))
-			->mutate($order->buy ? $order->filledBuyQuantity() : -$order->filledSellQuantity());
+		event(new OrderClosed($order));
 	}
 
 	/**
