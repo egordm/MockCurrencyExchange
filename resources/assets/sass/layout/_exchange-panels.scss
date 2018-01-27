@@ -33,6 +33,7 @@
 
 .chart-panel, .secondary-panel {
   width: 100%;
+  overflow: hidden;
 }
 
 .chart-panel {
@@ -120,6 +121,21 @@
 }
 
 @include media-breakpoint-down(sm) {
+  .sidebar {
+	.market-panel {
+	  display: block;
+	}
+
+	.orders-panel {
+	  max-height: 400px;
+	}
+
+	.orders-history-panel {
+	  max-height: 300px; // TODO: is magic rn
+	}
+  }
+
+
   .secondary-panel {
 	.tab-content, .tab-content .tab-pane, .tab-content .table-wrapper {
 	  height: 100%;

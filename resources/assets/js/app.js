@@ -7,4 +7,4 @@
 
 require('./bootstrap');
 
-import 'paper-kit-2/assets/js/paper-kit'
+import './vendor/paper-kit'

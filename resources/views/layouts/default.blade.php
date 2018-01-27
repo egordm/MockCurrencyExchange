@@ -4,9 +4,10 @@
 <body>
 
 @include('partials.navbar')
-@yield('header')
 
-<div class="main root">
+<div class="main wrapper root">
+	@yield('header')
+
 	@yield('content')
 </div>
 

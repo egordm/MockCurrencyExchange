@@ -210,6 +210,10 @@
   font-weight: 700;
   margin: 0;
   color: #FFFFFF;
+
+  @include media-breakpoint-down(md) {
+	font-size: 4rem;
+  }
 }
 
 .landing-subtitle {

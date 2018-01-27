@@ -1,12 +1,13 @@
+<!--suppress ALL -->
 <nav class="navbar navbar-expand-md @yield('navbar_class')" color-on-scroll="500">
 	<div class="container">
 		<div class="navbar-translate">
 			<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse"
 			        data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
 			        aria-label="Toggle navigation">
-				<span class="navbar-toggler-bar"/>
-				<span class="navbar-toggler-bar"/>
-				<span class="navbar-toggler-bar"/>
+				<span class="navbar-toggler-bar"></span>
+				<span class="navbar-toggler-bar"></span>
+				<span class="navbar-toggler-bar"></span>
 			</button>
 			<a class="navbar-brand" href="{{route('home')}}">{{config('branding.title')}}</a>
 		</div>
