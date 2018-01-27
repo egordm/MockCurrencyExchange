@@ -12,7 +12,7 @@ import {XAxis, YAxis} from "react-stockcharts/es/lib/axes";
 import {CrossHairCursor, MouseCoordinateX, MouseCoordinateY} from "react-stockcharts/lib/coordinates";
 
 import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
-import {last, toObject} from "react-stockcharts/lib/utils";
+import {last} from "react-stockcharts/lib/utils";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
 import {
 	chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType,

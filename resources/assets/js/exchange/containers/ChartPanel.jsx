@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 
 import * as ChartActions from '../actions/ChartActions'
 import ChartContainer from "./ChartContainer";
+import DepthChart from "./DepthChart";
 
 @connect((store) => store.charting, (dispatch) => {
 	return {
@@ -29,13 +30,26 @@ export default class ChartPanel extends Component {
 		return this.props.width !== nextProps.width || this.props.height !== nextProps.height;
 	}
 
-	renderChart = (chart, i) => {
+	renderCandleChart = (chart, i) => {
 		return <ChartContainer key={i} index={i} width={this.props.width} height={this.props.height / this.props.charts.length}/>
 	};
 
+	renderDepthChart = () => {
+		return <DepthChart width={this.props.width} height={this.props.height}/>
+	};
+
 	render() {
-		return <div className="chart-panel" ref={(el) => { this.chart_panel = el;}}>
-			{this.props.charts.map(this.renderChart)}
+		return <div className="chart-panel tab-content" ref={(el) => { this.chart_panel = el;}}>
+			<div className="chart-panel-header nav justify-content-end">
+				<a className="btn nav-item active show" data-toggle="tab" role="tab" href="#candle-chart">Candles</a>
+				<a className="btn nav-item" data-toggle="tab" role="tab" href="#depth-chart">Depth</a>
+			</div>
+			<div className="tab-pane fade show active" id="candle-chart">
+				{this.props.charts.map(this.renderCandleChart)}
+			</div>
+			<div className="tab-pane fade" id="depth-chart">
+				{this.renderDepthChart()}
+			</div>
 		</div>;
 	}
 }
