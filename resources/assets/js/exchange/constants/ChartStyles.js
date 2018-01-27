@@ -13,6 +13,13 @@ export const mainChart = {
 	}
 };
 
+export const depthChart = {
+	padding: {
+		top: 20,
+		bottom: 0
+	}
+};
+
 export const axisStyle = {
 	stroke: "#00000000",
 	tickStroke: "#7d7f81",
@@ -61,6 +68,12 @@ export const kagiStyle = {
 export const areaStyle = {
 	stroke: "#8ec919",
 	fill: "#8ec919",
+	opacity: 0.2
+};
+
+export const areaSellStyle = {
+	stroke: "#ff007a",
+	fill: "#ff007a",
 	opacity: 0.2
 };
 
