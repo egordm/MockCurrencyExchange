@@ -1,29 +1,64 @@
 @extends('layouts.default')
 
 @section('content')
-    <section class="section section-gray text-center">
-        <h1>Balance</h1>
+	<section class="section section-gray text-center">
+		<div class="container">
+			<h1>Balance</h1>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Currency</th>
+						<th>Quantity</th>
+						<th>Liquid quantity</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach($balances as $balance)
+						<tr>
+							<td>{{$balance->valuta->name}}</td>
+							<td>{{$balance->quantity}} {{$balance->valuta->symbol}}</td>
+							<td>{{$balance->quantity - $balance->halted}} {{$balance->valuta->symbol}}</td>
+						</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+	<section class="section section-white text-center">
+		<div class="container">
+			<h1>History</h1>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Buy/Sell</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Fee</th>
+						<th>Status</th>
+						<th>Filled Quantity</th>
+						<th>Created At</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach($orders as $order)
+						<tr>
+							<td>{{$order->buy ? 'Buy' : 'Sell'}}</td>
+							<td>{{$order->price}}</td>
+							<td>{{$order->quantity}}</td>
+							<td>{{$order->fee}}</td>
+							<td>{{App\Models\Order::STATUS_STRINGS[$order->status]}}</td>
+							<td>{{$order->getFilledQuantity()}}</td>
+							<td>{{$order->created_at}}</td>
+						</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
 
-      {{--  @foreach ($balances as $balance)
-            <li class="list-group-item">
-                {{$balance->valuta->name}}
-                {{$balance->quantity}}
-            </li>
-        @endforeach
-        <h1>Orders</h1>
-        @foreach ($orders as $order)
-            <li class="list-group-item">
-                {{$order->valuta_pair->valuta_primary->name}}
-                {{$order->price}}
-                {{'for'}}
-                {{$order->valuta_pair->valuta_secondary->name}}
-                {{$order->quantity}}
-                @if($order->status==0)
-                    {{'open'}}
-                    @else
-                {{'closed'}}
-                    @endif
-            </li>
-        @endforeach--}}
-    </section>
+			{{$orders->links()}}
+		</div>
+	</section>
 @endsection

@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/account', 'AccountController@edit')->name('account');
 	Route::post('/account', 'AccountController@update')->name('account.post');
 
-	Route::get('/portfolio', 'PortfolioController@showbalance')->name('portfolio');
+	Route::get('/portfolio', 'AccountController@portfolio')->name('portfolio');
 });
 
 Route::get('/', 'MainController@index')->name('home');

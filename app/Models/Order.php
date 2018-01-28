@@ -61,6 +61,12 @@ class Order extends BaseModel implements Transformable, Presentable
     const STATUS_FILLED = 1;
     const STATUS_CANCELLED = 2;
 
+    const STATUS_STRINGS = [
+	    self::STATUS_OPEN => 'open',
+	    self::STATUS_FILLED => 'filled',
+	    self::STATUS_CANCELLED => 'cancelled',
+    ];
+
     protected $fillable = ['valuta_pair_id', 'price', 'quantity', 'buy', 'type'];
 
     protected $filled_quantity = null;
