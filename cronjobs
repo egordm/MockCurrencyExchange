@@ -1,0 +1,1 @@
+/usr/local/php70/bin/php /home/**user**/domains/crypto-mex.ml/artisan schedule:run
