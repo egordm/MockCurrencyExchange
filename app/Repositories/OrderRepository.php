@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Constants\CacheConstants;
 use App\Events\OrderClosed;
 use App\Models\Order;
 use App\Models\OrderFill;
@@ -171,10 +172,25 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function getOpenOrders($market)
 	{
-		//$this->pushCriteria(FilledQuantityCriteria::class);
-		$this->pushCriteria(ActiveOrderCriteria::class);
-		$ret = $this->findWhere(['orders.valuta_pair_id' => $market->id], ['id', 'quantity', 'price', 'buy'])->groupBy('buy');
-		$this->clearCriteria();
+		// TODO: this code screams like kill me. Its a custom query though. Not sure how to optimize
+
+		$ret = \Cache::rememberForever(CacheConstants::ORDER_BOOK($market->id), function () use ($market) {
+			return collect(\DB::select("
+			SELECT corders.price, corders.buy,  SUM(corders.quantity - corders.filled_qty) AS quantity
+			FROM (
+			  SELECT
+			    orders.*,
+			    COALESCE(SUM(order_fills.quantity), 0) AS filled_qty
+			  FROM `orders`
+			    LEFT JOIN `order_fills`
+			      ON `orders`.`id` = `order_fills`.`order_primary_id` OR (`orders`.`id` = `order_fills`.`order_secondary_id`)
+			    LEFT JOIN `orders` AS `fillers` ON `orders`.`id` <> `fillers`.`id`
+			                                       AND (`fillers`.`id` = `order_fills`.`order_primary_id`
+			                                            OR (`fillers`.`id` = `order_fills`.`order_secondary_id`))
+			  WHERE `orders`.`status` = 0 AND `orders`.`valuta_pair_id` = ?
+			  GROUP BY `orders`.`id`
+			) AS corders GROUP BY buy, price ORDER BY price ASC", [$market->id]))->groupBy('buy');
+		});
 		return $ret;
 	}
 

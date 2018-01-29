@@ -23,8 +23,8 @@ class DepthOrderTransformer extends TransformerAbstract
 	public function transform($model)
 	{
 		return [
-			'price' => (double)$model['price'],
-			'quantity' => (double)$model['quantity']
+			'price' => (double)$model->price,
+			'quantity' => (double)$model->quantity
 		];
 	}
 }

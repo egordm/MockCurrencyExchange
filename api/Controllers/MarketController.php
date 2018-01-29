@@ -89,7 +89,7 @@ class MarketController extends APIController
 	public function depth($market)
 	{
 		$market = $this->getMarket();
-		return (new DepthPresenter())->present(\App::get(OrderRepository::class)->getOrderBook($market)->all());
+		return (new DepthPresenter())->present(\App::get(OrderRepository::class)->getOrderBook($market));
 	}
 
 	/**

@@ -58,7 +58,7 @@ export default class OpenOrders extends Component {
 				</tr>
 				</tbody>
 			</table>
-			<OrderList tableClass={'bid'} dataFormatter={openOrderFormatter} data={this.props.open_orders.asks} columns={['price', 'amount', 'total']}/>
+			<OrderList tableClass={'bid'} dataFormatter={openOrderFormatter} data={this.props.open_orders.asks.slice().reverse()} columns={['price', 'amount', 'total']}/>
 		</div>;
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\OrderFillCreated;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -26,5 +27,9 @@ class OrderFill extends BaseModel implements Transformable
     use TransformableTrait;
 
     protected $fillable = ['order_primary_id', 'order_secondary_id', 'quantity'];
+
+	protected $dispatchesEvents = [
+		'created' => OrderFillCreated::class,
+	];
 
 }

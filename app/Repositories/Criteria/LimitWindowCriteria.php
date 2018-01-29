@@ -24,7 +24,7 @@ class LimitWindowCriteria implements CriteriaInterface
 	 * @param null $start_time
 	 * @param null $end_time
 	 */
-	public function __construct(string $table, int $limit, $start_time, $end_time)
+	public function __construct(string $table, int $limit, $start_time=null, $end_time=null)
 	{
 		$this->table = $table;
 		$this->limit = $limit;

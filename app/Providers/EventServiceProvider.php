@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\OrderClosed;
 use App\Events\OrderCreated;
+use App\Events\OrderFillCreated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,8 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\GiveInitialBalance',
         ],
-	    OrderCreated::class => ['App\Listeners\FillOrder'],
-	    OrderClosed::class => ['App\Listeners\ApplyOrderToBalances'],
+	    OrderCreated::class => ['App\Listeners\FillOrder', 'App\Listeners\InvalidateOrderBook'],
+	    OrderClosed::class => ['App\Listeners\ApplyOrderToBalances', 'App\Listeners\InvalidateOrderBook'],
+	    OrderFillCreated::class => ['App\Listeners\InvalidateOrderBook'],
     ];
 
     /**

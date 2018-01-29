@@ -13,17 +13,8 @@ use League\Fractal\TransformerAbstract;
 
 class DepthTransformer extends TransformerAbstract
 {
-	//protected $defaultIncludes = ['bid', 'ask'];
-
-	private function clean($orders)
-	{
-		$ret = [];
-		foreach ($orders as $order) {
-			if(empty($ret[$order->price])) $ret[$order->price] = ['price' => (double)$order->price, 'quantity' => 0];
-			$ret[$order->price]['quantity'] += $order->quantity - $order->getFilledQuantity();
-		}
-		return array_values(collect(array_values($ret))->sortByDesc('price')->toArray());
-	}
+	const MAX_DISPLAY = 60;
+	protected $defaultIncludes = ['bids', 'asks'];
 
 	/**
 	 * @param array $model
@@ -32,9 +23,18 @@ class DepthTransformer extends TransformerAbstract
 	 */
 	public function transform($model)
 	{
-		return [
-			'bids' => !empty($model[0]) ? $this->collection($this->clean($model[0]), new DepthOrderTransformer())->getData() : [],
-			'asks' => !empty($model[1]) ? $this->collection($this->clean($model[1]), new DepthOrderTransformer())->getData() : []
-		];
+		return [];
+	}
+
+	public function includeBids($model)
+	{
+		$bids = array_slice($model[0]->toArray(), 0, self::MAX_DISPLAY);
+		return $this->collection($bids, new DepthOrderTransformer());
+	}
+
+	public function includeAsks($model)
+	{
+		$asks = array_slice($model[1]->toArray(), -self::MAX_DISPLAY, self::MAX_DISPLAY, true);
+		return $this->collection($asks, new DepthOrderTransformer());
 	}
 }

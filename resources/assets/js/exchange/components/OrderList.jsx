@@ -28,6 +28,7 @@ export default class OrderList extends Component {
 	};
 
 	shouldComponentUpdate(nextProps) {
+		// TODO: Not sure if this works
 		return this.props.data !== nextProps.data;
 	}
 
