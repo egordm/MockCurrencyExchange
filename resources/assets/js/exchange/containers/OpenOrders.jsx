@@ -34,7 +34,7 @@ export default class OpenOrders extends Component {
 
 		const last_order = order_history && order_history.length > 0 ? order_history[0] : null;
 		let price_label = '-';
-		if(last_order) price_label = format("(.2f")(last_order.price) + ' ' + (last_order.buy ? '↑' : '↓');
+		if (last_order) price_label = format("(.2f")(last_order.price) + ' ' + (last_order.buy ? '↑' : '↓');
 
 		return <div className="orders-panel">
 			<h3 className="panel-title text-center">Open Trades</h3>
@@ -48,7 +48,8 @@ export default class OpenOrders extends Component {
 				</tbody>
 			</table>
 
-			<OrderList tableClass={'ask'} dataFormatter={openOrderFormatter} data={this.props.open_orders.bids} columns={['price', 'amount', 'total']}/>
+			<OrderList tableClass={'ask'} dataFormatter={openOrderFormatter} data={this.props.open_orders.bids} columns={['price', 'amount', 'total']}
+			           scrollBottom={true}/>
 			<table className="table price-bar">
 				<tbody>
 				<tr>

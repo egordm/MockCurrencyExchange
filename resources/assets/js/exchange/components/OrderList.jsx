@@ -13,11 +13,25 @@ export default class OrderList extends Component {
 		typeField: PropTypes.string, // TODO: get type recognizer function instead
 		dataFormatter: PropTypes.func,
 		renderHeader: PropTypes.bool,
+		scrollBottom: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		dataFormatter: formatData,
-		renderHeader: false
+		renderHeader: false,
+		scrollBottom: false
+	};
+
+	scrollToBottom = () => {
+		if(this.props.scrollBottom) this.wrapper.scrollTop = this.wrapper.scrollHeight - this.wrapper.clientHeight;
+	};
+
+	componentDidMount() {
+		this.scrollToBottom();
+	};
+
+	componentDidUpdate() {
+		this.scrollToBottom();
 	};
 
 	renderOrder = (order, i) => {
@@ -39,7 +53,7 @@ export default class OrderList extends Component {
 	}
 
 	render() {
-		return <div className="table-wrapper">
+		return <div className="table-wrapper" ref={(el) => { this.wrapper = el; }}>
 			<table className={'table order-table ' + this.props.tableClass}>
 				<tbody>
 				{this.props.renderHeader ? this.renderHeader() : null}
