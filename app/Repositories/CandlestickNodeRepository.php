@@ -82,6 +82,8 @@ class CandlestickNodeRepository extends BaseRepository implements RepositoryInte
 				'valuta_pair_id' => $market->id
 			])->limit(500)->orderBy('close_time', 'ASC')->get()->all();
 
+		if(!empty($res) && abs(time() - end($res)->close_time) > $interval) return [];
+
 		$minCount = $full_period ? count($res) : floor(($end_time - $start_time) / ($interval * 60));
 		return ($minCount <= CandlestickNodeRepository::CANDLESTICK_TICKS) ? $res : [];
 	}
