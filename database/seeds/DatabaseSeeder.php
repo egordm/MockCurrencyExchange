@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
 	    $this->call(ValutaTableSeeder::class);
 	    $this->call(BalancesTableSeeder::class);
 	    $this->call(ValutaPairsSeeder::class);
+	    $this->call(BotSeeder::class);
     }
 }
