@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Events\OrderClosed;
-use App\Jobs\MergeExternalDepthJob;
 use App\Models\Order;
 use App\Models\OrderFill;
 use App\Models\ValutaPair;
@@ -172,7 +171,7 @@ class OrderRepository extends AdvancedRepository
 	 */
 	public function getOpenOrders($market)
 	{
-		$this->pushCriteria(FilledQuantityCriteria::class);
+		//$this->pushCriteria(FilledQuantityCriteria::class);
 		$this->pushCriteria(ActiveOrderCriteria::class);
 		$ret = $this->findWhere(['orders.valuta_pair_id' => $market->id], ['id', 'quantity', 'price', 'buy'])->groupBy('buy');
 		$this->clearCriteria();

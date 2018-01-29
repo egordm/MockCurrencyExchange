@@ -2,8 +2,7 @@
 
 namespace App\Console;
 
-use App\Jobs\MergeExternalDepthJob;
-use App\Models\ValutaPair;
+use App\Console\Commands\SyncOrderBooks;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +14,7 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-		//
+		SyncOrderBooks::class
 	];
 
 	/**
@@ -26,11 +25,9 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		foreach (ValutaPair::all() as $pair) {
-			//$schedule->job(new MergeExternalDepthJob($pair))->everyMinute();
-			$schedule->job(new MergeExternalDepthJob($pair))->everyThirtyMinutes();
-		}
-
+		$schedule->command('orderbook:sync')->everyThirtyMinutes()
+			->sendOutputTo(storage_path('logs/ext_sync.log' ))
+			->withoutOverlapping();
 	}
 
 	/**
