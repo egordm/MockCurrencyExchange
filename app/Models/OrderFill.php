@@ -32,4 +32,8 @@ class OrderFill extends BaseModel implements Transformable
 		'created' => OrderFillCreated::class,
 	];
 
+	public function order_primary()
+	{
+		return $this->belongsTo(Order::class, 'order_primary_id');
+	}
 }

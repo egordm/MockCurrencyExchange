@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Order;
+use App\Models\OrderFill;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -13,18 +14,18 @@ class OrderFillCreated
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 
 	/**
-	 * @var Order
+	 * @var OrderFill
 	 */
-	public $order;
+	public $orderFill;
 
 	/**
 	 * Create a new event instance.
 	 *
-	 * @param Order $order
+	 * @param OrderFill $orderFill
 	 */
-	public function __construct(Order $order)
+	public function __construct(OrderFill $orderFill)
 	{
-		$this->order = $order;
+		$this->orderFill = $orderFill;
 	}
 
 	/**
