@@ -24,12 +24,19 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property-read \App\Models\Valuta $valuta_secondary
  * @property-read \App\Models\ExternalSymbol $external_symbol
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $history
+ * @property \Carbon\Carbon|null updated_external_at
  */
 class ValutaPair extends BaseModel implements Transformable
 {
     use TransformableTrait;
 
     protected $fillable = [];
+
+	protected $dates = [
+		'created_at',
+		'updated_at',
+		'updated_external_at'
+	];
 
 	public function valuta_primary() {
 		return $this->belongsTo(Valuta::class);
@@ -41,6 +48,10 @@ class ValutaPair extends BaseModel implements Transformable
 
 	public function external_symbol() {
 		return $this->hasOne(ExternalSymbol::class);
+	}
+
+	public function external_depths() {
+		return $this->hasMany(ExternalDepth::class);
 	}
 
 	public function history() {

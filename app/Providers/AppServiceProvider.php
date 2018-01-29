@@ -34,10 +34,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+	    require_once __DIR__ . '/../Http/helpers.php';
 	    if ($this->app->environment() !== 'production') {
 		    $this->app->register(IdeHelperServiceProvider::class);
 	    }
 	    $this->app->register(RepositoryServiceProvider::class);
-        //
     }
 }
