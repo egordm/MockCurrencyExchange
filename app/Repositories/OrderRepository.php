@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Events\OrderClosed;
+use App\Jobs\MergeExternalDepthJob;
 use App\Models\Order;
 use App\Models\OrderFill;
 use App\Models\ValutaPair;
@@ -178,7 +179,6 @@ class OrderRepository extends AdvancedRepository
 		return $ret;
 	}
 
-
 	/**
 	 * @param $market
 	 * @param int $limit
@@ -200,5 +200,17 @@ class OrderRepository extends AdvancedRepository
 				return $query->where('updated_at', '<=', $end_time);
 			})
 			->orderBy('updated_at', 'DESC')->limit($limit)->get();
+	}
+
+	/**
+	 * @param ValutaPair $market
+	 * @return Order[]
+	 * @throws \Illuminate\Support\Facades\ContainerExceptionInterface
+	 * @throws \Illuminate\Support\Facades\NotFoundExceptionInterface
+	 * @throws \Prettus\Repository\Exceptions\RepositoryException
+	 */
+	public function getOrderBook(ValutaPair $market)
+	{
+		return $this->getOpenOrders($market);
 	}
 }

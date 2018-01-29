@@ -10,8 +10,10 @@ namespace API\Controllers;
 
 
 use App\External\BinanceAPI;
+use App\Models\ExternalDepth;
 use App\Repositories\Criteria\ActiveOrderCriteria;
 use App\Repositories\Criteria\FilledQuantityCriteria;
+use App\Repositories\ExternalDepthRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\Presenters\CandleNodePresenter;
 use App\Repositories\Presenters\DepthPresenter;
@@ -86,9 +88,8 @@ class MarketController extends APIController
 	 */
 	public function depth($market)
 	{
-		$orderRepository = \App::get(OrderRepository::class);
-		$orders = $orderRepository->getOpenOrders($this->getMarket());
-		return (new DepthPresenter())->present($orders->all());
+		$market = $this->getMarket();
+		return (new DepthPresenter())->present(\App::get(OrderRepository::class)->getOrderBook($market)->all());
 	}
 
 	/**
