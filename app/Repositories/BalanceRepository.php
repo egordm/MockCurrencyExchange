@@ -111,10 +111,10 @@ class BalanceRepository extends PresentableRepository
         foreach ($orders as $order):
             if ($order->buy = 1) {
                 $balancearray[$order->valuta_pair->valuta_primary->id] = $balancearray[$order->valuta_pair->valuta_primary->id] - $order->quantity;
-                $balancearray[$order->valuta_pair->valuta_secondary->id] = $balancearray[$order->valuta_pair->valuta_secondary->id] + $order->price;
+                $balancearray[$order->valuta_pair->valuta_secondary->id] = $balancearray[$order->valuta_pair->valuta_secondary->id] + $order->price*$order->quantity;
             } else {
                 $balancearray[$order->valuta_pair->valuta_primary->id] = +$order->quantity;
-                $balancearray[$order->valuta_pair->valuta_secondary->id] = -$order->price;
+                $balancearray[$order->valuta_pair->valuta_secondary->id] = -$order->price*$order->quantity;
             }
         endforeach;
 
