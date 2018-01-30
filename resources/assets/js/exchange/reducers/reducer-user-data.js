@@ -16,8 +16,8 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-	if([POLL_USER_DATA_FAIL, LOGIN_FAIL, CREATE_ORDER_FAIL].includes(action.type) && action.error.response.status === 401) {
-		return {...state, logged_in: false};
+	if([POLL_USER_DATA_FAIL, LOGIN_FAIL, CREATE_ORDER_FAIL, CREATE_ORDER_FAIL].includes(action.type) && action.error.response.status === 401) {
+		return {...state, logged_in: false, orders: null, balance: null};
 	}
 
 	switch(action.type) {
