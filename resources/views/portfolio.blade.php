@@ -69,5 +69,44 @@
 
 			{{$orders->links()}}
 		</div>
+    </section>
+        <section class="section section-gray text-center">
+        <div class="container">
+            <h1>Balance in USD</h1>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                    {{'$'}} {{$convertedbalance}}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+	</section>
+
+	<section class="section section-white text-center">
+		<div class="container">
+			<h1>Gains/Losses</h1>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>% in the last day</th>
+						<th>$ in the last week</th>
+						<th>$ in the last month</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{($gainslossesday-$convertedbalance)/$convertedbalance*100}}</td>
+							<td>{{($gainslossesweek-$convertedbalance)/$convertedbalance*100}}</td>
+							<td>{{($gainslossesmonth-$convertedbalance)/$convertedbalance*100}}</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</section>
 @endsection
