@@ -1,4 +1,4 @@
-import {CREATE_ORDER_FAIL, HIDE_MESSAGE} from "../constants/ChartActionTypes";
+import {CREATE_ORDER_FAIL, HIDE_MESSAGE, LOGIN_FAIL} from "../constants/ChartActionTypes";
 import React from "react";
 
 const initialState = {
@@ -21,9 +21,15 @@ function prefabMessages(code, action) {
 
 export default function (state = initialState, action) {
 	switch (action.type) {
-		case CREATE_ORDER_FAIL:
+		case CREATE_ORDER_FAIL: {
 			const status = action.error.response.status;
 			return prefabMessages(status, action);
+		}
+		case LOGIN_FAIL: {
+			$('#login-modal').modal('hide');
+			const status = action.error.response.status;
+			return prefabMessages(status, action);
+		}
 		case HIDE_MESSAGE:
 			return initialState;
 		default:
