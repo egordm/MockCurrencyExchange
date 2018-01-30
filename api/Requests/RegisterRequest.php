@@ -9,10 +9,15 @@
 namespace API\Requests;
 
 
-use Infrastructure\Requests\APIRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends APIRequest
+class RegisterRequest extends FormRequest
 {
+	public function authorize()
+	{
+		return true;
+	}
+
 	public function rules()
 	{
 		return [
@@ -21,6 +26,4 @@ class RegisterRequest extends APIRequest
 			'password' => 'required|string|max:255|min:8'
 		];
 	}
-
-
 }
