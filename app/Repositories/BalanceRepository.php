@@ -21,6 +21,8 @@ use App\Repositories\Presenters\BalanceValutaPresenter;
 use App\User;
 use \Illuminate\Database\Eloquent\Collection;
 use DB;
+use \Carbon\Carbon;
+
 
 class BalanceRepository extends PresentableRepository
 {
@@ -84,6 +86,63 @@ class BalanceRepository extends PresentableRepository
             } else {
                 $convertedbalance = $convertedbalance + $balance->quantity;
             }
+        endforeach;
+
+        return $convertedbalance;
+    }
+
+
+    public function getDifference(Collection $balances, Collection $orders, int $days)
+    {
+        $balancearray = array();
+        $orders = $orders->where('created_at', '>=', Carbon::now()->subDays($days));
+
+        $valutas = DB::table('valuta')->get();
+
+        foreach($valutas as $valuta):
+            $balancearray[$valuta->id] = 0;
+        endforeach;
+
+        foreach ($balances as $balance):
+            $balancearray[$balance->valuta_id] = $balance->quantity;
+        endforeach;
+
+
+        foreach ($orders as $order):
+            if ($order->buy = 1) {
+                $balancearray[$order->valuta_pair->valuta_primary->id] = $balancearray[$order->valuta_pair->valuta_primary->id] - $order->quantity;
+                $balancearray[$order->valuta_pair->valuta_secondary->id] = $balancearray[$order->valuta_pair->valuta_secondary->id] + $order->price;
+            } else {
+                $balancearray[$order->valuta_pair->valuta_primary->id] = +$order->quantity;
+                $balancearray[$order->valuta_pair->valuta_secondary->id] = -$order->price;
+            }
+        endforeach;
+
+        $convertedbalance = 0;
+        $USDollarid = DB::table('valuta')->where('name', 'US Dollar')->first()->id;
+        $Bitcoinid = DB::table('valuta')->where('name', 'Bitcoin')->first()->id;
+        $valutapairUSDBTCid = DB::table('valuta_pairs')->where('valuta_primary_id', $USDollarid)->where('valuta_secondary_id', $Bitcoinid)->first()->id;
+
+        $balancearray[$USDollarid] = 1000;
+
+        $id = 1;
+        foreach ($balancearray as $balance):
+            if (!($id == $USDollarid)) {
+                $valutapair = DB::table('valuta_pairs')->where('valuta_secondary_id', $id)->first();
+                $order = DB::table('candlestick_nodes')->where('valuta_pair_id', $valutapair->id)->Orderby('close_time', 'desc')->first();
+                if ($valutapair->valuta_primary_id == $USDollarid) {
+                    $conversion = ($order->high + $order->low) / 2;
+                    $convertedbalance = $convertedbalance + $conversion * $balance;
+                } else {
+                    $order2 = DB::table('candlestick_nodes')->where('valuta_pair_id', $valutapairUSDBTCid)->Orderby('close_time', 'desc')->first();
+                    $conversion = ($order->high + $order->low) / 2;
+                    $conversion2 = ($order2->high + $order2->low) / 2;
+                    $convertedbalance = $convertedbalance + $conversion2 * $conversion * $balance;
+                }
+            }else {
+                $convertedbalance = $convertedbalance + $balance;
+            }
+            $id ++;
         endforeach;
 
         return $convertedbalance;

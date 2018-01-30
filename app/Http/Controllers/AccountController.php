@@ -42,6 +42,7 @@ class AccountController extends Controller
 	public function portfolio(OrderRepository $orderRepository, BalanceRepository $balanceRepository)
 	{
 		$balances = $balanceRepository->getBalances(Auth::user());
+		$orders2 = $orderRepository->getOrders(Auth::user());
 
 		$orderRepository->pushCriteria(UserOwnedCriteria::class);
 		$orderRepository->pushCriteria(new OrderByNewestCriteria('orders', 'id'));
@@ -49,7 +50,12 @@ class AccountController extends Controller
 
         $convertedbalance = $balanceRepository->getConvertedBalance($balances);
 
-		return view('portfolio', compact('orders', 'balances', 'convertedbalance'));
+        $gainslossesday = $balanceRepository->getDifference($balances, $orders2 ,1);
+        $gainslossesweek = $balanceRepository->getDifference($balances, $orders2 ,7);
+        $gainslossesmonth = $balanceRepository->getDifference($balances, $orders2 ,30);
+
+        return view('/portfolio', compact('balances', 'orders', 'convertedbalance', 'gainslossesday', 'gainslossesweek' , 'gainslossesmonth'));
+
 	}
 
 }
