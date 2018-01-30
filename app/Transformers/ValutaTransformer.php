@@ -23,7 +23,8 @@ class ValutaTransformer extends TransformerAbstract
 		return [
 			'id' => (int)$model->id,
 			'symbol' => $model->symbol,
-			'name' => $model->name
+			'name' => $model->name,
+			'decimal_places' => (int)$model->decimal_places,
 		];
 	}
 }
