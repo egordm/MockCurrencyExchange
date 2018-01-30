@@ -31,6 +31,8 @@ class AccountController extends Controller
 		return redirect()->back()->with("success", "Account has been updated succesfully");
 	}
 
+	const GAIN_PERIODS = ['30 day' => 30, '7 day' => 7, '24 hour' => 1];
+
 	/**
 	 * @param OrderRepository $orderRepository
 	 * @param BalanceRepository $balanceRepository
@@ -46,8 +48,15 @@ class AccountController extends Controller
 		$orderRepository->pushCriteria(UserOwnedCriteria::class);
 		$orderRepository->pushCriteria(new OrderByNewestCriteria('orders', 'id'));
 		$orders = $orderRepository->paginate();
+		$totalBalance = $balanceRepository->getConvertedBalance($balances->keyBy('valuta_id'));
+		$gains = [];
+		if($totalBalance > 0) {
+			foreach (self::GAIN_PERIODS as $period => $days) {
+				$gains[$period] = ($balanceRepository->balanceHistory($balances, $days) - $totalBalance) / $totalBalance;
+			}
+		}
 
-		return view('portfolio', compact('orders', 'balances'));
+		return view('portfolio', compact('orders', 'balances', 'totalBalance', 'gains'));
 	}
 
 }

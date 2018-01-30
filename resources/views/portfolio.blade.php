@@ -4,6 +4,15 @@
 	<section class="section section-gray text-center">
 		<div class="container">
 			<h1>Balance</h1>
+			<h3>Portfolio value: ${{number_format($totalBalance, 2)}}</h3>
+			@if(!empty($gains))
+				<h4>
+					@foreach($gains as $period => $gain)
+						<span> {{$period}}: </span><span style="color: {{$gain > 0 ? '#4CAF50' : '#B33C12'}}">{{number_format($gain * 100,1)}}%</span>
+					@endforeach
+				</h4>
+			@endif
+			<br/>
 			<div class="table-responsive">
 				<table class="table">
 					<thead>
