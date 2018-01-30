@@ -25,7 +25,7 @@ class AccountController extends Controller
 	{
 		$user = Auth::user();
 		if (!empty($request->get('name'))) $user->name = $request->get('name');
-		if (!empty($request->get('new_password'))) $user->password = $request->get('new-password');
+		if (!empty($request->get('new_password'))) $user->password = $request->get('new_password');
 		$user->save();
 
 		return redirect()->back()->with("success", "Account has been updated succesfully");
