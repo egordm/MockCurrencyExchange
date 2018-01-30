@@ -7,11 +7,11 @@ import {timeFormat} from 'd3-time-format';
 
 const timeFormatter = timeFormat('%H:%M:%S');
 
-function orderHistoryFormatter(column, data) {
+function orderHistoryFormatter(column, data, market) {
 	switch (column) {
 		case 'type': return data.buy ? 'buy' : 'sell';
-		case 'price': return format("(.2f")(data[column]);
-		case 'amount': return format("(.4f")(data.quantity);
+		case 'price': return format(`(,.${market.valuta_primary.decimal_places}f`)(data[column]);
+		case 'amount': return format(`(,.${market.valuta_secondary.decimal_places}f`)(data.quantity);
 		case 'time': return timeFormatter(new Date(data[column] * 1000));
 		default: return null;
 	}
@@ -19,7 +19,8 @@ function orderHistoryFormatter(column, data) {
 
 @connect((store) => {
 	return {
-		order_history: store.market_data.history
+		order_history: store.market_data.history,
+		market: store.market_data.market
 	};
 })
 export default class OrderHistory extends Component {
@@ -40,7 +41,8 @@ export default class OrderHistory extends Component {
 					</tr>
 				</tbody>
 			</table>
-			<OrderList typeField="type" dataFormatter={orderHistoryFormatter} columns={['price', 'amount', 'time']} data={this.props.order_history}/>
+			<OrderList typeField="type" dataFormatter={(c, d) => orderHistoryFormatter(c, d, this.props.market)}
+			           columns={['price', 'amount', 'time']} data={this.props.order_history}/>
 		</div>;
 	}
 }

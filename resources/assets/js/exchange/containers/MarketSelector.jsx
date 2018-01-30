@@ -24,7 +24,7 @@ export default class MarketSelector extends Component {
 	renderMarket = market => {
 		return <tr key={market.symbol} onClick={() => this.props.setMarket(market)}>
 			<td>{market.symbol.replace('_', '/')}</td>
-			<td>{market.price ? format("(.2f")(market.price) : '-'}</td>
+			<td>{market.price ? format(`(,.${market.valuta_primary.decimal_places}f`)(market.price) : '-'}</td>
 		</tr>
 	};
 

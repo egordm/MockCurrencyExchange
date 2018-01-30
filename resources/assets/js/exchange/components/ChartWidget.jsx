@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-import {ChartCanvas, Chart} from "react-stockcharts";
+import {Chart, ChartCanvas} from "react-stockcharts";
 import {PureComponent} from "react-stockcharts/es/lib/utils";
 import PropTypes from "prop-types";
 
@@ -15,21 +15,33 @@ import {discontinuousTimeScaleProvider} from "react-stockcharts/lib/scale";
 import {last} from "react-stockcharts/lib/utils";
 import {OHLCTooltip} from "react-stockcharts/es/lib/tooltip";
 import {
-	chartMargin, axisStyle, coordStyle, ohlcStyle, xhairStyle, styleFromType, barStyle, mainChart, secondaryChartHeight, styleFromTooltipType,
-	fibStyle, trendStyle, eqdsStyle, stdevStyle, ganfanStyle
+	axisStyle,
+	barStyle,
+	chartMargin,
+	coordStyle,
+	eqdsStyle,
+	fibStyle,
+	ganfanStyle,
+	mainChart,
+	ohlcStyle,
+	secondaryChartHeight,
+	stdevStyle,
+	styleFromTooltipType,
+	styleFromType,
+	trendStyle,
+	xhairStyle
 } from "../constants/ChartStyles";
 import {chartFromType} from "../constants/ChartTypes";
 import {settingFromType, transformForType} from "../constants/ChartSettings";
 
 import {BarSeries} from "react-stockcharts/es/lib/series";
 import {CurrentCoordinate} from "react-stockcharts/es/lib/coordinates";
-import {FibonacciRetracement, GannFan, TrendLine, EquidistantChannel, StandardDeviationChannel, DrawingObjectSelector} from "react-stockcharts/es/lib/interactive";
+import {EquidistantChannel, FibonacciRetracement, GannFan, StandardDeviationChannel, TrendLine} from "react-stockcharts/es/lib/interactive";
 import * as ToolTypes from "../constants/ToolTypes";
 
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as ChartActions from "../actions/ChartActions";
-import {LinearIndicator} from "../presenters/IndicatorPresenter";
 
 @connect((store) => {return {}}, (dispatch) => {
 	return {
@@ -66,7 +78,7 @@ export default class ChartWidget extends PureComponent {
 		switch (keyCode) {
 			case 46: {
 				let state = {};
-				for(const key in this.state) {
+				for (const key in this.state) {
 					state[key] = this.state[key].filter(each => !each.selected);
 				}
 
@@ -83,7 +95,7 @@ export default class ChartWidget extends PureComponent {
 
 	onClickIndicator = (event, index) => {
 		// Extract indicator
-		if('index' in event) {
+		if ('index' in event) {
 			index = event.index;
 		}
 		this.props.editIndicator(index);
@@ -112,7 +124,8 @@ export default class ChartWidget extends PureComponent {
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
 		const {data, xScale, xAccessor, displayXAccessor} = xScaleProvider(calculatedData);
 
-		const xExtents = [xAccessor(last(data)), xAccessor(data[Math.max(0, data.length - 200)])];
+		const windowsSize = Math.round((width / 1420) * 200);
+		const xExtents = [xAccessor(last(data)), xAccessor(data[Math.max(0, data.length - windowsSize)])];
 
 		const gridHeight = height - chartMargin.top - chartMargin.bottom;
 		const gridWidth = width - chartMargin.left - chartMargin.right;

@@ -12,8 +12,8 @@ const timeFormatter = timeFormat('%e-%m-%Y %H:%M:%S');
 function balanceFormatter(column, data) {
 	switch (column) {
 		case 'currency': return data.valuta.name;
-		case 'quantity': return `${format("(,.4f")(data.quantity)} ${data.valuta.symbol}`;
-		case 'liquid_quantity': return `${format("(.4f")(data.quantity - data.halted)} ${data.valuta.symbol}`;
+		case 'quantity': return `${format(`(,.${data.valuta.decimal_places}f`)(data.quantity)} ${data.valuta.symbol}`;
+		case 'liquid_quantity': return `${format(`(,.${data.valuta.decimal_places}f`)(data.quantity - data.halted)} ${data.valuta.symbol}`;
 	}
 }
 
@@ -35,10 +35,10 @@ export default class MyOrdersPanel extends Component {
 			case 'date': return timeFormatter(new Date(data['updated_at']['date']));
 			case 'pair': return `${data.valuta_pair.valuta_primary.symbol}/${data.valuta_pair.valuta_secondary.symbol}`; // TODO: full name
 			case 'side': return <span className={data.buy ? 'green' : 'red'}>{data.buy ? 'buy' : 'sell'}</span>;
-			case 'price': return format("(,.2f")(data.price);
-			case 'amount': return format("(.4f")(data.quantity);
+			case 'price': return format(`(,.${data.valuta_pair.valuta_primary.decimal_places}f`)(data.price);
+			case 'amount': return format(`(.${data.valuta_pair.valuta_secondary.decimal_places}f`)(data.quantity);
 			case 'filled': return format("(.2%")(data.filled_quantity / data.quantity);
-			case 'total': return format("(,.4f")(data.price * data.quantity);
+			case 'total': return format(`(,.${data.valuta_pair.valuta_primary.decimal_places}f`)(data.price * data.quantity);
 			case 'state':
 				let stateClass = '';
 				if(data.status === 2) stateClass = 'red'; // TODO: magic strings

@@ -4,14 +4,14 @@ import {connect} from 'react-redux';
 import OrderList from '../components/OrderList';
 import {format} from "d3-format";
 
-function openOrderFormatter(column, data) {
+function openOrderFormatter(column, data, market) {
 	switch (column) {
 		case 'price':
-			return format("(.2f")(data[column]);
+			return format(`(,.${market.valuta_primary.decimal_places}f`)(data[column]);
 		case 'amount':
-			return format("(.4f")(data.quantity);
+			return format(`(,.${market.valuta_secondary.decimal_places}f`)(data.quantity);
 		case 'total':
-			return format("(.4f")(data.quantity * data.price);
+			return format(`(,.${market.valuta_primary.decimal_places}f`)(data.quantity * data.price);
 		default:
 			return null;
 	}
@@ -20,7 +20,8 @@ function openOrderFormatter(column, data) {
 @connect((store) => {
 	return {
 		open_orders: store.market_data.order_book,
-		order_history: store.market_data.history
+		order_history: store.market_data.history,
+		market: store.market_data.market,
 	};
 })
 export default class OpenOrders extends Component {
@@ -34,7 +35,7 @@ export default class OpenOrders extends Component {
 
 		const last_order = order_history && order_history.length > 0 ? order_history[0] : null;
 		let price_label = '-';
-		if (last_order) price_label = format("(.2f")(last_order.price) + ' ' + (last_order.buy ? '↑' : '↓');
+		if (last_order) price_label = format(`(,.${this.props.market.valuta_primary.decimal_places}f`)(last_order.price) + ' ' + (last_order.buy ? '↑' : '↓');
 
 		return <div className="orders-panel">
 			<h3 className="panel-title text-center">Open Trades</h3>
@@ -48,8 +49,8 @@ export default class OpenOrders extends Component {
 				</tbody>
 			</table>
 
-			<OrderList tableClass={'ask'} dataFormatter={openOrderFormatter} data={this.props.open_orders.bids} columns={['price', 'amount', 'total']}
-			           scrollBottom={true}/>
+			<OrderList tableClass={'ask'} dataFormatter={(c, d) => openOrderFormatter(c, d, this.props.market)}
+			           data={this.props.open_orders.bids.slice().reverse()} columns={['price', 'amount', 'total']} scrollBottom={true}/>
 			<table className="table price-bar">
 				<tbody>
 				<tr>
@@ -59,7 +60,8 @@ export default class OpenOrders extends Component {
 				</tr>
 				</tbody>
 			</table>
-			<OrderList tableClass={'bid'} dataFormatter={openOrderFormatter} data={this.props.open_orders.asks.slice().reverse()} columns={['price', 'amount', 'total']}/>
+			<OrderList tableClass={'bid'} dataFormatter={(c, d) => openOrderFormatter(c, d, this.props.market)}
+			           data={this.props.open_orders.asks.slice().reverse()} columns={['price', 'amount', 'total']}/>
 		</div>;
 	}
 }

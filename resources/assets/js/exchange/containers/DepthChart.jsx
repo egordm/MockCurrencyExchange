@@ -16,7 +16,8 @@ import {curveStepAfter, curveStepBefore} from "d3-shape";
 
 @connect((store) => {
 	return {
-		data: store.market_data.depth
+		data: store.market_data.depth,
+		market: store.market_data.market
 	}
 })
 export default class DepthChart extends Component {
@@ -58,7 +59,8 @@ export default class DepthChart extends Component {
 				<YAxis axisAt="right" orient="right" ticks={5} {...axisStyle} {...yGrid}/>
 				<XAxis axisAt="bottom" orient="bottom" ticks={8} {...axisStyle} {...xGrid}/>
 
-				<MouseCoordinateX snapX={false} at="bottom" orient="bottom" displayFormat={format(".2f")} {...coordStyle}/>
+				<MouseCoordinateX snapX={false} at="bottom" orient="bottom"
+				                  displayFormat={format(`(,.${this.props.market.valuta_primary.decimal_places}f`)} {...coordStyle}/>
 				<MouseCoordinateY at="right" orient="right" displayFormat={format(".2f")} {...coordStyle}/>
 
 

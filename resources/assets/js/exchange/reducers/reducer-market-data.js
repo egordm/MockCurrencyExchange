@@ -9,8 +9,8 @@ const initialState = {
 	last_polled: null,
 	market: {
 		id: 1,
-		valuta_primary: {id: 9, symbol: "USD", name: "US Dollar"},
-		valuta_secondary: {id: 7, symbol: "BTC", name: "Bitcoin"},
+		valuta_primary: {id: 9, symbol: "USD", name: "US Dollar", decimal_places: 2},
+		valuta_secondary: {id: 7, symbol: "BTC", name: "Bitcoin", decimal_places: 8},
 		symbol: "USD_BTC"
 	},
 

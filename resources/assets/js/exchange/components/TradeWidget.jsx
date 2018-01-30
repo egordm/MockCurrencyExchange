@@ -16,9 +16,8 @@ export default class TradeWidget extends Component {
 	};
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({price: nextProps.market.price});
+		if(this.props.market !== nextProps.market) this.setState({price: nextProps.market.price});
 	}
-
 
 	handleSubmit = (e) => {
 		e.preventDefault();
@@ -26,7 +25,7 @@ export default class TradeWidget extends Component {
 	};
 
 	handleChange = (e) => {
-		if(e.target.value < 99999999999) this.setState({[e.target.name]: e.target.value});
+		if(e.target.value <= 99999999999) this.setState({[e.target.name]: e.target.value});
 	};
 
 	render() {
@@ -34,6 +33,7 @@ export default class TradeWidget extends Component {
 		const market = this.props.market;
 		const balance = this.props.balance ? this.props.balance.quantity - this.props.balance.halted : null;
 		const price = this.state.price ? this.state.price : '';
+		const balance_valuta = this.props.type === 'buy' ? market.valuta_primary : market.valuta_secondary;
 		return <div className="trade-widget" id="form">
 			<div className="row trade-header">
 				<div className="col-3">
@@ -41,8 +41,8 @@ export default class TradeWidget extends Component {
 				</div>
 				<div className="col-9 balance">
 					<i className="material-icons">&#xE850;</i>
-					<span> {balance ? format("(,.2f")(balance) : '-'}</span>
-					<span> {this.props.type === 'buy' ? market.valuta_primary.symbol : market.valuta_secondary.symbol}</span>
+					<span> {balance ? format(`(,.${balance_valuta.decimal_places}f`)(balance) : '-'}</span>
+					<span> {balance_valuta.symbol}</span>
 				</div>
 			</div>
 			<form onSubmit={this.handleSubmit}>
@@ -69,7 +69,7 @@ export default class TradeWidget extends Component {
 				<div className="form-group trade-total row">
 					<div className="col-3 col-form-label">Total:</div>
 					<div className="col-9 col-form-label display-label">
-						<span>{format("(,.2f")(this.state.price * this.state.quantity)}</span>
+						<span>{format(`(,.${market.valuta_primary.decimal_places}f`)(this.state.price * this.state.quantity)}</span>
 						<span> {market.valuta_primary.symbol}</span>
 					</div>
 				</div>
