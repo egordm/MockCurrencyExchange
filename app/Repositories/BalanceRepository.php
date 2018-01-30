@@ -19,7 +19,8 @@ use App\Repositories\Criteria\WithBalanceCriteria;
 use App\Repositories\Presenters\BalancePresenter;
 use App\Repositories\Presenters\BalanceValutaPresenter;
 use App\User;
-use \lluminate\Database\Eloquent\Collection;
+use \Illuminate\Database\Eloquent\Collection;
+use DB;
 
 class BalanceRepository extends PresentableRepository
 {
@@ -64,9 +65,10 @@ class BalanceRepository extends PresentableRepository
     public function getConvertedBalance(Collection $balances)
     {
         $convertedbalance = 0;
+        $USDollarid = DB::table('valuta')->where('name', 'US Dollar')->first()->id;
         foreach ($balances as $balance):
             if (!($balance->valuta->name == 'US Dollar')) {
-                $valutapair = DB::table('valuta_pairs')->where('valuta_primary_id', 3)->where('valuta_secondary_id', $balance->valuta->id)->first()->id;
+                $valutapair = DB::table('valuta_pairs')->where('valuta_primary_id', $USDollarid)->where('valuta_secondary_id', $balance->valuta->id)->first()->id;
                 $order = DB::table('candlestick_nodes')->where('valuta_pair_id', $valutapair)->Orderby('close_time', 'desc')->first();
                 $conversion = $conversion = ($order->high + $order->low) / 2;
                 $convertedbalance = $convertedbalance + $conversion * $balance->quantity;

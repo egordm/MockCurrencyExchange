@@ -60,9 +60,20 @@
 
 			{{$orders->links()}}
 		</div>
+    </section>
+        <section class="section section-gray text-center">
+        <div class="container">
+            <h1>Balance in USD</h1>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                    {{'$'}} {{$convertedbalance}}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-
-        <h1>Total Balance</h1>
-        {{$convertedbalance}}
 	</section>
 @endsection
