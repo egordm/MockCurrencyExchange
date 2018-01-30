@@ -10,7 +10,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 
 class GiveInitialBalance
 {
-	const DEFAULT_INITIAL_BALANCE = 1000;
+	const DEFAULT_INITIAL_BALANCE = 5000;
 
 	/**
 	 * @var ValutaRepository
