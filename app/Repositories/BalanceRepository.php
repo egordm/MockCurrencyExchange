@@ -19,6 +19,7 @@ use App\Repositories\Criteria\WithBalanceCriteria;
 use App\Repositories\Presenters\BalancePresenter;
 use App\Repositories\Presenters\BalanceValutaPresenter;
 use App\User;
+use \lluminate\Database\Eloquent\Collection;
 
 class BalanceRepository extends PresentableRepository
 {
@@ -57,6 +58,25 @@ class BalanceRepository extends PresentableRepository
 	{
 		return $this->findWhere(['user_id' => $user->id, 'valuta_id' => $valuta->id]);
 	}
+
+
+
+    public function getConvertedBalance(Collection $balances)
+    {
+        $convertedbalance = 0;
+        foreach ($balances as $balance):
+            if (!($balance->valuta->name == 'US Dollar')) {
+                $valutapair = DB::table('valuta_pairs')->where('valuta_primary_id', 3)->where('valuta_secondary_id', $balance->valuta->id)->first()->id;
+                $order = DB::table('candlestick_nodes')->where('valuta_pair_id', $valutapair)->Orderby('close_time', 'desc')->first();
+                $conversion = $conversion = ($order->high + $order->low) / 2;
+                $convertedbalance = $convertedbalance + $conversion * $balance->quantity;
+            } else {
+                $convertedbalance = $convertedbalance + $balance->quantity;
+            }
+        endforeach;
+
+        return $convertedbalance;
+    }
 
 	/**
 	 * Get balance for given valuta that is not useable. Not usable means it has been reserved for an order.

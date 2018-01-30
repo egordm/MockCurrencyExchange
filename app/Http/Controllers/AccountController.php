@@ -47,7 +47,9 @@ class AccountController extends Controller
 		$orderRepository->pushCriteria(new OrderByNewestCriteria('orders', 'id'));
 		$orders = $orderRepository->paginate();
 
-		return view('portfolio', compact('orders', 'balances'));
+        $convertedbalance = $balanceRepository->getConvertedBalance($balances);
+
+		return view('portfolio', compact('orders', 'balances', 'convertedbalance'));
 	}
 
 }

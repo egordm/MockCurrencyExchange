@@ -60,5 +60,9 @@
 
 			{{$orders->links()}}
 		</div>
+
+
+        <h1>Total Balance</h1>
+        {{$convertedbalance}}
 	</section>
 @endsection
