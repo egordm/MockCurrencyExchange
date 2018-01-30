@@ -5,7 +5,6 @@
 				<ul>
 					<li><a href="{{route('home')}}">Home</a></li>
 					<li><a href="{{route('exchange')}}">Exchange</a></li>
-					<li><a href="#about">About</a></li>
 				</ul>
 			</nav>
 			<div class="credits ml-auto">

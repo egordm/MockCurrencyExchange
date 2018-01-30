@@ -16,9 +16,6 @@
 				<li class="nav-item">
 					<a href="{{route('home')}}" class="nav-link">Home</a>
 				</li>
-				<li class="nav-item">
-					<a href="#about" class="nav-link">About</a>
-				</li>
 				@if (Auth::check())
 					<li class="nav-item">
 						<a href="{{route('account')}}" class="nav-link">Account</a>
