@@ -1,6 +1,8 @@
 # Centralized Exchange Concept
 We have build a fully functional centralized exchange. The frontend is using React and the backend is powered by Laravel.
 
+## [View demo](https://www.youtube.com/watch?v=9VbuzYH5QEA)
+
 ## Discalimer
 This project is built for educational reasons and is not meant to use in real world scenario. Please use it at your own risk. We are not responsible for any damages or problems that may arise.
 
@@ -27,3 +29,6 @@ You also want to fill in binance api credentials for the live market data in the
 
 ### Frontend
 Use webpack to compile the frontend sass and js.
+
+## Acknowledgements
+Frontend is hugely inspired by binance ui
