@@ -14,3 +14,4 @@ vagrant_dir
 storage/debugbar/*
 .env.mock.*
 resources/marktdata.jsx
+*.sql
